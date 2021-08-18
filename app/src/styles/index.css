@@ -1,0 +1,22 @@
+:root {
+  --red-violet: #da18a3;
+  --red-linear: linear-gradient(
+    101.12deg,
+    #eb1484 27.35%,
+    #c91cc3 99.99%,
+    #c81cc5 100%,
+    #c81cc5 100%
+  );
+  --dark: #24252d;
+  --gray-1: #e3e1e3;
+  --gray-2: #888888;
+  --gray-3: #4f4f4f;
+  --black-1: #2d2e36;
+  --black-2: #1b1a21;
+  --black-3: #2a2d3a;
+  --black-4: #24252D;
+  --p1: 16px;
+  --p2: 14px;
+  --p3: 12px;
+  --p4: 10px;
+}

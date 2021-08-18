@@ -1,0 +1,11 @@
+@import "../../styles/index.css";
+
+.navbar-container {
+  height: 110px;
+  width: 100%;
+  background-color: var(--black-3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}

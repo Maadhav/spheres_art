@@ -1,0 +1,11 @@
+@import "../../styles/index.css";
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 10px;
+  width: 612px;
+  background-color: var(--black-2);
+  height: 38px;
+}

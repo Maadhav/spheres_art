@@ -1,0 +1,25 @@
+@import "../../styles/index.css";
+@import url('http://fonts.cdnfonts.com/css/gotham');
+
+.logo-container {
+  display: flex;
+  position: sticky;
+  height: 32px;
+  align-items: center;
+  flex: 0.14;
+}
+
+.logo {
+  margin-right: 4px;
+  background: var(--red-linear);
+  height: 32px;
+  width: 32px;
+  border-radius: 20px;
+}
+
+.logo-title {
+    font-family: 'Gotham';
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
