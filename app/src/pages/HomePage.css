@@ -1,0 +1,67 @@
+@import "../styles/index.css";
+@import url("http://fonts.cdnfonts.com/css/gotham");
+
+.discover-card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  height: 300px;
+  margin-top: 60px;
+  border-radius: 25px;
+  background: var(--red-linear);
+}
+
+.discover-card span {
+  padding: 0 53px;
+  text-align: left;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  font-family: "Gotham";
+}
+
+.circle-1 {
+  position: absolute;
+  width: 338px;
+  height: 338px;
+  left: -164px;
+  top: -164px;
+  background: #ffffff20;
+  border-radius: 50%;
+}
+
+.circle-2 {
+  position: absolute;
+  width: 338px;
+  height: 338px;
+  left: 700px;
+  top: 110px;
+  background: #ffffff20;
+  border-radius: 50%;
+}
+
+.home-body {
+  display: inline-flex;
+  flex-wrap: wrap;
+  padding: 0 225px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.explore-section {
+  margin-top: 60px;
+  width: 100%;
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.nft-grid {
+  display: grid;
+  margin-top: 30px;
+  margin-bottom: 60px;
+  grid-gap: 20px;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}

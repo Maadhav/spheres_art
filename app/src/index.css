@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins');
-
+@import './styles/index.css';
 body {
   margin: 0;
   font-family: 'Poppins';
+  background-color: var(--dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -35,6 +36,7 @@ h3 {
 }
 
 button {
+  font-family: 'Poppins';
   font-weight: 600;
   font-size: 14px;
 }

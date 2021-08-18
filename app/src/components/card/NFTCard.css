@@ -1,0 +1,39 @@
+@import "../../styles/index.css";
+
+.container {
+  height: 319px;
+  width: 233px;
+  position: relative;
+  border-radius: 20px;
+  background-color: var(--black-3);
+}
+
+.image-container {
+  height: 230px;
+  margin: 11px;
+  position: absolute;
+  right: 0;
+  left: 0;
+  background-color: var(--gray-2);
+  border-radius: 20px;
+}
+
+.title-style {
+    position: absolute;
+    top: 255px;
+    left: 11px;
+    bottom: 5px;
+    font-size: var(--p2);
+    font-weight: 600;
+    color: white;
+}
+
+
+.price-style {
+    position: absolute;
+    top: 280px;
+    left: 11px;
+    bottom: 5px;
+    font-size: var(--p3);
+    color: white;
+}
