@@ -1,11 +1,29 @@
 @import "../../styles/index.css";
 
 .search-container {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  flex: 1; 
+  gap: 0px 10px;
   align-items: center;
   border-radius: 10px;
-  width: 612px;
   background-color: var(--black-2);
   height: 38px;
+  padding-left: 15px;
+}
+
+.search-icon{
+  color: white;
+  height: 24px;
+  width: 24px;
+}
+
+.search-input{
+  font-size: var(--p3);
+  color: white;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  width: calc(100% - 50px);
 }

@@ -1,0 +1,11 @@
+@import "../../../styles/index.css";
+
+.menu{
+    font-size: var(--p1);
+    font-weight: 600;
+    color: white;
+}
+
+.active{
+    color: var(--gray-3);
+}
