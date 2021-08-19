@@ -18,7 +18,7 @@ const HomePage = () => {
                     }
                 </div>
             </div>
-            <LinedButton title="Load More" onClick={() => { }} style={{ width: "300px" }} />
+            <LinedButton title="Load More" onClick={() => { }} style={{ marginBottom: "60px",width: "300px" }} />
         </div>
     )
 }
