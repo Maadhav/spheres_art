@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import Footer from './components/footer/Footer';
 import { Route, Switch } from 'react-router-dom';
 import Profile from './pages/Profile';
+import ItemPage from './pages/ItemPage';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
         </Route>
         <Route path="/profile/:id?" exact>
           <Profile />
+        </Route>
+        <Route path="/item/:id?" exact>
+          <ItemPage />
         </Route>
       </Switch>
       <Footer />
