@@ -14,14 +14,14 @@ class NFT(FA2.FA2):
             )
         user = self.ledger_key.make(params.address, params.token_id)
         self.token_id_set.add(self.data.all_tokens, params.token_id)
-        sp.if self.data.ledger.contains(user):
+        with sp.if_(self.data.ledger.contains(user)):
             self.data.ledger[user].balance += 1
-        sp.else:
+        with sp.else_():
             self.data.ledger[user] = FA2.Ledger_value.make(1)
-        sp.if self.data.token_metadata.contains(params.token_id):
+        with sp.if_(self.data.token_metadata.contains(params.token_id)):
             if self.config.store_total_supply:
                 self.data.total_supply[params.token_id] = 1
-        sp.else:
+        with sp.else_():
             self.data.token_metadata[params.token_id] = sp.record(
                 token_id    = params.token_id,
                 token_info  = params.metadata
@@ -46,9 +46,9 @@ class NFT(FA2.FA2):
         to_user = self.ledger_key.make(params.to_, params.token_id)
         self.data.ledger[from_user].balance = sp.as_nat(
             self.data.ledger[from_user].balance - 1)
-        sp.if self.data.ledger.contains(to_user):
+        with sp.if_(self.data.ledger.contains(to_user)):
             self.data.ledger[to_user].balance += 1
-        sp.else:
+        with sp.else_():
                 self.data.ledger[to_user] = FA2.Ledger_value.make(1)
 
 class SphereArt(sp.Contract):
@@ -82,7 +82,7 @@ class SphereArt(sp.Contract):
         sphere.owner = sp.sender
         token_contract = sp.contract(sp.TRecord(from_ = sp.TAddress, to_ = sp.TAddress, token_id = sp.TNat), params.address, entry_point = "buy").open_some()
         sp.transfer(sp.record(from_ = sphere.creator, to_ = sp.sender, token_id = sp.nat(0)), sp.mutez(0), token_contract)
-        sp.if sphere.isNew:
+        with sp.if_(sphere.isNew):
             sphere.isNew = False
 
 @sp.add_test(name = "a")
