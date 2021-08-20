@@ -1,6 +1,6 @@
 @import "../../styles/index.css";
 
-.search-container {
+.email-container {
   display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -9,28 +9,21 @@
   align-items: center;
   border-radius: 10px;
   background-color: var(--black-2);
-  height: 38px;
+  height: 40px;
   padding-left: 15px;
 }
 
-.search-icon{
-  color: white;
-  height: 24px;
-  width: 24px;
-}
-
-.search-input{
-  font-size: var(--p3);
-  color: white;
-  border: none;
+.email-input {
   outline: none;
-  background-color: transparent;
-  width: calc(100% - 50px);
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: var(--p2);
+  font-weight: 600;
 }
 
-
-.search-input::placeholder{
+.email-input::placeholder{
   color: white;
-  font-size: var(--p3);
+  font-size: var(--p2);
   font-family: 'Poppins';
 }

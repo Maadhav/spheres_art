@@ -1,0 +1,29 @@
+@import "../../styles/index.css";
+
+.solid {
+  padding: 9px 30px;
+  height: 40px;
+  background: var(--red-linear);
+  border-radius: 10px;
+  border: none;
+  color: white;
+}
+
+.lined {
+  padding: 9px 30px;
+  height: 40px;
+  border-radius: 10px;
+  border: solid 1px  transparent;
+  background-image: var(--red-linear) ,var(--red-linear);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 1px 1000px 1px var(--dark) inset;
+  
+}
+
+.lined span {
+    background: var(--red-linear);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+   
+}

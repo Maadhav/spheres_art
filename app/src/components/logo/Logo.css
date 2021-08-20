@@ -3,7 +3,6 @@
 
 .logo-container {
   display: flex;
-  position: sticky;
   height: 32px;
   align-items: center;
   flex: 0.14;

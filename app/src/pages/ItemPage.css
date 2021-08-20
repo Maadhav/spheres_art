@@ -1,0 +1,88 @@
+@import "../styles/index.css";
+
+.section-separator {
+  display: flex;
+  width: 100%;
+}
+
+.image-section {
+  flex: 0.55;
+  display: flex;
+  justify-content: center;
+  border-right: 1px solid var(--black-1);
+}
+
+.image-style {
+  height: 542px;
+  width: 542px;
+  left: 165px;
+  top: 189px;
+  border-radius: 20px;
+  margin: 79px 0;
+}
+
+.details-section {
+  flex: 0.45;
+  border-left: 1px solid var(--black-1);
+}
+
+.price-text {
+  margin-top: 5px;
+  font-size: var(--p2);
+  color: white;
+}
+
+.creator {
+  margin-top: 30px;
+  font-size: var(--p3);
+  color: white;
+}
+
+.creator-details {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0px 10px;
+}
+
+.creator-image {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.creator-name {
+  font-size: var(--p2);
+  color: white;
+  font-weight: 600;
+}
+
+.details {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: var(--p1);
+  color: white;
+  font-weight: 600;
+}
+
+.break-line {
+  height: 1px;
+  width: 423px;
+  border-radius: 1px;
+  background-color: var(--black-1);
+}
+
+.highlighted-line {
+  height: 1px;
+  width: 54px;
+  background-color: white;
+  border-radius: 1px;
+}
+
+.description {
+    font-size: var(--p1);
+    color: white;
+    white-space: pre-line;
+    margin: 30px 0px;
+    width: 420px;
+}

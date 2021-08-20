@@ -4,6 +4,8 @@
     font-size: var(--p1);
     font-weight: 600;
     color: white;
+    text-decoration: none;
+    text-decoration-color: transparent;
 }
 
 .active{
