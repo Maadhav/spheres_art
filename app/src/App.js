@@ -15,10 +15,13 @@ function App() {
         <Route path="/" exact>
           <HomePage />
         </Route>
-        <Route path="/profile/:id?" exact>
+        <Route path="/profile" exact>
           <Profile />
         </Route>
         <Route path="/item/:id?" exact>
+          <ItemPage />
+        </Route>
+        <Route path="/profile/item/:id?" exact>
           <ItemPage />
         </Route>
       </Switch>

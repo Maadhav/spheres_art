@@ -1,0 +1,85 @@
+@import "../../styles/index.css";
+.box {
+  width: 585px;
+  border-radius: 20px;
+  background: var(--dark);
+  box-sizing: border-box;
+  border: 1px solid var(--black-1);
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.title-section {
+  display: inline-flex;
+  height: 95px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-bottom: 1px solid var(--black-1);
+}
+
+.checkout-section {
+    display: flex;
+    margin-top: 35px;
+}
+
+.body-section {
+  padding: 25px 40px;
+  border-bottom: 1px solid var(--black-1);
+}
+
+
+.action-section {
+    height: 111px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0 20px;
+}
+
+.header {
+  display: flex;
+}
+
+.header-text {
+  font-size: var(--p1);
+  font-weight: 600;
+  color: white;
+}
+
+.item-section {
+  display: flex;
+  margin-top: 35px;
+}
+
+.item-details {
+    display: flex;
+    gap: 0px 15px;
+    flex: 1;
+    align-items: center;
+}
+
+.item-creator {
+    font-size: var(--p2);
+    font-weight: 600;
+    color: white;
+}
+
+.item-title {
+    font-size: var(--p2);
+    color: white;
+}
+
+.price {
+    font-size: var(--p1);
+    color: white;
+}
+
+.item-image {
+  height: 104px;
+  width: 107px;
+  border-radius: 0px;
+}
+
+

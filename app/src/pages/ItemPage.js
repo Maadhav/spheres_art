@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './ItemPage.css'
 import profile from '../images/profile.png'
 import SolidButton from '../components/button/SolidButton'
+import CheckOut from '../components/dialog/CheckOut'
+import Payment from '../components/dialog/Payment'
 
 const ItemPage = () => {
+
+    const [checkout, setCheckout] =  useState(false)
+    const [payment, setPayment] =  useState(false)
     return (
         <div className="section-separator">
             <div className="image-section">
@@ -23,9 +28,11 @@ const ItemPage = () => {
                     <div className="description">
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
                     </div>
-                    <SolidButton title="Buy for 4.5 XTZ"/>
+                    <SolidButton title="Buy for 4.5 XTZ" onClick={() => {setCheckout(true)}}/>
                 </div>
             </div>
+            {checkout && <CheckOut onQuit={() => {setCheckout(false)}} onCheckOut={() => {setPayment(true); setCheckout(false)}}/>}
+            {payment && <Payment onQuit={() => {setPayment(false)}}/>}
         </div>
     )
 }
