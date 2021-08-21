@@ -7,8 +7,14 @@ import { Route, Switch } from 'react-router-dom';
 import Profile from './pages/Profile';
 import ItemPage from './pages/ItemPage';
 import CreateItem from './pages/CreateItem';
+import {getActiveAccount, getContractStorage} from './adapters/tezos/index'
+import { useEffect } from 'react';
 
 function App() {
+
+  useEffect(() => {
+    getContractStorage()
+  }, [])
   return (
     <div>
       <NavBar />
