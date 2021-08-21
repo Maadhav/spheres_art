@@ -7,10 +7,12 @@
   border-radius: 10px;
   border: none;
   color: white;
+  cursor: pointer;
 }
 
 .lined {
   padding: 9px 30px;
+  cursor: pointer;
   height: 40px;
   border-radius: 10px;
   border: solid 1px  transparent;
