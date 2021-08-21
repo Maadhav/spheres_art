@@ -30,7 +30,9 @@ const NavBar = () => {
             <MenuItem title="My Items" active={index === 1} />
             </Link>
             <MenuItem title="Following" active={index === 2} />
+            <Link to={'/create'} style={{ textDecoration: 'none' }}>
             <SolidButton title="Create" onClick={() => { }} />
+            </Link>
             <LinedButton title="Connect" onClick={() => { }} />
         </div>
     )

@@ -1,0 +1,83 @@
+@import '../styles/index.css';
+
+.create-item-container {
+    padding: 35px 0px;  
+    display: flex;
+    justify-content: center;
+}
+
+.container-width {
+    width:610px;
+}
+
+.field-section {
+    margin-top: 55px;
+}
+
+.field-input {
+    margin-top: 20px;
+    width: calc(100% - 58px);
+    outline: none;
+    height: 60px;
+    padding: 0 29px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--black-1);
+    color: white;
+    font-size: var(--p1);
+}
+
+.field-input::placeholder {
+    color: white;
+}
+
+.field-textarea {
+    margin-top: 20px;
+    width: calc(100% - 58px);
+    outline: none;
+    height: 160px;
+    resize: none;
+    font-family: 'Poppins';
+    padding: 17px 29px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--black-1);
+    color: white;
+    font-size: var(--p1);
+}
+
+.field-textarea::placeholder {
+    color: white;
+}
+
+.price-field {
+    margin-top: 20px;
+    width: calc(100% - 58px);
+    height: 60px;
+    padding: 0 29px;
+    border-radius: 10px;
+    display: flex;
+    background-color: var(--black-1);
+}
+
+.price-input {
+    border: none;
+    flex: 1;
+    outline: none;
+    color: white;
+    background: none;
+    font-size: var(--p1);
+}
+
+.price-input::placeholder {
+    color: white;
+}
+
+.crypto-drop-down {
+    border: none; 
+    outline: none;
+    background-color: transparent;
+    color: white;
+    font-size: var(--p1);
+    font-weight: 600;  
+}
