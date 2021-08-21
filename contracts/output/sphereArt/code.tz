@@ -1,0 +1,268 @@
+parameter (or (pair %createItem (address %address) (pair (address %creator) (pair %sphere (nat %price) (pair (timestamp %timestamp) (string %tokenUrl))))) (pair %createSale (address %address) (nat %token_id)));
+storage   (pair (nat %counter) (map %spheres nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id))))));
+code
+  {
+    UNPAIR;     # @parameter : @storage
+    IF_LEFT
+      {
+        # == createItem ==
+        # sp.verify(params.sphere.price >= 0) # @parameter%createItem : @storage
+        DUP;        # @parameter%createItem : @parameter%createItem : @storage
+        GET 5;      # nat : @parameter%createItem : @storage
+        PUSH nat 0; # nat : nat : @parameter%createItem : @storage
+        SWAP;       # nat : nat : @parameter%createItem : @storage
+        COMPARE;    # int : @parameter%createItem : @storage
+        GE;         # bool : @parameter%createItem : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: params.sphere.price >= 0"; # string : @parameter%createItem : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%createItem : @storage
+        # sp.transfer(sp.record(address = params.creator, admin = sp.sender, metadata = {'tokenUrl' : sp.bytes('0x28617474722028617474722028706172616d73202822537068657265417274436f6e74726163742e7079222035392929202273706865726522202822537068657265417274436f6e74726163742e70792220363029292022746f6b656e55726c22202822537068657265417274436f6e74726163742e7079222036302929')}, token_id = self.data.counter), sp.tez(0), sp.contract(sp.TRecord(address = sp.TAddress, admin = sp.TAddress, metadata = sp.TMap(sp.TString, sp.TBytes), token_id = sp.TNat).layout((("address", "admin"), ("metadata", "token_id"))), params.address, entry_point='mint').open_some()) # @parameter%createItem : @storage
+        DUP;        # @parameter%createItem : @parameter%createItem : @storage
+        CAR;        # address : @parameter%createItem : @storage
+        CONTRACT %mint (pair (pair address address) (pair (map string bytes) nat)); # option (contract (pair (pair address address) (pair (map string bytes) nat))) : @parameter%createItem : @storage
+        IF_NONE
+          {
+            PUSH int 70; # int : @parameter%createItem : @storage
+            FAILWITH;   # FAILED
+          }
+          {}; # @some : @parameter%createItem : @storage
+        NIL operation; # list operation : @some : @parameter%createItem : @storage
+        SWAP;       # @some : list operation : @parameter%createItem : @storage
+        PUSH mutez 0; # mutez : @some : list operation : @parameter%createItem : @storage
+        DUP 5;      # @storage : mutez : @some : list operation : @parameter%createItem : @storage
+        CAR;        # nat : mutez : @some : list operation : @parameter%createItem : @storage
+        PUSH (map string bytes) {Elt "tokenUrl" 0x28617474722028617474722028706172616d73202822537068657265417274436f6e74726163742e7079222035392929202273706865726522202822537068657265417274436f6e74726163742e70792220363029292022746f6b656e55726c22202822537068657265417274436f6e74726163742e7079222036302929}; # map string bytes : nat : mutez : @some : list operation : @parameter%createItem : @storage
+        PAIR;       # pair (map string bytes) nat : mutez : @some : list operation : @parameter%createItem : @storage
+        SENDER;     # @sender : pair (map string bytes) nat : mutez : @some : list operation : @parameter%createItem : @storage
+        DUP 6;      # @parameter%createItem : @sender : pair (map string bytes) nat : mutez : @some : list operation : @parameter%createItem : @storage
+        GET 3;      # address : @sender : pair (map string bytes) nat : mutez : @some : list operation : @parameter%createItem : @storage
+        PAIR;       # pair address @sender : pair (map string bytes) nat : mutez : @some : list operation : @parameter%createItem : @storage
+        PAIR;       # pair (pair address @sender) (pair (map string bytes) nat) : mutez : @some : list operation : @parameter%createItem : @storage
+        TRANSFER_TOKENS; # operation : list operation : @parameter%createItem : @storage
+        CONS;       # list operation : @parameter%createItem : @storage
+        # self.data.spheres[self.data.counter] = sp.record(creator = params.creator, isNew = True, owner = params.creator, price = sp.mul(params.sphere.price, sp.mutez(1)), timestamp = params.sphere.timestamp, tokenUrl = params.sphere.tokenUrl, token_id = self.data.counter) # list operation : @parameter%createItem : @storage
+        DUP 3;      # @storage : list operation : @parameter%createItem : @storage
+        DUP;        # @storage : @storage : list operation : @parameter%createItem : @storage
+        CDR;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        DUP 5;      # @storage : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        CAR;        # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        DUP 5;      # @parameter%createItem : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        GET 8;      # string : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        PAIR;       # pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        DUP 5;      # @parameter%createItem : pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        GET 7;      # timestamp : pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        PUSH mutez 1; # mutez : timestamp : pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        DUP 7;      # @parameter%createItem : mutez : timestamp : pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        GET 5;      # nat : mutez : timestamp : pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        MUL;        # mutez : timestamp : pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        PAIR;       # pair mutez timestamp : pair string nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        PAIR;       # pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        DUP 5;      # @parameter%createItem : pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        GET 3;      # address : pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        PUSH bool True; # bool : address : pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        PAIR;       # pair bool address : pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createItem : @storage
+        DIG 5;      # @parameter%createItem : pair bool address : pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @storage
+        GET 3;      # address : pair bool address : pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @storage
+        PAIR;       # pair address (pair bool address) : pair (pair mutez timestamp) (pair string nat) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @storage
+        PAIR;       # pair (pair address (pair bool address)) (pair (pair mutez timestamp) (pair string nat)) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @storage
+        SOME;       # option (pair (pair address (pair bool address)) (pair (pair mutez timestamp) (pair string nat))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @storage
+        DIG 4;      # @storage : option (pair (pair address (pair bool address)) (pair (pair mutez timestamp) (pair string nat))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+        CAR;        # nat : option (pair (pair address (pair bool address)) (pair (pair mutez timestamp) (pair string nat))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+        UPDATE;     # map nat (pair (pair address (pair bool address)) (pair (pair mutez timestamp) (pair string nat))) : @storage : list operation
+        UPDATE 2;   # @storage : list operation
+        # self.data.counter += 1 # @storage : list operation
+        DUP;        # @storage : @storage : list operation
+        CAR;        # nat : @storage : list operation
+        PUSH nat 1; # nat : nat : @storage : list operation
+        ADD;        # nat : @storage : list operation
+        UPDATE 1;   # @storage : list operation
+        SWAP;       # list operation : @storage
+      }
+      {
+        SWAP;       # @storage : @parameter%createSale
+        # == createSale ==
+        # sp.verify(sp.amount == self.data.spheres[params.token_id].price) # @storage : @parameter%createSale
+        DUP;        # @storage : @storage : @parameter%createSale
+        DUG 2;      # @storage : @parameter%createSale : @storage
+        CDR;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @parameter%createSale : @storage
+        SWAP;       # @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage
+        DUP;        # @parameter%createSale : @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage
+        DUG 2;      # @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @parameter%createSale : @storage
+        CDR;        # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @parameter%createSale : @storage
+        GET;        # option (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @parameter%createSale : @storage
+        IF_NONE
+          {
+            PUSH int 79; # int : @parameter%createSale : @storage
+            FAILWITH;   # FAILED
+          }
+          {
+            # of_some: Get-item:79 # @some : @parameter%createSale : @storage
+          }; # @some : @parameter%createSale : @storage
+        GET 3;      # pair (mutez %price) (timestamp %timestamp) : @parameter%createSale : @storage
+        CAR;        # mutez : @parameter%createSale : @storage
+        AMOUNT;     # @amount : mutez : @parameter%createSale : @storage
+        COMPARE;    # int : @parameter%createSale : @storage
+        EQ;         # bool : @parameter%createSale : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: sp.amount == self.data.spheres[params.token_id].price"; # string : @parameter%createSale : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%createSale : @storage
+        # sp.send(self.data.spheres[params.token_id].owner, sp.amount) # @parameter%createSale : @storage
+        NIL operation; # list operation : @parameter%createSale : @storage
+        DUP 3;      # @storage : list operation : @parameter%createSale : @storage
+        CDR;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        DUP 3;      # @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        CDR;        # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        GET;        # option (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        IF_NONE
+          {
+            PUSH int 79; # int : list operation : @parameter%createSale : @storage
+            FAILWITH;   # FAILED
+          }
+          {
+            # of_some: Get-item:79 # @some : list operation : @parameter%createSale : @storage
+          }; # @some : list operation : @parameter%createSale : @storage
+        CAR;        # pair (address %creator) (pair (bool %isNew) (address %owner)) : list operation : @parameter%createSale : @storage
+        GET 4;      # address : list operation : @parameter%createSale : @storage
+        CONTRACT unit; # option (contract unit) : list operation : @parameter%createSale : @storage
+        IF_NONE
+          {
+            PUSH int 81; # int : list operation : @parameter%createSale : @storage
+            FAILWITH;   # FAILED
+          }
+          {}; # @some : list operation : @parameter%createSale : @storage
+        AMOUNT;     # @amount : @some : list operation : @parameter%createSale : @storage
+        UNIT;       # unit : @amount : @some : list operation : @parameter%createSale : @storage
+        TRANSFER_TOKENS; # operation : list operation : @parameter%createSale : @storage
+        CONS;       # list operation : @parameter%createSale : @storage
+        # self.data.spheres[params.token_id].owner = sp.sender # list operation : @parameter%createSale : @storage
+        DIG 2;      # @storage : list operation : @parameter%createSale
+        DUP;        # @storage : @storage : list operation : @parameter%createSale
+        CDR;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        DUP;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        DUP 5;      # @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        CDR;        # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        DUP;        # nat : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        DUG 2;      # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        GET;        # option (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        IF_NONE
+          {
+            PUSH int 82; # int : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+            FAILWITH;   # FAILED
+          }
+          {}; # @some : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        UNPAIR;     # pair (address %creator) (pair (bool %isNew) (address %owner)) : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        UNPAIR;     # address : pair (bool %isNew) (address %owner) : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        SWAP;       # pair (bool %isNew) (address %owner) : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        CAR;        # bool : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        SENDER;     # @sender : bool : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        SWAP;       # bool : @sender : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        PAIR;       # pair bool @sender : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        SWAP;       # address : pair bool @sender : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        PAIR;       # pair address (pair bool @sender) : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        PAIR;       # pair (pair address (pair bool @sender)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        SOME;       # option (pair (pair address (pair bool @sender)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        SWAP;       # nat : option (pair (pair address (pair bool @sender)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        UPDATE;     # map nat (pair (pair address (pair bool address)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+        UPDATE 2;   # @storage : list operation : @parameter%createSale
+        DUG 2;      # list operation : @parameter%createSale : @storage
+        SWAP;       # @parameter%createSale : list operation : @storage
+        # sp.transfer(sp.record(from_ = self.data.spheres[params.token_id].creator, to_ = sp.sender, token_id = 0), sp.tez(0), sp.contract(sp.TRecord(from_ = sp.TAddress, to_ = sp.TAddress, token_id = sp.TNat).layout(("from_", ("to_", "token_id"))), params.address, entry_point='buy').open_some()) # @parameter%createSale : list operation : @storage
+        DUP;        # @parameter%createSale : @parameter%createSale : list operation : @storage
+        DUG 2;      # @parameter%createSale : list operation : @parameter%createSale : @storage
+        CAR;        # address : list operation : @parameter%createSale : @storage
+        CONTRACT %buy (pair address (pair address nat)); # option (contract (pair address (pair address nat))) : list operation : @parameter%createSale : @storage
+        IF_NONE
+          {
+            PUSH int 83; # int : list operation : @parameter%createSale : @storage
+            FAILWITH;   # FAILED
+          }
+          {}; # @some : list operation : @parameter%createSale : @storage
+        PUSH mutez 0; # mutez : @some : list operation : @parameter%createSale : @storage
+        PUSH nat 0; # nat : mutez : @some : list operation : @parameter%createSale : @storage
+        SENDER;     # @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        DUP 7;      # @storage : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        CDR;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        DUP 7;      # @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        CDR;        # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        GET;        # option (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        IF_NONE
+          {
+            PUSH int 79; # int : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+            FAILWITH;   # FAILED
+          }
+          {
+            # of_some: Get-item:79 # @some : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+          }; # @some : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        CAR;        # pair (address %creator) (pair (bool %isNew) (address %owner)) : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        CAR;        # address : @sender : nat : mutez : @some : list operation : @parameter%createSale : @storage
+        PAIR 3;     # pair address (pair @sender nat) : mutez : @some : list operation : @parameter%createSale : @storage
+        TRANSFER_TOKENS; # operation : list operation : @parameter%createSale : @storage
+        CONS;       # list operation : @parameter%createSale : @storage
+        # if self.data.spheres[params.token_id].isNew: # list operation : @parameter%createSale : @storage
+        DUP 3;      # @storage : list operation : @parameter%createSale : @storage
+        CDR;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        DUP 3;      # @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        CDR;        # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        GET;        # option (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : list operation : @parameter%createSale : @storage
+        IF_NONE
+          {
+            PUSH int 79; # int : list operation : @parameter%createSale : @storage
+            FAILWITH;   # FAILED
+          }
+          {
+            # of_some: Get-item:79 # @some : list operation : @parameter%createSale : @storage
+          }; # @some : list operation : @parameter%createSale : @storage
+        CAR;        # pair (address %creator) (pair (bool %isNew) (address %owner)) : list operation : @parameter%createSale : @storage
+        GET 3;      # bool : list operation : @parameter%createSale : @storage
+        IF
+          {
+            # self.data.spheres[params.token_id].isNew = False # list operation : @parameter%createSale : @storage
+            DIG 2;      # @storage : list operation : @parameter%createSale
+            DUP;        # @storage : @storage : list operation : @parameter%createSale
+            CDR;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+            DUP;        # map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation : @parameter%createSale
+            DIG 4;      # @parameter%createSale : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            CDR;        # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            DUP;        # nat : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            DUG 2;      # nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            GET;        # option (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            IF_NONE
+              {
+                PUSH int 86; # int : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+                FAILWITH;   # FAILED
+              }
+              {}; # @some : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            UNPAIR;     # pair (address %creator) (pair (bool %isNew) (address %owner)) : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            UNPAIR;     # address : pair (bool %isNew) (address %owner) : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            SWAP;       # pair (bool %isNew) (address %owner) : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            CDR;        # address : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            PUSH bool False; # bool : address : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            PAIR;       # pair bool address : address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            SWAP;       # address : pair bool address : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            PAIR;       # pair address (pair bool address) : pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            PAIR;       # pair (pair address (pair bool address)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            SOME;       # option (pair (pair address (pair bool address)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : nat : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            SWAP;       # nat : option (pair (pair address (pair bool address)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : map nat (pair (pair (address %creator) (pair (bool %isNew) (address %owner))) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            UPDATE;     # map nat (pair (pair address (pair bool address)) (pair (pair (mutez %price) (timestamp %timestamp)) (pair (string %tokenUrl) (nat %token_id)))) : @storage : list operation
+            UPDATE 2;   # @storage : list operation
+            SWAP;       # list operation : @storage
+          }
+          {
+            SWAP;       # @parameter%createSale : list operation : @storage
+            DROP;       # list operation : @storage
+          }; # list operation : @storage
+      }; # list operation : @storage
+    NIL operation; # list operation : list operation : @storage
+    SWAP;       # list operation : list operation : @storage
+    ITER
+      {
+        CONS;       # list operation : @storage
+      }; # list operation : @storage
+    PAIR;       # pair (list operation) @storage
+  };

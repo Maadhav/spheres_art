@@ -1,0 +1,10 @@
+Creating contract KT1TezoooozzSmartPyzzSTATiCzzzwwBFA1
+ -> (Pair 0 {})
+ => ./output/sphereArt/step_000_cont_0_storage.tz 1
+ => ./output/sphereArt/step_000_cont_0_storage.json 1
+ => ./output/sphereArt/step_000_cont_0_sizes.csv 2
+ => ./output/sphereArt/step_000_cont_0_storage.py 1
+ => ./output/sphereArt/step_000_cont_0_types.py 7
+ => ./output/sphereArt/step_000_cont_0_contract.tz 268
+ => ./output/sphereArt/step_000_cont_0_contract.json 313
+ => ./output/sphereArt/step_000_cont_0_contract.py 28

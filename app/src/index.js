@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import {Tezos} from './adapters/tezos/index'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 
