@@ -4,7 +4,7 @@ import profile from '../images/profile.png'
 import SolidButton from '../components/button/SolidButton'
 import CheckOut from '../components/dialog/CheckOut'
 import Payment from '../components/dialog/Payment'
-
+import Blockies from 'react-blockies'
 const ItemPage = () => {
 
     const [checkout, setCheckout] =  useState(false)
@@ -20,7 +20,8 @@ const ItemPage = () => {
                     <div className="price-text">From<span style={{ fontWeight: "600" }}> 4.5 XTZ</span></div>
                     <div className="creator">Creator</div>
                     <div className="creator-details">
-                        <img src={profile} className="creator-image" alt="" />
+                        <Blockies
+                seed={''}className="creator-image" alt="" />
                         <div className="creator-name"> Mio Ayana</div>
                     </div>
                     <div className="details">Details</div>

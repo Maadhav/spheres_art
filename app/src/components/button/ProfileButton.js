@@ -2,24 +2,36 @@ import React from 'react'
 import './Button.css'
 import profile from '../../images/profile.png'
 import { ChevronDown } from 'react-iconly'
+import Blockies from 'react-blockies';
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
-const ProfileButton = ({ title, onSignOut }) => {
+const ProfileButton = ({ title, onDisconnect }) => {
     return (
-        <button className="profile-button"  >
-            <img src={profile} className="profile-button-image" />
-            <div className="profile-button-text">{title}</div>
-            <ChevronDown set="bold" primaryColor="white" onClick={() => {
-                var element = document.getElementById("dropdown");
-                if (element.classList.contains('show')) {
-                    element.classList.remove('show');
-                } else {
-                    element.classList.add('show')
-                }
-            }} className="dropbtn" />
+        <div className="profile-button" onClick={() => {
+            var element = document.getElementById("dropdown");
+            if (element.classList.contains('show')) {
+                element.classList.remove('show');
+            } else {
+                element.classList.add('show')
+            }
+        }} >
+            <Tippy
+                content={<span>{title}</span>}
+                maxWidth="none"
+            >
+                <div>
+
+                    <Blockies
+                        seed={title}
+                        scale={4.25}
+                        className="profile-button-image" alt="" />
+                </div>
+            </Tippy>
             <div class="dropdown-content" id="dropdown">
-                <div onClick={onSignOut}>Sign Out</div>
+                <div onClick={onDisconnect}>Disconnect</div>
             </div>
-        </button>
+        </div>
     )
 }
 

@@ -9,11 +9,13 @@ import ItemPage from './pages/ItemPage';
 import CreateItem from './pages/CreateItem';
 import {getActiveAccount, getContractStorage} from './adapters/tezos/index'
 import { useEffect } from 'react';
+import { deploy } from './adapters/tezos/deploy';
 
 function App() {
 
   useEffect(() => {
     getContractStorage()
+    // deploy()
   }, [])
   return (
     <div>

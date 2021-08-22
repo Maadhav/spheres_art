@@ -60,7 +60,7 @@ const NavBar = () => {
       <Link to={"/create"} style={{ textDecoration: "none" }}>
         <SolidButton title="Create" onClick={() => { }} />
       </Link>
-      {wallet ? <ProfileButton title={wallet.address} onSignOut={handleLogin}/> :
+      {wallet ? <ProfileButton title={wallet.address} onDisconnect={handleLogin}/> :
         <LinedButton
           title={"Connect"}
           onClick={handleLogin}

@@ -17,8 +17,6 @@
 
 
 .profile-image {
-  width: 208px;
-  height: 208px;
   border-radius: 50%;
   border: 6px solid var(--dark);
 }

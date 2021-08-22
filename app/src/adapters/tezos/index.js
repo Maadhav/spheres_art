@@ -5,7 +5,7 @@ import { importKey } from "@taquito/signer";
 const DAPP_NAME = "Sphere.ART";
 const RPC_URL = "https://florencenet.smartpy.io";
 const NETWORK = "florencenet";
-const CONTRACT_ADDRESS = "KT1WSHQLAAekvTLenwXkjYjprzWQTNb49NPD";
+const CONTRACT_ADDRESS = "KT1TxHAn2hqGMNZBDGdebeVA7DaWqUEqrs1H";
 
 const Tezos = new TezosToolkit(RPC_URL);
 
@@ -50,10 +50,10 @@ const getContractStorage = async () => {
   return (await getContract()).storage();
 };
 
-const createItem = async ({ url, price }) => {
+const createItem = async ({ url, price,timestamp }) => {
   getContract()
     .then((c) => {
-      return c.methods.createItem(price ?? 100000, url ?? "test.com").send();
+      return c.methods.createItem(price ?? 100000,timestamp, url ?? "test.com").send();
     })
     .then((operation) => {
       console.log("Mint operation sent.");

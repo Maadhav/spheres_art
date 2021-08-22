@@ -31,6 +31,7 @@ const CreateItem = () => {
                 <SolidButton title="Create Item" onClick={()=> createItem({
                     price: 1000,
                     url: "https://www.third.com",
+                    timestamp: 1629615899,
                 })}/>
             </div>
             </div>
