@@ -11,6 +11,7 @@ import {
   connectAccount,
   clearActiveAccount,
 } from "../../adapters/tezos/index";
+import ProfileButton from "../button/ProfileButton";
 
 const NavBar = () => {
   const location = useLocation();
@@ -57,12 +58,13 @@ const NavBar = () => {
       </Link>
       <MenuItem title="Following" active={index === 2} />
       <Link to={"/create"} style={{ textDecoration: "none" }}>
-        <SolidButton title="Create" onClick={() => {}} />
+        <SolidButton title="Create" onClick={() => { }} />
       </Link>
-      <LinedButton
-        title={wallet ? "Disconnect" : "Connect"}
-        onClick={handleLogin}
-      />
+      {wallet ? <ProfileButton title={wallet.address} onSignOut={handleLogin}/> :
+        <LinedButton
+          title={"Connect"}
+          onClick={handleLogin}
+        />}
     </div>
   );
 };
