@@ -49,8 +49,8 @@ console.log(Tezos._rpc);
 export function deploy() {
   Tezos.contract
     .originate({
-      code: FA2_CODE_JSON,
-      init: FA2_STORAGE_JSON,
+      code: CODE_JSON,
+      init: STORAGE_JSON,
     //   code: CODE_JSON,
     //   init: STORAGE_JSON,
     })
