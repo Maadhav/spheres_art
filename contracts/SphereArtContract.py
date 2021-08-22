@@ -1,5 +1,5 @@
 import smartpy as sp
-
+import time
 FA2 = sp.io.import_template("FA2.py")
 
 class NFT(FA2.FA2):
@@ -58,7 +58,7 @@ class SphereArt(sp.Contract):
     def createItem(self, params):
         sp.set_type(params.sphere.tokenUrl, sp.TString)
         sp.set_type(params.sphere.price, sp.TNat)
-        sp.set_type(params.sphere.timestamp, sp.TTimestamp)
+        sp.set_type(params.sphere.timestamp, sp.TInt)
         sp.verify(0 <= params.sphere.price)
         sp.trace(params.sphere)
         token_contract = sp.contract(sp.TRecord(creator = sp.TAddress, metadata = sp.TMap(sp.TString, sp.TBytes),token_id = sp.TNat ), self.data.contract_address, entry_point = "mint").open_some()
@@ -67,8 +67,6 @@ class SphereArt(sp.Contract):
         name = 'Sphere.ART Token',
         symbol = 'SPHERE'
         )), sp.mutez(0), token_contract)
-
-
         self.data.spheres[self.data.counter] = sp.record(token_id = self.data.counter, owner = sp.sender, creator = sp.sender, price = sp.utils.nat_to_mutez(params.sphere.price), tokenUrl = params.sphere.tokenUrl, isNew = True, timestamp = params.sphere.timestamp)
         self.data.counter+=1
    
@@ -96,8 +94,9 @@ def test():
     scenario += c1  
 
     def newSphere(price, tokenUrl):
-        return sp.record(price = sp.nat(price), tokenUrl = tokenUrl,  timestamp = sp.timestamp_from_utc_now())
+        return sp.record(price = sp.nat(price), tokenUrl = tokenUrl, timestamp = 1629614520)
     c1.createItem(sphere = newSphere(1000, "test.com")).run(sender = mark)
 
     c1.createSale(token_id = 0).run(sender = elon, amount = sp.mutez(1000))
+    c1.createItem(sphere = newSphere(1000, "test.com")).run(sender = mark)
 # sp.add_compilation_target("sphereArt", SphereArt())
