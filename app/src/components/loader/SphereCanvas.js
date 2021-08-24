@@ -5,8 +5,7 @@ const SphereCanvas = () => {
         <Canvas>
             <ambientLight />
             <pointLight position={[10, 10, 10]} />
-            <Sphere position={[-1.2, 0, 0]} />
-
+            <Sphere position={[0, 0, 0]} />
         </Canvas>
     )
 }

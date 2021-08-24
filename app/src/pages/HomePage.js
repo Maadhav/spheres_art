@@ -1,19 +1,28 @@
 import React, { useEffect, useState } from 'react'
+import getIPFSData from '../adapters/ipfs'
 import { getContractStorage } from '../adapters/tezos'
 import LinedButton from '../components/button/LinedButton'
 import NFTCard from '../components/card/NFTCard'
 import Loader from '../components/loader/Loader'
 import './HomePage.css'
+
 const HomePage = () => {
+
     const [loading, setLoading] = useState(true)
     const [spheres, setSpheres] = useState([])
     async function getData() {
         var data = (await getContractStorage()).spheres.valueMap;
         var spheres = [];
-        data.forEach((sphere) => {
-            if (sphere.isNew)
-                spheres.push(sphere);
-        })
+        var parseData = (Array.from(data).map((k,v) => k[1]))
+        for (let i = 0; i < parseData.length; i++) {
+            const sphere = parseData[i];
+            if (sphere.isNew && (i > 3)) {
+                console.log(sphere.tokenUrl)
+                let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
+                let ipfsData = JSON.parse(ex);
+                spheres.push({...sphere,...ipfsData, });
+            }
+        }
         setSpheres(spheres)
         setLoading(false)
     }
@@ -34,7 +43,7 @@ const HomePage = () => {
                     <h1>Explore</h1>
                     <div className="nft-grid">
                         {
-                            spheres.map((e) => <NFTCard sphere={e} key={e.token_id}/>)
+                            spheres.map((e) => <NFTCard sphere={e} key={e.token_id} />)
                         }
                     </div>
                 </div>

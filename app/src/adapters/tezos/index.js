@@ -1,6 +1,7 @@
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import { importKey } from "@taquito/signer";
+import { NFTStorage ,File } from "nft.storage";
 
 const DAPP_NAME = "Sphere.ART";
 const RPC_URL = "https://florencenet.smartpy.io";
@@ -17,6 +18,12 @@ const wallet = new BeaconWallet({
 
 // Setting the wallet as the wallet provider for Taquito.
 Tezos.setWalletProvider(wallet);
+
+const apiKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIzYUZjNjQ2Y2IyNDY5YzExQTM2Q2M1YTgwNGIxODY4MzgxMjU2MTEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyOTcwMzE3NzIwNSwibmFtZSI6IlNwaGVyZS5BUlQifQ.FpuXmk2p22Oni4govC1buUjb1Vl8Pxv27_frE-jI12o";
+const client = new NFTStorage({
+  token: apiKey,
+});
 
 const network = {
   type: NETWORK,
@@ -50,10 +57,20 @@ const getContractStorage = async () => {
   return (await getContract()).storage();
 };
 
-const createItem = async ({ url, price,timestamp }) => {
+const createItem = async ({title, description,file,  price }) => {
+  console.log('Starting IPFS')
+  const metadata = await client.store({
+    name: title,
+    description: description,
+    image: new File([file], file.name, { type: "image/jpg" }),
+  });
+  console.log('Completed IPFS')
+  console.log(metadata.url)
+  console.log("Started Minting")
+
   getContract()
     .then((c) => {
-      return c.methods.createItem(price ?? 100000,timestamp, url ?? "test.com").send();
+      return c.methods.createItem(price,Math.round(Date.now()/ 1000), metadata.url ?? "test.com").send();
     })
     .then((operation) => {
       console.log("Mint operation sent.");

@@ -6,12 +6,16 @@ import MenuItem from "./menu/MenuItem";
 import SolidButton from "../button/SolidButton";
 import LinedButton from "../button/LinedButton";
 import { Link, useLocation } from "react-router-dom";
+import { NFTStorage, File } from "nft.storage";
 import {
   getActiveAccount,
   connectAccount,
   clearActiveAccount,
 } from "../../adapters/tezos/index";
 import ProfileButton from "../button/ProfileButton";
+
+
+
 
 const NavBar = () => {
   const location = useLocation();

@@ -9,11 +9,12 @@ const CreateItem = () => {
     const [title,setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('')
+    const [file, setFile] = useState(null)
     return (
         <div className="create-item-container">
             <div className="container-width">
             <h1>Create New Item</h1>
-            <DragDrop onFileDrop={(file) => {console.log(file)}}/>
+            <DragDrop onFileDrop={(file) => {setFile(file)}}/>
             <div className="field-section">
                 <h2>Name</h2>
                 <input placeholder="Item Name" className="field-input" onChange={e => setTitle(e.currentTarget.value)}  value={title}/>
@@ -33,9 +34,10 @@ const CreateItem = () => {
             </div>
             <div style={{display:"flex", justifyContent:"flex-end",marginTop: "50px"}}>
                 <SolidButton title="Create Item" onClick={()=> createItem({
-                    price: 1000,
-                    url: "https://www.third.com",
-                    timestamp: 1629615899,
+                    price: price * 1000000,
+                    description: description,
+                    title: title,
+                    file: file,
                 })}/>
             </div>
             </div>
