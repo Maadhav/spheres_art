@@ -3,6 +3,7 @@ import Logo from '../logo/Logo';
 import EmailInput from './EmailInput';
 import './Footer.css';
 import { FaDiscord, FaInstagram, FaTwitter, FaTelegramPlane} from 'react-icons/fa'
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -16,7 +17,9 @@ const Footer = () => {
                 <div style={{flex: 0.34,}}>
                 <h3>Sphere.ART</h3>
                 <div style={{marginTop: "20px"}}>
+                    <Link to="/" style={{textDecoration: "none"}}>
                 <div className="footer-text">Explore</div>
+                    </Link>
                 <div className="footer-text">How it Works</div>
                 <div className="footer-text">Contact Us</div>
                 </div>

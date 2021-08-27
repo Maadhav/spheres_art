@@ -18,7 +18,9 @@
   left: 165px;
   top: 189px;
   border-radius: 20px;
-  margin: 79px 0;
+}
+.padding {
+  padding: 79px 0px;
 }
 
 .details-section {

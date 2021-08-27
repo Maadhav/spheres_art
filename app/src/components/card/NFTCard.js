@@ -14,12 +14,8 @@ const NFTCard = ({ sphere }) => {
     // console.log(sphere.imageData.scene)
     const [ipfsCid, ipfsName] = sphere.image.split('ipfs://')[1].split('/')
     return (
-        <div className="container" onClick={() => { history.push((location.pathname == "/" ? "" : location.pathname) + `/item/${sphere.token_id}`) }}>
-            <Canvas className="image-container" style={{height: "230px", width: "auto"}}>
-                <Suspense fallback={null}>
-                    <Model ipfs={`https://${ipfsCid}.ipfs.dweb.link/${ipfsName}`}/>
-                </Suspense>
-            </Canvas>
+        <div className="container" onClick={() => { history.push({pathname: (location.pathname == "/" ? "" : location.pathname) + `/item/${sphere.token_id}`,state: sphere}) }}>
+            <div className="image-container"/>
             <div className="title-style">{sphere.name}</div>
             <div className="price-style"><span style={{ fontWeight: "600" }}>{(sphere.price / 1000000).toFixed(2)}</span> XTZ</div>
         </div>

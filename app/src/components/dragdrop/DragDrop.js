@@ -17,7 +17,7 @@ const DragDrop = ({onFileDrop}) => {
         onFileDrop(e.dataTransfer.files[0]);
     };
     return (
-        <FilePicker onChange={(file) => {onFileDrop(file)}} accept={'.gltf,.glb'}  >
+        <FilePicker onChange={(file) => {onFileDrop(file)}} accept={''}  >
         <div style={{marginTop: "40px"}} onDragOver={dragOver} onDragEnter={dragEnter} onDrop={onDrop}>
             <h2>Upload</h2>
             <div className="drag-drop-container">

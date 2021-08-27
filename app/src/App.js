@@ -32,16 +32,12 @@ function App() {
         <Route path="/" exact>
           <HomePage />
         </Route>
-        <Route path="/profile" exact>
+        <Route path="/profile">
           <Profile />
         </Route>
-        <Route path="/item/:id?" exact>
-          <ItemPage />
-        </Route>
-        <Route path="/profile/item/:id?" exact>
-          <ItemPage />
-        </Route>
-        <Route path="/create" exact>
+        <Route path="/item/:id?" component={ItemPage}/>
+        <Route path="/profile/item/:id?" component={ItemPage}/>
+        <Route path="/create" >
           <CreateItem />
         </Route>
       </Switch>
