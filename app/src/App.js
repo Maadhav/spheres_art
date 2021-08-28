@@ -12,6 +12,7 @@ import { deploy } from "./adapters/tezos/deploy";
 function App() {
 
   useEffect(() => {
+    // deploy()
   }, []);
   return (
     <div>

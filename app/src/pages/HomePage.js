@@ -10,6 +10,7 @@ const HomePage = () => {
 
     const [loading, setLoading] = useState(true)
     const [spheres, setSpheres] = useState([])
+    const [length, setLength] = useState(0)
     async function getData() {
         var data = (await getContractStorage()).spheres.valueMap;
         var spheres = [];
@@ -24,6 +25,7 @@ const HomePage = () => {
             }
         }
         setSpheres(spheres)
+        setLength(8)
         setLoading(false)
     }
     useEffect(() => {
@@ -41,11 +43,11 @@ const HomePage = () => {
                 {loading ? <Loader/>:
                 <div className="nft-grid">
                     {
-                        spheres.map((e) => <NFTCard sphere={e} key={e.token_id} />)
+                        spheres.map((e,i) => i < length && <NFTCard sphere={e} key={e.token_id} />)
                     }
                 </div>}
             </div>
-            {spheres.length > 8  && <LinedButton title="Load More" onClick={() => { }} style={{ marginBottom: "60px", width: "300px" }} />}
+            {spheres.length > length  && <LinedButton title="Load More" onClick={() => { setLength(val => val + 8) }} style={{ marginBottom: "60px", width: "300px" }} />}
         </div>
     )
 }

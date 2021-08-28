@@ -6,7 +6,7 @@ import { NFTStorage ,File } from "nft.storage";
 const DAPP_NAME = "Sphere.ART";
 const RPC_URL = "https://florencenet.smartpy.io";
 const NETWORK = "florencenet";
-const CONTRACT_ADDRESS = "KT1TxHAn2hqGMNZBDGdebeVA7DaWqUEqrs1H";
+const CONTRACT_ADDRESS = "KT1BCv4Hza5f83iVtXhctGKU6QTNYXmEThHw";
 
 const Tezos = new TezosToolkit(RPC_URL);
 

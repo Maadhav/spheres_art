@@ -64,7 +64,7 @@ const CreateItem = () => {
             <div className="container-width">
                 <div style={{display: "flex", alignItems:"center"}}>
                     <h1 style={{flex: 1}}>Create New Item</h1>
-                    <SolidButton title="Online Editor" onClick={() => { window.open('https://www.google.com','_blank','',true).focus() }}/>
+                    <SolidButton title="Online Editor" onClick={() => { window.open('https://sphereart-editor.netlify.app/editor/','_blank','',true).focus() }}/>
                 </div>
                 <DragDrop onFileDrop={(file) => { setFile(file) }} />
                 <div className="field-section">

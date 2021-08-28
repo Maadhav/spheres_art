@@ -13,7 +13,7 @@ const Profile = () => {
     const [wallet, setWallet] = useState(null);
     const [loading, setLoading] = useState(true)
     const [spheres, setSpheres] = useState([])
-    const [length,setLength] = useState(0)
+    const [length, setLength] = useState(0)
     const init = async () => {
         let activeAccount = await getActiveAccount();
         setWallet(activeAccount);
@@ -24,7 +24,7 @@ const Profile = () => {
         var parseData = (Array.from(data).map((k, v) => k[1]))
         for (let i = 0; i < parseData.length; i++) {
             const sphere = parseData[i];
-            if ((i > 4) ) {
+            if ((i > 4)) {
 
 
                 console.log(sphere.tokenUrl)
@@ -34,17 +34,27 @@ const Profile = () => {
             }
         }
         setSpheres(spheres)
-        setLength(spheres.length)
+        setLength(8)
         setLoading(false)
     }
 
     function onFilterChange(value) {
         console.log(value)
-        if(value === "0"){
-            var _spheres = spheres.sort((a,b) => b.timestamp - a.timestamp)
-            console.log(_spheres)
-            setSpheres(val => _spheres)
+        var _spheres;
+        if (value === "0") {
+            _spheres = spheres.sort((a, b) => b.timestamp - a.timestamp)
         }
+        else if (value === "1") {
+            _spheres = spheres.sort((a, b) => a.price - b.price)
+
+        }
+        else if (value === '2') {
+            _spheres = spheres.sort((a, b) => b.price - a.price)
+        }
+        console.log(_spheres)
+        setSpheres([..._spheres])
+        setLength(8)
+        console.log(spheres)
     }
 
     useEffect(() => {
@@ -68,7 +78,7 @@ const Profile = () => {
             </div>
             <div className="search-section">
                 <Search />
-                <select className="filter-select" onChange={(e) => {onFilterChange(e.currentTarget.value)}}>
+                <select className="filter-select" onChange={(e) => { onFilterChange(e.currentTarget.value) }}>
                     <option value="0">Recently Listed</option>
                     <option value="1">Price: Low to High</option>
                     <option value="2">Price: High to Low</option>
@@ -77,7 +87,7 @@ const Profile = () => {
             {loading ? <Loader /> : <div className="nft-section">
                 <div className="nft-grid">
                     {
-                        spheres.map((e,i) => i < length  && <NFTCard sphere={e} key={e.token_id} />)
+                        spheres.map((e, i) => i < length && <NFTCard sphere={e} key={e.token_id} />)
                     }
                 </div>
                 {spheres.length > length && <LinedButton title="Load More" onClick={() => { setLength(val => val + 8) }} style={{ marginBottom: "60px", width: "300px" }} />}
