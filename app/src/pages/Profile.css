@@ -25,6 +25,7 @@
   padding: 0px 225px;
   width: calc(100% - 450px);
   display: flex;
+  gap: 0 20px;
   margin: 30px 0px;
 }
 
@@ -34,4 +35,13 @@
   flex-direction: column;
   align-items: center;
   display: flex;
+}
+
+.filter-select {
+  background-color: var(--black-2);
+  color: white;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  padding: 0px 10px;
 }

@@ -18,67 +18,54 @@ const CreateItem = () => {
     }, [file])
 
     async function onCreate() {
-        // zip.configure({
-        //     useWebWorkers: false
-
-        //   });
-
         var blob = await new Blob([new Uint8Array(await file.arrayBuffer())], { type: "application/zip" });
         const reader = new ZipReader(new BlobReader(blob))
         const entries = await reader.getEntries();
         let imageFile, jsonFile, videoFile;
         for (let index = 0; index < entries.length; index++) {
             const entry = entries[index];
-            
-            
-            // get first entry content as text by using a TextWriter
             const blob = await entry.getData(
-                // writer
                 new BlobWriter(),
-                // options
-                );
-                blob.name  = entry.filename
-                if (entry.filename == 'app.json')
+            );
+            blob.name = entry.filename
+            if (entry.filename === 'app.json')
                 jsonFile = blob
-                else if (entry.filename == 'thumbnail.png')
+            else if (entry.filename === 'thumbnail.png')
                 imageFile = blob
-                else videoFile = blob
-                // text contains the entry data as a String
-            }
-            if(!jsonFile){
-                alert("Zip doesn't contain App.json")
-            }
-            else if(!imageFile) {
-                alert("Zip doesn't contain Thumbnail")
-                
-            }
-            else if(!videoFile){
-                alert("Zip doesn't contain Preview Video")
-            }
-            else if(JSON.parse(await jsonFile.text()).metadata.source !== 'sphere.ART Editor')
-            {
-                alert("Export from Sphere.ART Editor")
-            }
-            else {
-                console.log(imageFile)
-                createItem({
-            price: price * 1000000,
-            description: description,
-            title: title,
-            jsonFile: jsonFile,
-            imageFile: imageFile,
-            videoFile: videoFile
-        })
-            }
+            else videoFile = blob
+        }
+        if (!jsonFile) {
+            alert("Zip doesn't contain App.json")
+        }
+        else if (!imageFile) {
+            alert("Zip doesn't contain Thumbnail")
 
-
-
-
+        }
+        else if (!videoFile) {
+            alert("Zip doesn't contain Preview Video")
+        }
+        else if (JSON.parse(await jsonFile.text()).metadata.source !== 'sphere.ART Editor') {
+            alert("Export from Sphere.ART Editor")
+        }
+        else {
+            console.log(imageFile)
+            createItem({
+                price: price * 1000000,
+                description: description,
+                title: title,
+                jsonFile: jsonFile,
+                imageFile: imageFile,
+                videoFile: videoFile
+            })
+        }
     }
     return (
         <div className="create-item-container">
             <div className="container-width">
-                <h1>Create New Item</h1>
+                <div style={{display: "flex", alignItems:"center"}}>
+                    <h1 style={{flex: 1}}>Create New Item</h1>
+                    <SolidButton title="Online Editor" onClick={() => { window.open('https://www.google.com','_blank','',true).focus() }}/>
+                </div>
                 <DragDrop onFileDrop={(file) => { setFile(file) }} />
                 <div className="field-section">
                     <h2>Name</h2>

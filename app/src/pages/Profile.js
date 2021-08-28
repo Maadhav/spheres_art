@@ -24,7 +24,7 @@ const Profile = () => {
         var parseData = (Array.from(data).map((k, v) => k[1]))
         for (let i = 0; i < parseData.length; i++) {
             const sphere = parseData[i];
-            if (!sphere.isNew && (i > 4) && sphere.owner === wallet?.address) {
+            if ((i > 4) ) {
 
 
                 console.log(sphere.tokenUrl)
@@ -37,10 +37,22 @@ const Profile = () => {
         setLength(spheres.length)
         setLoading(false)
     }
+
+    function onFilterChange(value) {
+        console.log(value)
+        if(value === "0"){
+            var _spheres = spheres.sort((a,b) => b.timestamp - a.timestamp)
+            console.log(_spheres)
+            setSpheres(val => _spheres)
+        }
+    }
+
     useEffect(() => {
         init()
         getData()
     }, [wallet])
+
+
     return (
         <div>
             <div className="banner-section">
@@ -56,6 +68,11 @@ const Profile = () => {
             </div>
             <div className="search-section">
                 <Search />
+                <select className="filter-select" onChange={(e) => {onFilterChange(e.currentTarget.value)}}>
+                    <option value="0">Recently Listed</option>
+                    <option value="1">Price: Low to High</option>
+                    <option value="2">Price: High to Low</option>
+                </select>
             </div>
             {loading ? <Loader /> : <div className="nft-section">
                 <div className="nft-grid">
