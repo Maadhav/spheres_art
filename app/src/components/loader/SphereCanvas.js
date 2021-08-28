@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 const SphereCanvas = () => {
     return (
-        <Canvas>
+        <Canvas style={{width: "200px", height: "200px"}}>
             <ambientLight />
             <pointLight position={[10, 10, 10]} />
             <Sphere position={[0, 0, 0]} />

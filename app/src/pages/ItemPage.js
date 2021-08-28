@@ -7,20 +7,25 @@ import Payment from '../components/dialog/Payment'
 import Blockies from 'react-blockies'
 import { APP } from '../adapters/three.js/index'
 import * as THREE from 'three'
+import { useLocation } from 'react-router-dom'
+import Loader from '../components/loader/Loader'
 const ItemPage = (props) => {
-
+    const location = useLocation()
     const [checkout, setCheckout] = useState(false)
     const [payment, setPayment] = useState(false)
     const [state, setstate] = useState(props.location.state)
+    const [loading , setLoading] = useState(true)
+    const [ipfsCid, ipfsName] = state.properties.file.split('ipfs://')[1].split('/')
     const ref = useRef();
     function init() {
         var loader = new THREE.FileLoader()
-        loader.load('http://127.0.0.1:5500/app.json', function (json) {
+        loader.load(`https://${ipfsCid}.ipfs.dweb.link/${ipfsName}`, function (json) {
             var player = new APP.Player();
             player.load(JSON.parse(json));
             player.setSize(window.innerWidth, window.innerHeight);
             player.play();
 
+            setLoading(false)
             ref.current.appendChild(player.dom);
 
             window.addEventListener('resize', function () {
@@ -37,6 +42,7 @@ const ItemPage = (props) => {
     return (
         <div className="section-separator">
             <div className="image-section" ref={ref}>
+                {loading && <Loader/>}
             </div>
             <div className="details-section">
                 <div style={{ margin: "45px 43px" }}>
@@ -53,7 +59,7 @@ const ItemPage = (props) => {
                     <div className="description">
                         {state.description}
                     </div>
-                    <SolidButton title={"Buy for " + (state.price.c / 1000000).toFixed(2) + " XTZ"} onClick={() => { setCheckout(true) }} />
+                    {!location.pathname.includes('profile') && <SolidButton title={"Buy for " + (state.price.c / 1000000).toFixed(2) + " XTZ"} onClick={() => { setCheckout(true) }} />}
                 </div>
             </div>
             {checkout && <CheckOut sphere={state} onQuit={() => { setCheckout(false) }} onCheckOut={() => { setPayment(true); setCheckout(false) }} />}

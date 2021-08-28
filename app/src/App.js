@@ -32,11 +32,11 @@ function App() {
         <Route path="/" exact>
           <HomePage />
         </Route>
+        <Route path="/profile/item/:id?" component={ItemPage}/>
         <Route path="/profile">
           <Profile />
         </Route>
         <Route path="/item/:id?" component={ItemPage}/>
-        <Route path="/profile/item/:id?" component={ItemPage}/>
         <Route path="/create" >
           <CreateItem />
         </Route>

@@ -57,12 +57,16 @@ const getContractStorage = async () => {
   return (await getContract()).storage();
 };
 
-const createItem = async ({title, description,file,  price }) => {
+const createItem = async ({title, description,jsonFile, imageFile, videoFile,  price }) => {
   console.log('Starting IPFS')
   const metadata = await client.store({
     name: title,
     description: description,
-    image: new File([file], file.name, { type: "image/jpg" }),
+    image: new File([imageFile], imageFile.name, { type: 'image/png' }),
+    properties: {
+      file: new File([jsonFile], jsonFile.name, { type: jsonFile.type }),
+      preview: new File([videoFile], videoFile.name, { type: videoFile.type })
+    }
   });
   console.log('Completed IPFS')
   console.log(metadata.url)

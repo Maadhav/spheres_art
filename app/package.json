@@ -11,6 +11,7 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@tippyjs/react": "^4.2.5",
+    "@zip.js/zip.js": "^2.3.8",
     "big-number": "^2.0.0",
     "ipfs-core": "^0.10.3",
     "it-to-buffer": "^2.0.0",

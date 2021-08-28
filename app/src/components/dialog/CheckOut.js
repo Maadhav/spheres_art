@@ -3,7 +3,18 @@ import './dialog.css'
 import './CheckOut.css'
 import SolidButton from '../button/SolidButton'
 import LinedButton from '../button/LinedButton'
+import { createSale } from '../../adapters/tezos'
 const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
+    const [ipfsCid, ipfsName] = sphere.image.split('ipfs://')[1].split('/')
+
+    async function onBuy() {
+        console.log('Buying')
+        await createSale({
+            token_id: sphere.token_id,
+            price: sphere.price
+        })
+        onCheckOut();
+    }
     return (
         <div className="popup-box">
             <div className="box">
@@ -17,7 +28,7 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                     </div>
                     <div className="item-section">
                         <div className="item-details">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTFMYCWAtp0Hb83KVHXxqvUQA6d1dlRYxJfQ&usqp=CAU" className="item-image" />
+                            <img src={`https://${ipfsCid}.ipfs.dweb.link/${ipfsName}`} className="item-image" alt=''/>
                             <div>
                                 <div className="item-creator">{sphere.creator}</div>
                                 <div className="item-title">{sphere.name}</div>
@@ -31,7 +42,7 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                     </div>
                 </div>
                 <div className="action-section">
-                    <SolidButton title="Checkout" onClick={onCheckOut} />
+                    <SolidButton title="Checkout" onClick={onBuy} />
                     <LinedButton title="Cancel" onClick={onQuit} />
                 </div>
             </div>

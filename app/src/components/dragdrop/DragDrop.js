@@ -17,11 +17,11 @@ const DragDrop = ({onFileDrop}) => {
         onFileDrop(e.dataTransfer.files[0]);
     };
     return (
-        <FilePicker onChange={(file) => {onFileDrop(file)}} accept={''}  >
+        <FilePicker onChange={(file) => {onFileDrop(file)}} accept={'.sphere'}  >
         <div style={{marginTop: "40px"}} onDragOver={dragOver} onDragEnter={dragEnter} onDrop={onDrop}>
             <h2>Upload</h2>
             <div className="drag-drop-container">
-                <h3>.GLTF, .GLB Max 100mb.</h3>
+                <h3>Accepted File Type: <span style={{color: "var(--red-violet)"}}>.sphere</span></h3>
                 <Image set="bold" primaryColor="white" size={137}/>
                 <div>
                     <div className="drag-drop-text" style={{fontWeight: "600"}}>Drag and Drop File</div>
