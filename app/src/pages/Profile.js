@@ -24,7 +24,7 @@ const Profile = () => {
         var parseData = (Array.from(data).map((k, v) => k[1]))
         for (let i = 0; i < parseData.length; i++) {
             const sphere = parseData[i];
-            if ((i > 4)) {
+            if (!sphere.isNew && sphere.owner === wallet.address) {
 
 
                 console.log(sphere.tokenUrl)

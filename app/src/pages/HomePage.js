@@ -1,3 +1,4 @@
+import { start } from 'ipfs-core/src/components/network'
 import React, { useEffect, useState } from 'react'
 import getIPFSData from '../adapters/ipfs'
 import { getContractStorage } from '../adapters/tezos'
@@ -17,10 +18,19 @@ const HomePage = () => {
         var parseData = (Array.from(data).map((k, v) => k[1]))
         for (let i = 0; i < parseData.length; i++) {
             const sphere = parseData[i];
-            if (sphere.isNew && (i > 4)) {
+            if (sphere.isNew) {
                 console.log(sphere.tokenUrl)
                 let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
-                let ipfsData = JSON.parse(ex);
+                let ipfsData;
+                console.log(ex)
+                if(ex.startsWith("{"))
+                {    
+                    ipfsData = JSON.parse(ex);
+                }
+                else {
+                    let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
+                    ipfsData = JSON.parse(String.fromCharCode(ex))
+                }
                 spheres.push({ ...sphere, ...ipfsData, });
             }
         }
