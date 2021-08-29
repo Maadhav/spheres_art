@@ -1,5 +1,5 @@
 import IPFS from 'ipfs-core'
-
+import {TextDecoder} from 'text-encoding'
 const node = IPFS.create()
 
 export default async function getIPFSData(ipfs) {
@@ -7,8 +7,7 @@ export default async function getIPFSData(ipfs) {
     let data = ''
 
     for await (const chunk of stream) {
-        // chunks of data are returned as a Buffer, convert it back to a string
-        data += chunk.toString()
+        data += new TextDecoder().decode(chunk)
     }
     return data;
 }

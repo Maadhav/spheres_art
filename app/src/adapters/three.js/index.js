@@ -5,7 +5,7 @@ var APP = {
 
 	Player: function () {
 		var renderer = new THREE.WebGLRenderer( { antialias: true } );
-		renderer.setPixelRatio( window.devicePixelRatio ); // TODO: Use player.setPixelRatio()
+		renderer.setPixelRatio( 5 ); // TODO: Use player.setPixelRatio()
 		renderer.outputEncoding = THREE.sRGBEncoding;
 		
 		var loader = new THREE.ObjectLoader();
@@ -22,8 +22,8 @@ var APP = {
 
 		this.dom = dom;
 
-		this.width = 500;
-		this.height = 500;
+		this.width = 542;
+		this.height = 542;
 
 		this.load = function ( json ) {
 
@@ -108,7 +108,7 @@ var APP = {
 		this.setCamera = function ( value ) {
 
 			camera = value;
-			camera.aspect = 1;
+			camera.aspect = this.width/this.height;
 			camera.updateProjectionMatrix();
 
 		};
@@ -131,7 +131,7 @@ var APP = {
 
 			if ( camera ) {
 
-				camera.aspect = 1;
+				camera.aspect = width/height;
 				camera.updateProjectionMatrix();
 
 			}

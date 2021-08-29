@@ -24,6 +24,7 @@
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "text-encoding": "^0.7.0",
     "three": "^0.131.3",
     "web-vitals": "^2.1.0"
   },

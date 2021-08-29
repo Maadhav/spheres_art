@@ -44,7 +44,7 @@
 .home-body {
   display: inline-flex;
   flex-wrap: wrap;
-  padding: 0 225px;
+  padding: 0 222.5px;
   align-items: center;
   flex-direction: column;
 }

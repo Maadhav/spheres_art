@@ -22,7 +22,7 @@ const ItemPage = (props) => {
         loader.load(`https://${ipfsCid}.ipfs.dweb.link/${ipfsName}`, function (json) {
             var player = new APP.Player();
             player.load(JSON.parse(json));
-            player.setSize(window.innerWidth, window.innerHeight);
+            player.setSize(542, 542);
             player.play();
 
             setLoading(false)
@@ -30,7 +30,7 @@ const ItemPage = (props) => {
 
             window.addEventListener('resize', function () {
 
-                player.setSize(window.innerWidth, window.innerHeight);
+                player.setSize(542, 542);
 
             });
         })

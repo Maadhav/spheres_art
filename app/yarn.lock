@@ -13918,6 +13918,11 @@
     "glob" "^7.1.4"
     "minimatch" "^3.0.4"
 
+"text-encoding@^0.7.0":
+  "integrity" "sha512-oJQ3f1hrOnbRLOcwKz0Liq2IcrvDeZRHXhd9RgLrsT+DjWY/nty1Hi7v3dtkaEYbPYe0mUoOfzRrMwfXXwgPUA=="
+  "resolved" "https://registry.npmjs.org/text-encoding/-/text-encoding-0.7.0.tgz"
+  "version" "0.7.0"
+
 "text-table@^0.2.0", "text-table@0.2.0":
   "integrity" "sha1-f17oI66AUgfACvLfSoTsP8+lcLQ="
   "resolved" "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz"
