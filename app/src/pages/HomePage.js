@@ -19,10 +19,8 @@ const HomePage = () => {
         for (let i = 0; i < parseData.length; i++) {
             const sphere = parseData[i];
             if (sphere.isNew) {
-                console.log(sphere.tokenUrl)
                 let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
                 let ipfsData;
-                console.log(ex)
                 if(ex.startsWith("{"))
                 {    
                     ipfsData = JSON.parse(ex);

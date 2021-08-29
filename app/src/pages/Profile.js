@@ -25,11 +25,16 @@ const Profile = () => {
         for (let i = 0; i < parseData.length; i++) {
             const sphere = parseData[i];
             if (!sphere.isNew && sphere.owner === wallet.address) {
-
-
-                console.log(sphere.tokenUrl)
                 let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
-                let ipfsData = JSON.parse(ex);
+                let ipfsData;
+                if(ex.startsWith("{"))
+                {    
+                    ipfsData = JSON.parse(ex);
+                }
+                else {
+                    let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
+                    ipfsData = JSON.parse(String.fromCharCode(ex))
+                }
                 spheres.push({ ...sphere, ...ipfsData, });
             }
         }
