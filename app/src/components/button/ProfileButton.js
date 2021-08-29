@@ -28,7 +28,7 @@ const ProfileButton = ({ title, onDisconnect }) => {
                         className="profile-button-image" alt="" />
                 </div>
             </Tippy>
-            <div class="dropdown-content" id="dropdown">
+            <div className="dropdown-content" id="dropdown">
                 <div onClick={onDisconnect}>Disconnect</div>
             </div>
         </div>

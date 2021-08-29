@@ -72,7 +72,7 @@ const createItem = async ({title, description,jsonFile, imageFile, videoFile,  p
   console.log(metadata.url)
   console.log("Started Minting")
 
-  getContract()
+  await getContract()
     .then((c) => {
       return c.methods.createItem(price,Math.round(Date.now()/ 1000), metadata.url ?? "test.com").send();
     })

@@ -4,10 +4,11 @@ import SolidButton from '../components/button/SolidButton'
 import './CreateItem.css'
 import { createItem } from '../adapters/tezos'
 import { BlobReader, ZipReader, BlobWriter } from "@zip.js/zip.js/dist/zip-fs-full";
+import SphereCanvas from '../components/loader/SphereCanvas'
 
 
 const CreateItem = () => {
-
+    const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('')
@@ -18,6 +19,8 @@ const CreateItem = () => {
     }, [file])
 
     async function onCreate() {
+        setLoading(true)
+
         var blob = await new Blob([new Uint8Array(await file.arrayBuffer())], { type: "application/zip" });
         const reader = new ZipReader(new BlobReader(blob))
         const entries = await reader.getEntries();
@@ -49,7 +52,7 @@ const CreateItem = () => {
         }
         else {
             console.log(imageFile)
-            createItem({
+            await createItem({
                 price: price * 1000000,
                 description: description,
                 title: title,
@@ -57,16 +60,22 @@ const CreateItem = () => {
                 imageFile: imageFile,
                 videoFile: videoFile
             })
+            setFile(null)
+            setDescription('')
+            setPrice('')
+            setTitle('')
+            setLoading(false)
+            window.open('/', '_self')
         }
     }
     return (
         <div className="create-item-container">
             <div className="container-width">
-                <div style={{display: "flex", alignItems:"center"}}>
-                    <h1 style={{flex: 1}}>Create New Item</h1>
-                    <SolidButton title="Online Editor" onClick={() => { window.open('https://sphereart-editor.netlify.app/editor/','_blank','',true).focus() }}/>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <h1 style={{ flex: 1 }}>Create New Item</h1>
+                    <SolidButton title="Online Editor" onClick={() => { window.open('https://sphereart-editor.netlify.app/editor/', '_blank', '', true).focus() }} />
                 </div>
-                <DragDrop onFileDrop={(file) => { setFile(file) }} />
+                <DragDrop onFileDrop={(file) => { setFile(file) }} file={file} />
                 <div className="field-section">
                     <h2>Name</h2>
                     <input placeholder="Item Name" className="field-input" onChange={e => setTitle(e.currentTarget.value)} value={title} />
@@ -88,6 +97,9 @@ const CreateItem = () => {
                     <SolidButton title="Create Item" onClick={onCreate} />
                 </div>
             </div>
+            {loading && <div className="loading-section">
+                <SphereCanvas />
+            </div>}
         </div>
     )
 }
