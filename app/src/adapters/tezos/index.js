@@ -57,8 +57,9 @@ const getContractStorage = async () => {
   return (await getContract()).storage();
 };
 
-const createItem = async ({title, description,jsonFile, imageFile, videoFile,  price }) => {
+const uploadToIPFS = async ({title, description,jsonFile, imageFile, videoFile}) => {
   console.log('Starting IPFS')
+  console.log(imageFile)
   const metadata = await client.store({
     name: title,
     description: description,
@@ -70,20 +71,20 @@ const createItem = async ({title, description,jsonFile, imageFile, videoFile,  p
   });
   console.log('Completed IPFS')
   console.log(metadata.url)
-  console.log("Started Minting")
+  return metadata.url
+}
 
-  await getContract()
+const createItem = async ({url, price }) => {
+  console.log("Started Minting")
+  return await getContract()
     .then((c) => {
-      return c.methods.createItem(price,Math.round(Date.now()/ 1000), metadata.url ?? "test.com").send();
+      return c.methods.createItem(price,Math.round(Date.now()/ 1000), url ?? "test.com").send();
     })
-    .then((operation) => {
-      console.log("Mint operation sent.");
-      console.log(operation);
-      console.log(`Awaiting for ${operation.opHash} to be confirmed...`);
-      return operation.confirmation(3).then(() => operation.opHash);
-    })
-    .then((opHash) => console.log(`Operation injected: ${opHash}`))
-    .catch((error) => console.log(error));
+};
+const confirmOperation = async (operation) => {
+    console.log("Mint operation sent.");
+    console.log(`Awaiting for ${operation.opHash} to be confirmed...`);
+    return operation.confirmation(3).then(() => operation.opHash);
 };
 
 const createSale = async ({ token_id, price }) => {
@@ -111,6 +112,8 @@ export {
   clearActiveAccount,
   getContract,
   getContractStorage,
+  uploadToIPFS,
   createItem,
+  confirmOperation,
   createSale,
 };

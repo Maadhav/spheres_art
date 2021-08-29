@@ -19,7 +19,7 @@ const ItemPage = (props) => {
     const ref = useRef();
     function init() {
         var loader = new THREE.FileLoader()
-        loader.load(`https://${ipfsCid}.ipfs.dweb.link/${ipfsName}`, function (json) {
+        loader.load(`https://ipfs.io/ipfs/${ipfsCid}/${ipfsName}`, function (json) {
             var player = new APP.Player();
             player.load(JSON.parse(json));
             player.setSize(542, 542);

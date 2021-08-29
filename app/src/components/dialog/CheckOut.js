@@ -28,7 +28,7 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                     </div>
                     <div className="item-section">
                         <div className="item-details">
-                            <img src={`https://${ipfsCid}.ipfs.dweb.link/${ipfsName}`} className="item-image" alt=''/>
+                            <img src={`https://ipfs.io/ipfs/${ipfsCid}/${ipfsName}`} className="item-image" alt=''/>
                             <div>
                                 <div className="item-creator">{sphere.creator}</div>
                                 <div className="item-title">{sphere.name}</div>

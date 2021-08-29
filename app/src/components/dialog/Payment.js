@@ -11,7 +11,7 @@ const Payment = ({onQuit, sphere}) => {
                     <h2>Payment Successful</h2>
                 </div>
                 <div className="body-section_payment">
-                    <img src={`https://${ipfsCid}.ipfs.dweb.link/${ipfsName}`} alt="" className="item-payment-image" />
+                    <img src={`https://ipfs.io/ipfs/${ipfsCid}/${ipfsName}`} alt="" className="item-payment-image" />
                     <span className="body-text">You successfully purchased <span style={{ fontWeight: "600" }}>{sphere.name}</span> from <span style={{ fontWeight: "600" }}>{sphere.creator}</span></span>
                 </div>
                 <div className="action-section_share">
