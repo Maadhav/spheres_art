@@ -10,6 +10,13 @@
 
 .image-container {
   height: 211px;
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 20px;
+}
+.image-container.shimmer {
+  height: 211px;
+  width: 100%;
   margin-bottom: 15px;
   border-radius: 20px;
 }
@@ -21,6 +28,7 @@
     margin-bottom: 5px;
     color: white;
 }
+
 
 .title-style.shimmer {
   height: 14px;
@@ -37,3 +45,4 @@
   height: 12px;
   width: 100px;
 }
+

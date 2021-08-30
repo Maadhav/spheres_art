@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import HoverVideoPlayer from "react-hover-video-player";
+import Shimmer from '../shimmer';
+
 
 import "./NFTCard.css";
 import getIPFSData from "../../adapters/ipfs";
@@ -15,7 +17,6 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
   const [isLoading, setLoading] = useState(true);
 
   const loadData = async () => {
-    console.log(sphere)
     let ex = await getIPFSData(sphere.tokenUrl.split("ipfs://")[1]);
     let ipfsData = JSON.parse(ex);
     onLoadIPFS({ ...sphere, ...ipfsData });
@@ -47,7 +48,7 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
         });
       }}
     >
-      {!  isLoading ? (
+      {!isLoading ? (
         <>
           <HoverVideoPlayer
             videoSrc={`https://ipfs.io/ipfs/${preview.cid}/${preview.name}`}
@@ -85,7 +86,13 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
           </div>{" "}
         </>
       ) : (
-        "Loading"
+        <>
+        <Shimmer className="image-container shimmer"/>
+        <span>
+        <Shimmer className = "title-style shimmer" >title</Shimmer>
+        <Shimmer className = "price-style shimmer" >0TEZ</Shimmer>
+        </span>
+        </>
       )}
     </div>
   );
