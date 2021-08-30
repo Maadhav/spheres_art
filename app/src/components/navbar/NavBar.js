@@ -5,7 +5,7 @@ import Search from "./Search";
 import MenuItem from "./menu/MenuItem";
 import SolidButton from "../button/SolidButton";
 import LinedButton from "../button/LinedButton";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { NFTStorage, File } from "nft.storage";
 import {
   getActiveAccount,
@@ -19,6 +19,7 @@ import ProfileButton from "../button/ProfileButton";
 
 const NavBar = () => {
   const location = useLocation();
+  const history = useHistory()
   const [index, setIndex] = useState(0);
   const [wallet, setWallet] = useState(null);
 
@@ -53,7 +54,7 @@ const NavBar = () => {
   return (
     <div className="navbar-container">
       <Logo />
-      <Search />
+      <Search onClick={() => { if(location.pathname !== '/') history.replace('/')  }}/>
       <Link to={"/"} style={{ textDecoration: "none" }}>
         <MenuItem title="Explore" active={index === 0} />
       </Link>

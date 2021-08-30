@@ -11,6 +11,8 @@ const HomePage = () => {
   const [spheres, setSpheres] = useState([]);
   const [length, setLength] = useState(0);
   async function getData() {
+    var allSpheres = []
+    var searchElement;
     var data = (await getContractStorage()).spheres.valueMap;
     var parseData = Array.from(data)
       .map((k, v) => k[1])
@@ -22,9 +24,22 @@ const HomePage = () => {
       spheres.push(sphere);
     }
     console.log(spheres)
+    allSpheres = spheres;
     setSpheres(spheres);
     setLength(8);
     setLoading(false);
+
+    setTimeout(() => {
+      searchElement = document.getElementById('search')
+      searchElement.addEventListener('input', () => {
+        //   if (searchElement.value.trim() !== '') {
+        //       setSpheres(allSpheres.filter((e) => e.name.toLowerCase().includes(searchElement.value.toLowerCase())))
+        //   } else if (searchElement.value === '') {
+        //       setSpheres(allSpheres)
+        //       setLength(8)
+        //   }
+      })
+  }, 500)
   }
   useEffect(() => {
     getData();
