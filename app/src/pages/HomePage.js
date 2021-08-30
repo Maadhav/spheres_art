@@ -14,6 +14,7 @@ const HomePage = () => {
     const [length, setLength] = useState(0)
     async function getData() {
         var searchElement;
+        var allSpheres = [];
         var data = (await getContractStorage()).spheres.valueMap;
         var spheres = [];
         var parseData = (Array.from(data).map((k, v) => k[1]))
@@ -25,33 +26,19 @@ const HomePage = () => {
                 spheres.push({ ...sphere, ...ipfsData, });
             }
         }
+        allSpheres = spheres
         setSpheres(spheres)
         setLength(8)
         setLoading(false)
         setTimeout(() => {
             searchElement = document.getElementById('search')
-            searchElement.addEventListener('input', async () => { 
-                if (searchElement.value.trim() !== '')
-                    setSpheres(val => val.filter((e) => e.name.includes(searchElement.value)))
-                else if(searchElement.value === ''){
-                    setLoading(true)
-                    var data = (await getContractStorage()).spheres.valueMap;
-                    var spheres = [];
-                    var parseData = (Array.from(data).map((k, v) => k[1]))
-                    for (let i = 0; i < parseData.length; i++) {
-                        const sphere = parseData[i];
-                        if (sphere.isNew) {
-                            let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
-                            let ipfsData = JSON.parse(ex);
-                            spheres.push({ ...sphere, ...ipfsData, });
-                        }
-                    }
-                    setSpheres(spheres)
+            searchElement.addEventListener('input', () => {
+                if (searchElement.value.trim() !== '') {
+                    setSpheres(allSpheres.filter((e) => e.name.toLowerCase().includes(searchElement.value.toLowerCase())))
+                } else if (searchElement.value === '') {
+                    setSpheres(allSpheres)
                     setLength(8)
-                    setLoading(false)
                 }
-
-                
             })
         }, 500)
     }

@@ -14,6 +14,7 @@ const Profile = () => {
     const [loading, setLoading] = useState(true)
     const [spheres, setSpheres] = useState([])
     const [length, setLength] = useState(0)
+    const [allSpheres, setAllSpheres] = useState([])
     const init = async () => {
         let activeAccount = await getActiveAccount();
         setWallet(activeAccount);
@@ -35,33 +36,9 @@ const Profile = () => {
             }
         }
         setSpheres(spheres)
+        setAllSpheres(spheres)
         setLength(8)
         setLoading(false)
-
-        setTimeout(() => {
-            searchElement = document.getElementById('search')
-            searchElement.addEventListener('input', async () => {
-                if (searchElement.value.trim() !== '')
-                    setSpheres(val => val.filter((e) => e.name.includes(searchElement.value)))
-                else if (searchElement.value === '') {
-                    setLoading(true)
-                    var data = (await getContractStorage()).spheres.valueMap;
-                    var spheres = [];
-                    var parseData = (Array.from(data).map((k, v) => k[1]))
-                    for (let i = 0; i < parseData.length; i++) {
-                        const sphere = parseData[i];
-                        if (sphere.isNew) {
-                            let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
-                            let ipfsData = JSON.parse(ex);
-                            spheres.push({ ...sphere, ...ipfsData, });
-                        }
-                    }
-                    setSpheres(spheres)
-                    setLength(8)
-                    setLoading(false)
-                }
-            })
-        }, 500)
     }
 
     function onFilterChange(value) {
@@ -103,7 +80,14 @@ const Profile = () => {
                 </div>
             </div>
             <div className="search-section">
-                <Search />
+                <Search onChange={(e) => {
+                    if (e.target.value.trim() !== '') {
+                        setSpheres(allSpheres.filter((e) => e.name.toLowerCase().includes(e.target.value.toLowerCase())))
+                    } else if (e.target.value === '') {
+                        setSpheres(allSpheres)
+                        setLength(8)
+                    }
+                }}/>
                 <select className="filter-select" onChange={(e) => { onFilterChange(e.currentTarget.value) }}>
                     <option value="0">Recently Listed</option>
                     <option value="1">Price: Low to High</option>
