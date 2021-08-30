@@ -7,7 +7,7 @@ import Profile from "./pages/Profile";
 import ItemPage from "./pages/ItemPage";
 import CreateItem from "./pages/CreateItem";
 import React, { useEffect } from "react";
-import { deploy } from "./adapters/tezos/deploy";
+// import { deploy } from "./adapters/tezos/deploy";
 
 function App() {
 

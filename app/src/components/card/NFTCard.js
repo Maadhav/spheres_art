@@ -10,7 +10,7 @@ const NFTCard = ({ sphere }) => {
   const [thumbnailCid, thumbnailName] = sphere.image
     .split("ipfs://")[1]
     .split("/");
-//   const [previewCid, previewName] = sphere.image.split("ipfs://")[1].split("/");
+  const [previewCid, previewName] = sphere.properties.preview.split("ipfs://")[1].split("/");
   return (
     <div
       className="container"
@@ -25,9 +25,10 @@ const NFTCard = ({ sphere }) => {
     >
 
       <HoverVideoPlayer
-        videoSrc={`https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`}
+        videoSrc={`https://ipfs.io/ipfs/${previewCid}/${previewName}`}
         loop={true}
-        sizingMode="container"
+        sizingMode="overlay"
+        overlayTransitionDuration ={0}
         videoStyle = {{
             height: "211px",
             marginBottom: "15px",
@@ -39,6 +40,9 @@ const NFTCard = ({ sphere }) => {
             marginBottom: "15px",
             // borderRadius: "20px"
         }}
+        pausedOverlayWrapperStyle={{
+          zIndex: "0"
+        }}
         pausedOverlay={
           <img
             src={`https://ipfs.io/ipfs/${thumbnailCid}/${thumbnailName}`}
@@ -46,7 +50,6 @@ const NFTCard = ({ sphere }) => {
             alt=""
           />
         }
-        loadingOverlay={"Loading"}
       />
       <div className="title-style">{sphere.name}</div>
       <div className="price-style">
