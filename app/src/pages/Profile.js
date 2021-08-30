@@ -19,6 +19,7 @@ const Profile = () => {
         setWallet(activeAccount);
     };
     async function getData() {
+        var searchElement;
         var data = (await getContractStorage()).spheres.valueMap;
         var spheres = [];
         var parseData = (Array.from(data).map((k, v) => k[1]))
@@ -36,6 +37,31 @@ const Profile = () => {
         setSpheres(spheres)
         setLength(8)
         setLoading(false)
+
+        setTimeout(() => {
+            searchElement = document.getElementById('search')
+            searchElement.addEventListener('input', async () => {
+                if (searchElement.value.trim() !== '')
+                    setSpheres(val => val.filter((e) => e.name.includes(searchElement.value)))
+                else if (searchElement.value === '') {
+                    setLoading(true)
+                    var data = (await getContractStorage()).spheres.valueMap;
+                    var spheres = [];
+                    var parseData = (Array.from(data).map((k, v) => k[1]))
+                    for (let i = 0; i < parseData.length; i++) {
+                        const sphere = parseData[i];
+                        if (sphere.isNew) {
+                            let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
+                            let ipfsData = JSON.parse(ex);
+                            spheres.push({ ...sphere, ...ipfsData, });
+                        }
+                    }
+                    setSpheres(spheres)
+                    setLength(8)
+                    setLoading(false)
+                }
+            })
+        }, 500)
     }
 
     function onFilterChange(value) {

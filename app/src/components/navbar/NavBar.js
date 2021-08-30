@@ -53,7 +53,7 @@ const NavBar = () => {
   return (
     <div className="navbar-container">
       <Logo />
-      <Search />
+      <Search/>
       <Link to={"/"} style={{ textDecoration: "none" }}>
         <MenuItem title="Explore" active={index === 0} />
       </Link>

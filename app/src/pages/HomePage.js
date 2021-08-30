@@ -13,6 +13,7 @@ const HomePage = () => {
     const [spheres, setSpheres] = useState([])
     const [length, setLength] = useState(0)
     async function getData() {
+        var searchElement;
         var data = (await getContractStorage()).spheres.valueMap;
         var spheres = [];
         var parseData = (Array.from(data).map((k, v) => k[1]))
@@ -27,10 +28,37 @@ const HomePage = () => {
         setSpheres(spheres)
         setLength(8)
         setLoading(false)
+        setTimeout(() => {
+            searchElement = document.getElementById('search')
+            searchElement.addEventListener('input', async () => { 
+                if (searchElement.value.trim() !== '')
+                    setSpheres(val => val.filter((e) => e.name.includes(searchElement.value)))
+                else if(searchElement.value === ''){
+                    setLoading(true)
+                    var data = (await getContractStorage()).spheres.valueMap;
+                    var spheres = [];
+                    var parseData = (Array.from(data).map((k, v) => k[1]))
+                    for (let i = 0; i < parseData.length; i++) {
+                        const sphere = parseData[i];
+                        if (sphere.isNew) {
+                            let ex = await getIPFSData(sphere.tokenUrl.split('ipfs://')[1])
+                            let ipfsData = JSON.parse(ex);
+                            spheres.push({ ...sphere, ...ipfsData, });
+                        }
+                    }
+                    setSpheres(spheres)
+                    setLength(8)
+                    setLoading(false)
+                }
+
+                
+            })
+        }, 500)
     }
     useEffect(() => {
         getData()
     }, [])
+
     return (
         <div className="home-body">
             <div className="discover-card">
@@ -40,14 +68,14 @@ const HomePage = () => {
             </div>
             <div className="explore-section">
                 <h1>Explore</h1>
-                {loading ? <Loader/>:
-                <div className="nft-grid">
-                    {
-                        spheres.map((e,i) => i < length && <NFTCard sphere={e} key={e.token_id} />)
-                    }
-                </div>}
+                {loading ? <Loader /> :
+                    <div className="nft-grid">
+                        {
+                            spheres.map((e, i) => i < length && <NFTCard sphere={e} key={e.token_id} />)
+                        }
+                    </div>}
             </div>
-            {spheres.length > length  && <LinedButton title="Load More" onClick={() => { setLength(val => val + 8) }} style={{ marginBottom: "60px", width: "300px" }} />}
+            {spheres.length > length && <LinedButton title="Load More" onClick={() => { setLength(val => val + 8) }} style={{ marginBottom: "60px", width: "300px" }} />}
         </div>
     )
 }
