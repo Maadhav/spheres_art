@@ -32,12 +32,12 @@ const HomePage = () => {
     setTimeout(() => {
       searchElement = document.getElementById('search')
       searchElement.addEventListener('input', () => {
-        //   if (searchElement.value.trim() !== '') {
-        //       setSpheres(allSpheres.filter((e) => e.name.toLowerCase().includes(searchElement.value.toLowerCase())))
-        //   } else if (searchElement.value === '') {
-        //       setSpheres(allSpheres)
-        //       setLength(8)
-        //   }
+          if (searchElement.value.trim() !== '') {
+              setSpheres(allSpheres.filter((e) => e.title.toLowerCase().includes(searchElement.value.toLowerCase())))
+          } else if (searchElement.value === '') {
+              setSpheres(allSpheres)
+              setLength(8)
+          }
       })
   }, 500)
   }

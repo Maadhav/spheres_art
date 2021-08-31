@@ -9,6 +9,10 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
 
     async function onBuy() {
         console.log('Buying')
+        console.log({
+            token_id: sphere.token_id,
+            price: sphere.price
+        })
         await createSale({
             token_id: sphere.token_id,
             price: sphere.price
@@ -28,7 +32,7 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                     </div>
                     <div className="item-section">
                         <div className="item-details">
-                            <img src={`https://ipfs.io/ipfs/${ipfsCid}/${ipfsName}`} className="item-image" alt=''/>
+                            <img src={`https://ipfs.io/ipfs/${ipfsCid}/${ipfsName}`} className="item-image" alt='' />
                             <div>
                                 <div className="item-creator">{sphere.creator}</div>
                                 <div className="item-title">{sphere.name}</div>

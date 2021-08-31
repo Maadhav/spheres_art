@@ -59,6 +59,7 @@ const CreateItem = () => {
           jsonFile: jsonFile,
           imageFile: imageFile,
           videoFile: videoFile,
+          zipFile: file,
         }),
         {
           pending: "Uploading Files to IPFS",
@@ -70,6 +71,7 @@ const CreateItem = () => {
         createItem({
           price: price * 1000000,
           url: url,
+          title: title
         }),
         {
           pending: "Minting NFT to Blockchain",
@@ -77,18 +79,16 @@ const CreateItem = () => {
           error: "Minting rejected 🤯",
         }
       );
-    toast.promise(confirmOperation(operation), {
+      await toast.promise(confirmOperation(operation), {
         pending: "Waiting for confirmation",
         success: "Operation Successfull",
         error: "Operation rejected 🤯",
       });
-
       setFile(null);
       setDescription("");
       setPrice("");
       setTitle("");
       setLoading(false);
-      window.open("/", "_self");
     }
   }
   return (

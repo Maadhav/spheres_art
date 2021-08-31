@@ -6,7 +6,7 @@ import { NFTStorage ,File } from "nft.storage";
 const DAPP_NAME = "Sphere.ART";
 const RPC_URL = "https://florencenet.smartpy.io";
 const NETWORK = "florencenet";
-const CONTRACT_ADDRESS = "KT1BCv4Hza5f83iVtXhctGKU6QTNYXmEThHw";
+const CONTRACT_ADDRESS = "KT18kAB6xquyyZRks1Rbgw6ccQKAdX5b8rFR";
 
 const Tezos = new TezosToolkit(RPC_URL);
 
@@ -57,7 +57,7 @@ const getContractStorage = async () => {
   return (await getContract()).storage();
 };
 
-const uploadToIPFS = async ({title, description,jsonFile, imageFile, videoFile}) => {
+const uploadToIPFS = async ({title, description,jsonFile, imageFile, videoFile,zipFile}) => {
   console.log('Starting IPFS')
   console.log(imageFile)
   const metadata = await client.store({
@@ -66,6 +66,7 @@ const uploadToIPFS = async ({title, description,jsonFile, imageFile, videoFile})
     image: new File([imageFile], imageFile.name, { type: 'image/png' }),
     properties: {
       file: new File([jsonFile], jsonFile.name, { type: jsonFile.type }),
+      zip: new File([zipFile],zipFile.name, {type: "application/zip"}),
       preview: new File([videoFile], videoFile.name, { type: videoFile.type })
     }
   });
@@ -74,11 +75,11 @@ const uploadToIPFS = async ({title, description,jsonFile, imageFile, videoFile})
   return metadata.url
 }
 
-const createItem = async ({url, price }) => {
+const createItem = async ({url, price,title }) => {
   console.log("Started Minting")
   return await getContract()
     .then((c) => {
-      return c.methods.createItem(price,Math.round(Date.now()/ 1000), url ?? "test.com").send();
+      return c.methods.createItem(price,Math.round(Date.now()/ 1000),title, url ?? "test.com").send();
     })
 };
 const confirmOperation = async (operation) => {
@@ -88,7 +89,7 @@ const confirmOperation = async (operation) => {
 };
 
 const createSale = async ({ token_id, price }) => {
-  getContract()
+  await getContract()
     .then((c) => {
       return c.methods.createSale(token_id ?? 0).send({
         amount: price,

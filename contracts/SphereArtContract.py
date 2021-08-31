@@ -67,7 +67,7 @@ class SphereArt(sp.Contract):
         name = 'Sphere.ART Token',
         symbol = 'SPHERE'
         )), sp.mutez(0), token_contract)
-        self.data.spheres[self.data.counter] = sp.record(token_id = self.data.counter, owner = sp.sender, creator = sp.sender, price = sp.utils.nat_to_mutez(params.sphere.price), tokenUrl = params.sphere.tokenUrl, isNew = True, timestamp = params.sphere.timestamp)
+        self.data.spheres[self.data.counter] = sp.record(token_id = self.data.counter, owner = sp.sender, creator = sp.sender, price = sp.utils.nat_to_mutez(params.sphere.price), tokenUrl = params.sphere.tokenUrl, isNew = True, timestamp = params.sphere.timestamp, title = params.sphere.title)
         self.data.counter+=1
    
     @sp.entry_point
@@ -77,7 +77,7 @@ class SphereArt(sp.Contract):
         sp.send(sphere.owner, sp.amount)
         sphere.owner = sp.sender
         token_contract = sp.contract(sp.TRecord(from_ = sp.TAddress, to_ = sp.TAddress, token_id = sp.TNat), self.data.contract_address, entry_point = "buy").open_some()
-        sp.transfer(sp.record(from_ = sphere.creator, to_ = sp.sender, token_id = sp.nat(0)), sp.mutez(0), token_contract)
+        sp.transfer(sp.record(from_ = sphere.creator, to_ = sp.sender, token_id = params.token_id), sp.mutez(0), token_contract)
         sp.if sphere.isNew:
             sphere.isNew = False
 
@@ -93,10 +93,10 @@ def test():
     c1 = SphereArt(nft.address)
     scenario += c1  
 
-    def newSphere(price, tokenUrl):
-        return sp.record(price = sp.nat(price), tokenUrl = tokenUrl, timestamp = 1629614520)
-    c1.createItem(sphere = newSphere(1000, "test.com")).run(sender = mark)
+    def newSphere(price, tokenUrl,title):
+        return sp.record(price = sp.nat(price), tokenUrl = tokenUrl, timestamp = 1629614520,title = title)
+    c1.createItem(sphere = newSphere(1000, "test.com",'Testing')).run(sender = mark)
 
     c1.createSale(token_id = 0).run(sender = elon, amount = sp.mutez(1000))
-    c1.createItem(sphere = newSphere(1000, "test.com")).run(sender = mark)
+    c1.createItem(sphere = newSphere(1000, "test.com",'Testing 2')).run(sender = mark)
 # sp.add_compilation_target("sphereArt", SphereArt())

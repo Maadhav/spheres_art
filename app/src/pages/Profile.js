@@ -25,7 +25,7 @@ const Profile = () => {
     var parseData = Array.from(data).map((k, v) => k[1]);
     for (let i = 0; i < parseData.length; i++) {
       const sphere = parseData[i];
-      if (!sphere.isNew && sphere.owner === wallet.address) {
+      if (!sphere.isNew && sphere.owner === wallet?.address) {
         spheres.push(sphere);
       }
     }
@@ -82,12 +82,12 @@ const Profile = () => {
       <div className="search-section">
         <Search
           onChange={(e) => {
-            // if (e.target.value.trim() !== '') {
-            //     setSpheres(allSpheres.filter((e) => e.name.toLowerCase().includes(e.target.value.toLowerCase())))
-            // } else if (e.target.value === '') {
-            //     setSpheres(allSpheres)
-            //     setLength(8)
-            // }
+            if (e.target.value.trim() !== '') {
+                setSpheres(allSpheres.filter((sphere) => sphere.title.toLowerCase().includes(e.target.value.toLowerCase())))
+            } else if (e.target.value === '') {
+                setSpheres(allSpheres)
+                setLength(8)
+            }
           }}
         />
         <select

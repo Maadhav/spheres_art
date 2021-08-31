@@ -7,19 +7,50 @@ import Payment from '../components/dialog/Payment'
 import Blockies from 'react-blockies'
 import { APP } from '../adapters/three.js/index'
 import * as THREE from 'three'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import Loader from '../components/loader/Loader'
+import BigNumber from 'big-number'
+import { getContractStorage } from '../adapters/tezos'
+import getIPFSData from '../adapters/ipfs'
 const ItemPage = (props) => {
     const location = useLocation()
     const [checkout, setCheckout] = useState(false)
     const [payment, setPayment] = useState(false)
     const [state, setstate] = useState(props.location.state)
-    const [loading , setLoading] = useState(true)
-    const [ipfsCid, ipfsName] = state.properties.file.split('ipfs://')[1].split('/')
+    const [loading, setLoading] = useState(true)
+    const { id } = useParams()
     const ref = useRef();
-    function init() {
+    async function init() {
+        var nft;
+        var sphere;
+        var ipfs = {}
+        if (!state) {
+            var data = (await getContractStorage()).spheres.valueMap
+            var parseData = Array.from(data)
+                .map((k, v) => k[1]);
+            console.log(parseData)
+            nft = parseData.find((e) =>
+                e.token_id.c[0] === parseInt(id)
+            )
+            let ex = await getIPFSData(nft.tokenUrl.split("ipfs://")[1]);
+            let ipfsData = JSON.parse(ex);
+            sphere = { ...nft, ...ipfsData }
+            console.log(sphere)
+            setstate(sphere)
+            ipfs = {
+                cid: sphere.properties.file.split('ipfs://')[1].split('/')[0],
+                name: sphere.properties.file.split('ipfs://')[1].split('/')[1]
+            }
+        }
+        else {
+
+            ipfs = {
+                cid: state.properties.file.split('ipfs://')[1].split('/')[0],
+                name: state.properties.file.split('ipfs://')[1].split('/')[1]
+            }
+        }
         var loader = new THREE.FileLoader()
-        loader.load(`https://ipfs.io/ipfs/${ipfsCid}/${ipfsName}`, function (json) {
+        loader.load(`https://ipfs.io/ipfs/${ipfs.cid}/${ipfs.name}`, function (json) {
             var player = new APP.Player();
             player.load(JSON.parse(json));
             player.setSize(542, 542);
@@ -37,12 +68,14 @@ const ItemPage = (props) => {
     }
 
     useEffect(() => {
-         init() 
-        }, [])
+        init()
+    }, [])
+    if (loading)
+        return <Loader />
     return (
         <div className="section-separator">
             <div className="image-section" ref={ref}>
-                {loading && <Loader/>}
+                {loading && <Loader />}
             </div>
             <div className="details-section">
                 <div style={{ margin: "45px 43px" }}>
@@ -52,13 +85,20 @@ const ItemPage = (props) => {
                     <div className="creator-details">
                         <Blockies
                             seed={state.creator} className="creator-image" alt="" />
-                        <div className="creator-name"> {state.creator}</div>
+                        <div className="creator-name"> {state?.creator}</div>
                     </div>
+                    {!state.isNew && <><div className="creator">Owner</div>
+                        <div className="creator-details">
+                            <Blockies
+                                seed={state.owner} className="creator-image" alt="" />
+                            <div className="creator-name"> {state?.owner}</div>
+                        </div></>}
                     <div className="details">Details</div>
                     <span><div className="highlighted-line"></div><div className="break-line"></div></span>
                     <div className="description">
                         {state.description}
                     </div>
+                    {!state.isNew && <SolidButton title={'Download'} onClick={() => { }} />}
                     {!location.pathname.includes('profile') && <SolidButton title={"Buy for " + (state.price.c / 1000000).toFixed(2) + " XTZ"} onClick={() => { setCheckout(true) }} />}
                 </div>
             </div>
