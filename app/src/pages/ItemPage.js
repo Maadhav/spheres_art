@@ -10,14 +10,17 @@ import * as THREE from 'three'
 import { useLocation, useParams } from 'react-router-dom'
 import Loader from '../components/loader/Loader'
 import BigNumber from 'big-number'
-import { getContractStorage } from '../adapters/tezos'
-import getIPFSData from '../adapters/ipfs'
+import { getActiveAccount, getContractStorage } from '../adapters/tezos'
+import getIPFSData, { getIPFSMedia } from '../adapters/ipfs'
 const ItemPage = (props) => {
     const location = useLocation()
     const [checkout, setCheckout] = useState(false)
     const [payment, setPayment] = useState(false)
     const [state, setstate] = useState(props.location.state)
     const [loading, setLoading] = useState(true)
+    const [wallet, setWallet] = useState()
+
+
     const { id } = useParams()
     const ref = useRef();
     async function init() {
@@ -37,75 +40,86 @@ const ItemPage = (props) => {
             sphere = { ...nft, ...ipfsData }
             console.log(sphere)
             setstate(sphere)
-            ipfs = {
-                cid: sphere.properties.file.split('ipfs://')[1].split('/')[0],
-                name: sphere.properties.file.split('ipfs://')[1].split('/')[1]
-            }
+            ipfs =  sphere.properties.file
         }
         else {
 
-            ipfs = {
-                cid: state.properties.file.split('ipfs://')[1].split('/')[0],
-                name: state.properties.file.split('ipfs://')[1].split('/')[1]
-            }
+            ipfs = state.properties.file
         }
-        var loader = new THREE.FileLoader()
-        loader.load(`https://ipfs.io/ipfs/${ipfs.cid}/${ipfs.name}`, function (json) {
-            var player = new APP.Player();
-            player.load(JSON.parse(json));
+        let json = await getIPFSData(ipfs.split("ipfs://")[1])
+        var player = new APP.Player();
+        player.load(JSON.parse(json));
+        player.setSize(542, 542);
+        player.play();
+
+        setLoading(false)
+        ref.current.appendChild(player.dom);
+
+        window.addEventListener('resize', function () {
+
             player.setSize(542, 542);
-            player.play();
 
-            setLoading(false)
-            ref.current.appendChild(player.dom);
+        });
+    // })
+}
 
-            window.addEventListener('resize', function () {
+const activeWallet = async () => {
+    let activeAccount = await getActiveAccount();
+    setWallet(activeAccount);
+};
 
-                player.setSize(542, 542);
-
-            });
-        })
-    }
-
-    useEffect(() => {
-        init()
-    }, [])
-    if (loading)
-        return <Loader />
-    return (
-        <div className="section-separator">
-            <div className="image-section" ref={ref}>
-                {loading && <Loader />}
-            </div>
-            <div className="details-section">
-                <div style={{ margin: "45px 43px" }}>
-                    <h1>{state.name}</h1>
-                    <div className="price-text">From<span style={{ fontWeight: "600" }}> {(state.price.c / 1000000).toFixed(2)} XTZ</span></div>
-                    <div className="creator">Creator</div>
+useEffect(() => {
+    init()
+    activeWallet()
+}, [])
+if (loading)
+    return <Loader />
+return (
+    <div className="section-separator">
+        <div className="image-section" ref={ref}>
+            {loading && <Loader />}
+        </div>
+        <div className="details-section">
+            <div style={{ margin: "45px 43px" }}>
+                <h1>{state.name}</h1>
+                <div className="price-text">From<span style={{ fontWeight: "600" }}> {(state.price.c / 1000000).toFixed(2)} XTZ</span></div>
+                <div className="creator">Creator</div>
+                <div className="creator-details">
+                    <Blockies
+                        seed={state.creator} className="creator-image" alt="" />
+                    <div className="creator-name"> {state?.creator}</div>
+                </div>
+                {!state.isNew && <><div className="creator">Owner</div>
                     <div className="creator-details">
                         <Blockies
-                            seed={state.creator} className="creator-image" alt="" />
-                        <div className="creator-name"> {state?.creator}</div>
-                    </div>
-                    {!state.isNew && <><div className="creator">Owner</div>
-                        <div className="creator-details">
-                            <Blockies
-                                seed={state.owner} className="creator-image" alt="" />
-                            <div className="creator-name"> {state?.owner}</div>
-                        </div></>}
-                    <div className="details">Details</div>
-                    <span><div className="highlighted-line"></div><div className="break-line"></div></span>
-                    <div className="description">
-                        {state.description}
-                    </div>
-                    {!state.isNew && <SolidButton title={'Download'} onClick={() => { }} />}
-                    {!location.pathname.includes('profile') && <SolidButton title={"Buy for " + (state.price.c / 1000000).toFixed(2) + " XTZ"} onClick={() => { setCheckout(true) }} />}
+                            seed={state.owner} className="creator-image" alt="" />
+                        <div className="creator-name"> {state?.owner}</div>
+                    </div></>}
+                <div className="details">Details</div>
+                <span><div className="highlighted-line"></div><div className="break-line"></div></span>
+                <div className="description">
+                    {state.description}
                 </div>
+                {!state.isNew && <SolidButton title={'Download'} onClick={() => {
+                    var element = document.createElement('a')
+                    var ipfs = {
+                        cid: state.properties.zip.split('ipfs://')[1].split('/')[0],
+                        name: state.properties.zip.split('ipfs://')[1].split('/')[1]
+                    }
+                    element.href = `https://ipfs.io/ipfs/${ipfs.cid}/${ipfs.name}`
+                    if (wallet.address === state.owner)
+                        element.click()
+                    else
+                        alert('Only owner can download the file.')
+
+                }} />}
+                {!location.pathname.includes('profile') && <SolidButton title={"Buy for " + (state.price.c / 1000000).toFixed(2) + " XTZ"} onClick={() => { setCheckout(true) }} />}
             </div>
-            {checkout && <CheckOut sphere={state} onQuit={() => { setCheckout(false) }} onCheckOut={() => { setPayment(true); setCheckout(false) }} />}
-            {payment && <Payment sphere={state} onQuit={() => { setPayment(false) }} />}
         </div>
-    )
+        {checkout && <CheckOut sphere={state} onQuit={() => { setCheckout(false) }} onCheckOut={() => { setPayment(true); setCheckout(false) }} />}
+        {payment && <Payment sphere={state} onQuit={() => { setPayment(false) }} />}
+    </div>
+)
 }
 
 export default ItemPage

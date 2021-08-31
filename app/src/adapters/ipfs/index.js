@@ -11,3 +11,14 @@ export default async function getIPFSData(ipfs) {
     }
     return data;
 }
+
+export async function getIPFSMedia(ipfs) {
+    const stream = await (await node).cat(ipfs)
+    let data = [];
+
+    for await (const chunk of stream) {
+        data = [...data,...chunk]
+    }
+
+    return data;
+}

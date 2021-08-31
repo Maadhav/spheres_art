@@ -5,7 +5,7 @@ import Shimmer from '../shimmer';
 
 
 import "./NFTCard.css";
-import getIPFSData from "../../adapters/ipfs";
+import getIPFSData, { getIPFSMedia } from "../../adapters/ipfs";
 
 const NFTCard = ({ sphere, onLoadIPFS }) => {
   const location = useLocation();
@@ -21,14 +21,13 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
     let ipfsData = JSON.parse(ex);
     onLoadIPFS({ ...sphere, ...ipfsData });
     setIpfsData(ipfsData);
-    setThumbnail({
-      cid: ipfsData.image.split("ipfs://")[1].split("/")[0],
-      name: ipfsData.image.split("ipfs://")[1].split("/")[1],
-    });
-    setPreview({
-      cid: ipfsData.properties.preview.split("ipfs://")[1].split("/")[0],
-      name: ipfsData.properties.preview.split("ipfs://")[1].split("/")[1],
-    });
+
+    let imageData = await getIPFSMedia(ipfsData.image.split("ipfs://")[1])
+    let imageBlob = new Blob([new Uint8Array(imageData)], { type: "image/png" })
+    setThumbnail(imageBlob)
+    let previewData = await getIPFSMedia(ipfsData.properties.preview.split("ipfs://")[1])
+    let previewBlob = new Blob([new Uint8Array(previewData)], { type: "video/webm" })
+    setPreview(previewBlob)
     setLoading(false);
   };
 
@@ -51,7 +50,7 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
       {!isLoading ? (
         <>
           <HoverVideoPlayer
-            videoSrc={`https://ipfs.io/ipfs/${preview.cid}/${preview.name}`}
+            videoSrc={URL.createObjectURL(preview)}
             loop={true}
             sizingMode="overlay"
             overlayTransitionDuration={0}
@@ -71,7 +70,7 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
             }}
             pausedOverlay={
               <img
-                src={`https://ipfs.io/ipfs/${thumbnail.cid}/${thumbnail.name}`}
+                src={URL.createObjectURL(thumbnail)}
                 className="image-container"
                 alt=""
               />
@@ -87,11 +86,11 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
         </>
       ) : (
         <>
-        <Shimmer className="image-container shimmer"/>
-        <span>
-        <Shimmer className = "title-style shimmer" >title</Shimmer>
-        <Shimmer className = "price-style shimmer" >0TEZ</Shimmer>
-        </span>
+          <Shimmer className="image-container shimmer" />
+          <span>
+            <Shimmer className="title-style shimmer" >title</Shimmer>
+            <Shimmer className="price-style shimmer" >0TEZ</Shimmer>
+          </span>
         </>
       )}
     </div>
