@@ -89,20 +89,13 @@ const confirmOperation = async (operation) => {
 };
 
 const createSale = async ({ token_id, price }) => {
-  await getContract()
+  return await getContract()
     .then((c) => {
       return c.methods.createSale(token_id ?? 0).send({
         amount: price,
         mutez: true,
       });
     })
-    .then((operation) => {
-      console.log("Buy operation sent.");
-      console.log(`Awaiting for ${operation.opHash} to be confirmed...`);
-      return operation.confirmation(3).then(() => operation.opHash);
-    })
-    .then((opHash) => console.log(`Operation injected: ${opHash}`))
-    .catch((error) => console.log(error));
 };
 
 export {
