@@ -59,9 +59,9 @@ const NavBar = () => {
         <MenuItem title="Explore" active={index === 0} />
       </Link>
       {wallet && <Link to={"/profile"} style={{ textDecoration: "none" }}>
-        <MenuItem title="My Items" active={index === 1} />
+        <MenuItem title="My Spheres" active={index === 1} />
       </Link>}
-      <MenuItem title="Following" active={index === 2} />
+      {/* <MenuItem title="Following" active={index === 2} /> */}
       <Link to={"/create"} style={{ textDecoration: "none" }}>
         <SolidButton title="Create" onClick={() => { }} />
       </Link>

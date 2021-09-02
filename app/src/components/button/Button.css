@@ -63,11 +63,11 @@
   position: absolute;
   top: 40px;
   right: 0;
-  left : -30px;
+  left : -45px;
   background-color: var(--dark);
   border: 1px solid var(--black-1);
   border-radius: 10px;
-  min-width: 120px;
+  min-width: 130px;
   overflow: auto;
   z-index: 1;
 }

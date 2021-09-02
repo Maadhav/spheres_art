@@ -9,7 +9,7 @@
   align-items: center;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 3;
   padding: 0 50px;
   flex-wrap: wrap;
   box-shadow: 3px 3px 1px var(--black-1);

@@ -85,7 +85,7 @@ const createItem = async ({url, price,title }) => {
 const confirmOperation = async (operation) => {
     console.log("Mint operation sent.");
     console.log(`Awaiting for ${operation.opHash} to be confirmed...`);
-    return operation.confirmation(3).then(() => operation.opHash);
+    return operation.confirmation(1).then(() => operation.opHash);
 };
 
 const createSale = async ({ token_id, price }) => {
@@ -98,10 +98,19 @@ const createSale = async ({ token_id, price }) => {
     })
 };
 
+
+const updatePrice = async ({ token_id, price }) => {
+  return await getContract()
+    .then((c) => {
+      return c.methods.updatePrice(price,token_id ?? 0).send();
+    })
+};
+
 export {
   Tezos,
   wallet,
   getActiveAccount,
+  updatePrice,
   connectAccount,
   clearActiveAccount,
   getContract,

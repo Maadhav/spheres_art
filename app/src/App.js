@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import ItemPage from "./pages/ItemPage";
 import CreateItem from "./pages/CreateItem";
 import React, { useEffect, useRef } from "react";
+import MyCreation from "./pages/MyCreation";
 // import { deploy } from "./adapters/tezos/deploy";
 
 function App() {
@@ -20,9 +21,11 @@ function App() {
         <Route path="/" exact>
           <HomePage/>
         </Route>
-        <Route path="/profile/item/:id?" component={ItemPage}/>
         <Route path="/profile">
           <Profile />
+        </Route>
+        <Route path="/mycreation">
+          <MyCreation />
         </Route>
         <Route path="/item/:id?" component={ItemPage}/>
         <Route path="/create" >

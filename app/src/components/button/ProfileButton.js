@@ -5,6 +5,7 @@ import { ChevronDown } from 'react-iconly'
 import Blockies from 'react-blockies';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { Link } from 'react-router-dom';
 
 const ProfileButton = ({ title, onDisconnect }) => {
     return (
@@ -30,6 +31,9 @@ const ProfileButton = ({ title, onDisconnect }) => {
             </Tippy>
             <div className="dropdown-content" id="dropdown">
                 <div onClick={onDisconnect}>Disconnect</div>
+                <Link to={'/mycreation'} style={{textDecoration: "none"}}>
+                <div>My Creations</div>
+                </Link>
             </div>
         </div>
     )

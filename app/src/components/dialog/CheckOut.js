@@ -18,9 +18,9 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                 price: sphere.price
             }),
             {
-                pending: "Buying NFT",
-                success: "NFT Buyed",
-                error: "Approval rejected 🤯",
+                pending: "Checking Out",
+                success: "NFT Checkout Complete",
+                error: "Checkout rejected 🤯",
             }
         );
         await toast.promise(confirmOperation(operation), {
@@ -76,7 +76,7 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                 </div>
             </div>
             {loading && (
-                <div className="loading-section">
+                <div className="loading-section" style={{backgroundColor:"transparent"}}>
                     <SphereCanvas />
                 </div>
             )}

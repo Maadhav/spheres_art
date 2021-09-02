@@ -33,6 +33,23 @@
   margin-top: 5px;
   font-size: var(--p2);
   color: white;
+  font-weight: 600;
+}
+
+.price-field-input {
+  margin-top: 5px;
+  outline: none;
+  height: 25px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--black-1);
+  color: white;
+  font-size: var(--p1);
+}
+
+.price-field-input::placeholder {
+  color: white;
 }
 
 .creator {
@@ -83,9 +100,9 @@
 }
 
 .description {
-    font-size: var(--p1);
-    color: white;
-    white-space: pre-line;
-    margin: 30px 0px;
-    width: 420px;
+  font-size: var(--p1);
+  color: white;
+  white-space: pre-line;
+  margin: 30px 0px;
+  width: 420px;
 }

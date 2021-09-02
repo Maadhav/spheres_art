@@ -41,7 +41,6 @@ const NFTCard = ({ sphere, onLoadIPFS }) => {
       onClick={() => {
         history.push({
           pathname:
-            (location.pathname === "/" ? "" : location.pathname) +
             `/item/${sphere.token_id}`,
           state: { ...sphere, ...ipfsData },
         });
