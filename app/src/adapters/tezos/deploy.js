@@ -6,31 +6,31 @@ import {
   CODE_JSON,
   STORAGE_JSON,
 } from "./contracts";
-const RPC_URL = "https://florencenet.smartpy.io";
+const RPC_URL = "https://granadanet.smartpy.io";
 
 const FAUCET_KEY = {
-  mnemonic: [
-    "observe",
-    "body",
-    "high",
-    "subject",
-    "enroll",
-    "collect",
-    "shell",
-    "rally",
-    "gym",
-    "judge",
-    "crew",
-    "hurdle",
-    "meat",
-    "duty",
-    "relax",
+  "mnemonic": [
+    "remember",
+    "garden",
+    "anchor",
+    "enrich",
+    "perfect",
+    "hobby",
+    "length",
+    "setup",
+    "series",
+    "apart",
+    "fence",
+    "snow",
+    "tape",
+    "bind",
+    "salad"
   ],
-  secret: "bdfb5c00c3bd6761988a7098fc2f9f3d16666beb",
-  amount: "4391730144",
-  pkh: "tz1bm9dFuBnSzTzgZKuHjJsFfrPfdkVgj1PW",
-  password: "wZn7IErB7b",
-  email: "dtanuigt.rvsagfhi@tezos.example.org",
+  "secret": "8d5f04490f1d82ab1f1128972469684ec849dbcf",
+  "amount": "431864625",
+  "pkh": "tz1aWs9YmRiD8QcYDfTrRQxD5BRMVHnGtU49",
+  "password": "q6w3lB2FNv",
+  "email": "rvcqcdhx.myttrltz@tezos.example.org"
 };
 
 // Import the admin account

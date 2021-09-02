@@ -29,7 +29,7 @@ class NFT(FA2.FA2):
                 self.data.total_supply[params.token_id] = 1
 
     @sp.entry_point
-    def buy(self, params):
+    def single_transfer(self, params):
         current_from = params.from_
         if self.config.single_asset:
             sp.verify(params.token_id == 0, message = "single-asset: token-id <> 0")
@@ -37,7 +37,6 @@ class NFT(FA2.FA2):
             self.data.token_metadata.contains(params.token_id),
             message = self.error_message.token_undefined()
         )
-        # If amount is 0 we do nothing now:
         from_user = self.ledger_key.make(current_from, params.token_id)
         sp.verify(
             (self.data.ledger[from_user].balance >= 1),
@@ -49,6 +48,7 @@ class NFT(FA2.FA2):
             self.data.ledger[to_user].balance += 1
         sp.else:
                 self.data.ledger[to_user] = FA2.Ledger_value.make(1)
+                
 
 class SphereArt(sp.Contract):
     def __init__(self, contract_address):
@@ -76,10 +76,24 @@ class SphereArt(sp.Contract):
         sp.verify(sp.amount == sphere.price)
         sp.send(sphere.owner, sp.amount)
         sphere.owner = sp.sender
-        token_contract = sp.contract(sp.TRecord(from_ = sp.TAddress, to_ = sp.TAddress, token_id = sp.TNat), self.data.contract_address, entry_point = "buy").open_some()
+        token_contract = sp.contract(sp.TRecord(from_ = sp.TAddress, to_ = sp.TAddress, token_id = sp.TNat), self.data.contract_address, entry_point = "single_transfer").open_some()
         sp.transfer(sp.record(from_ = sphere.creator, to_ = sp.sender, token_id = params.token_id), sp.mutez(0), token_contract)
         sp.if sphere.isNew:
             sphere.isNew = False
+
+    @sp.entry_point
+    def updatePrice(self, params):
+        sphere = self.data.spheres[params.token_id]
+        sp.verify(sp.sender == sphere.creator)
+        sp.verify(sphere.isNew)
+        sphere.price = sp.utils.nat_to_mutez(params.price)
+
+    @sp.entry_point
+    def deleteItem(self, params):
+        sphere = self.data.spheres[params.token_id]
+        sp.verify(sp.sender == sphere.creator)
+        sp.verify(sphere.isNew)
+        del self.data.spheres[params.token_id]
 
 @sp.add_test(name = "a")
 def test():
@@ -97,6 +111,7 @@ def test():
         return sp.record(price = sp.nat(price), tokenUrl = tokenUrl, timestamp = 1629614520,title = title)
     c1.createItem(sphere = newSphere(1000, "test.com",'Testing')).run(sender = mark)
 
-    c1.createSale(token_id = 0).run(sender = elon, amount = sp.mutez(1000))
+    c1.updatePrice(token_id = 0, price = 2000).run(sender = mark)
+    c1.deleteItem(token_id = 0).run(sender = mark)
     c1.createItem(sphere = newSphere(1000, "test.com",'Testing 2')).run(sender = mark)
 # sp.add_compilation_target("sphereArt", SphereArt())
