@@ -1,7 +1,5 @@
 import React from 'react'
 import './Button.css'
-import profile from '../../images/profile.png'
-import { ChevronDown } from 'react-iconly'
 import Blockies from 'react-blockies';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";

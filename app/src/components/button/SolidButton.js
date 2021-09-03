@@ -1,9 +1,9 @@
 import React from 'react'
 import './Button.css'
 
-const SolidButton = ({title, onClick}) => {
+const SolidButton = ({title, onClick,style}) => {
     return (
-        <button onClick={onClick} className="solid">
+        <button style={style} onClick={onClick} className="solid">
             {title}
         </button>
     )

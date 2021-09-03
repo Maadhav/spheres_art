@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './ItemPage.css'
-import profile from '../images/profile.png'
 import SolidButton from '../components/button/SolidButton'
 import CheckOut from '../components/dialog/CheckOut'
 import Payment from '../components/dialog/Payment'

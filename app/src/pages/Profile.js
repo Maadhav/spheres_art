@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.css";
 import banner from "../images/banner.png";
-import profile from "../images/profile.png";
 import Search from "../components/navbar/Search";
 import NFTCard from "../components/card/NFTCard";
 import LinedButton from "../components/button/LinedButton";

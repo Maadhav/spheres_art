@@ -11,7 +11,7 @@ const SphereCanvas = () => {
 }
 
 
-function Sphere(props) {
+export function Sphere(props) {
     const ref = useRef()
     useFrame((state, delta) => (ref.current.rotation.y += 0.01))
     return (

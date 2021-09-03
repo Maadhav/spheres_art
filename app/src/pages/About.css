@@ -1,0 +1,54 @@
+
+.title-text-style {
+    font-size: 64px;
+    color: white;
+    font-weight: 600;
+}
+
+.description-text-style {
+    font-size: 23px;
+    margin-top: 25px;
+    color: white;
+    font-weight: 600;
+    width: 603px;
+}
+
+.action-section {
+    width: 603px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0 30px;
+}
+
+.subtitle-text-style {
+    font-size: 21px;
+    color: white;
+    font-weight: 600;
+}
+
+.feature-section {
+    display: flex;
+    margin-top: 21px;
+    justify-content: center;
+    gap: 0 20px;
+}
+
+ol {
+    color: white;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+li {
+    margin-top: 10px;
+    line-height: 37px;
+}
+
+.video-container {
+    aspect-ratio: 1.77;
+    margin: 0 50px;
+    margin-top: 77px;
+    background-color: white;
+    width: calc(100% - 100px);
+}
