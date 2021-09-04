@@ -15,9 +15,9 @@ const About = () => {
     return (
         <>
             <div style={{ height: "680px", position: "absolute", zIndex: "1", top: "0", width: "100%", left: "0", }}>
-                <Canvas >
+                <Canvas dpr={5}>
                     <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={40} />
-                    <CameraShake makeDefault position={[0, 0, 10]} zoom={40} maxYaw={0.1}
+                    <CameraShake makeDefault maxYaw={0.1}
                         key={distort}
                         maxPitch={0}
                         maxRoll={0.1}
@@ -27,7 +27,7 @@ const About = () => {
                         intensity={distort}
                         decay={false}
                         decayRate={0.65} />
-                    <group position={[10, 0, -10]} onPointerOver={() => { console.log('Pointer'); setdistort(0.9) }} onPointerLeave={() => { console.log('Pointer --'); setdistort(0) }}>
+                    <group position={[10, 0, -10]} onPointerEnter={() => { console.log('Pointer'); setdistort(0.9) }} onPointerLeave={() => { console.log('Pointer --'); setdistort(0) }}>
                         <mesh
                             visible // object gets render if true
                             userData={{ test: "hello" }} // An object that can be used to store custom data about the Object3d
