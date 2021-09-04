@@ -15,11 +15,11 @@ const About = () => {
     return (
         <>
             <div style={{ height: "680px", position: "absolute", zIndex: "1", top: "0", width: "100%", left: "0", }}>
-                <Canvas dpr={5}>
+                <Canvas dpr={3}>
                     <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={40} />
                     <CameraShake makeDefault maxYaw={0.1}
                         key={distort}
-                        maxPitch={0}
+                        maxPitch={0.1}
                         maxRoll={0.1}
                         yawFrequency={1}
                         pitchFrequency={1}
@@ -85,7 +85,7 @@ const About = () => {
                                 attach="material"
                                 color="#EB1E99"
                                 factor={2} // Strength, 0 disables the effect (default=1)
-                                speed={2} // Speed (default=1)
+                                speed={4} // Speed (default=1)
                                 roughness={0}
                             />
                         </Sphere>
@@ -97,7 +97,7 @@ const About = () => {
                                     color="#00A38D"
                                     attach="material"
                                     distort={0.25} // Strength, 0 disables the effect (default=1)
-                                    speed={2} // Speed (default=1)
+                                    speed={20} // Speed (default=1)
                                     roughness={0}
                                 />
                             </Sphere>
