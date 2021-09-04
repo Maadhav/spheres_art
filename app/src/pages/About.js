@@ -5,8 +5,8 @@ import * as THREE from 'three'
 import './About.css'
 import { Canvas, } from '@react-three/fiber'
 import { Sphere, OrbitControls, MeshDistortMaterial, MeshWobbleMaterial, CameraShake, OrthographicCamera } from '@react-three/drei'
-
-
+import { Link } from 'react-router-dom'
+import preview from '../images/editor_preview.png'
 
 
 
@@ -96,8 +96,8 @@ const About = () => {
                                 <MeshDistortMaterial
                                     color="#00A38D"
                                     attach="material"
-                                    distort={ 0.25} // Strength, 0 disables the effect (default=1)
-                                    speed={ 2} // Speed (default=1)
+                                    distort={0.25} // Strength, 0 disables the effect (default=1)
+                                    speed={2} // Speed (default=1)
                                     roughness={0}
                                 />
                             </Sphere>
@@ -106,15 +106,21 @@ const About = () => {
                 </Canvas>
             </div>
             <div style={{ padding: "0 81px" }}>
-                <div className="title-text-style" style={{ marginTop: "146px" }}>Sphere.<span style={{ color: "var(--red-violet)" }}>ART</span></div>
-                <div className="description-text-style">
-                    Sphere.ART is a platform that aims to build a new creative economy—a world where creators, designers, and developers can use the Tezos blockchain to value their skills in an entirely new way. In this world, users can create, buy and sell 3D Spheres as an NFT.
+                <div style={{ position: "absolute", top: "146px", left: "81px", zIndex: 3 }}>
+                    <div className="title-text-style" >Sphere.<span style={{ color: "var(--red-violet)" }}>ART</span></div>
+                    <div className="description-text-style">
+                        Sphere.ART is a platform that aims to build a new creative economy—a world where creators, designers, and developers can use the Tezos blockchain to value their skills in an entirely new way. In this world, users can create, buy and sell 3D Spheres as an NFT.
+                    </div>
+                    <div className="action-section">
+                        <Link to="/" style={{ textDecoration: "none" }}>
+                            <SolidButton title="Explore" style={{ fontSize: "20px", height: "auto" }} />
+                        </Link>
+                        <Link to="/create" style={{ textDecoration: "none" }}>
+                            <LinedButton title="Create" style={{ fontSize: "20px", height: "auto" }} />
+                        </Link>
+                    </div>
                 </div>
-                <div className="action-section">
-                    <SolidButton title="Explore" style={{ fontSize: "20px", height: "auto" }} />
-                    <LinedButton title="Create" style={{ fontSize: "20px", height: "auto" }} />
-                </div>
-                <div className="title-text-style" style={{ marginTop: "130px" }}>Why Sphere.<span style={{ color: "var(--red-violet)" }}>ART</span> ?</div>
+                <div className="title-text-style" style={{ marginTop: "810px" }}>Why Sphere.<span style={{ color: "var(--red-violet)" }}>ART</span> ?</div>
                 <div className="subtitle-text-style" style={{ marginTop: "5px" }}>
                     Unlike other NFT marketplaces, Sphere.ART has come up with a unique way of presenting the NFTs. It allows users to move the camera to orbit around the 3d Sphere NFT. This gives the users freedom to look around the NFT and have a close to real life three dimensional view.
                 </div>
@@ -136,19 +142,23 @@ const About = () => {
                         <li>Buyers get a .sphere file, which can be imported in our editor.</li>
                     </ol>
                 </div>
-                <div className="title-text-style" style={{ marginTop: "416px", textAlign: "center" }}>Sphere.<span style={{ color: "var(--red-violet)" }}>ART</span> Editor</div>
+                <div className="title-text-style" style={{ marginTop: "136px", textAlign: "center" }}>Sphere.<span style={{ color: "var(--red-violet)" }}>ART</span> Editor</div>
                 <div style={{ display: "flex", justifyContent: "center", width: "100%", marginTop: "50px" }}>
                     <div className="subtitle-text-style" style={{ textAlign: "center", width: "790px", fontSize: "30px" }}>
                         A tool/ software which allows anyone to get started with building 3D Spheres.
                     </div>
                 </div>
-
-                <div className="subtitle-text-style" style={{ marginTop: "460px", }}>
+                <img src={preview} alt={''} className="video-container" />
+                <div className="subtitle-text-style" style={{ marginTop: "160px", }}>
                     With the help of the editor, there is no need for the creators to have 3rd party complex software, nor do they need a powerful machine to run them. Sphere.ART Editor is a part of our submission. The user can export the project and then sell it as a NFT for the buyers to buy it. With even close to zero knowledge about 3d development, our editor can be used to showcase their creativity  and convert their ideas into real art.
                 </div>
                 <div className="action-section" style={{ width: "100%", marginTop: "50px" }}>
-                    <SolidButton title="Explore" style={{ fontSize: "20px", height: "auto" }} />
-                    <LinedButton title="Create" style={{ fontSize: "20px", height: "auto" }} />
+                    <SolidButton title="Online Editor" style={{ fontSize: "20px", height: "auto" }} onClick={() => {
+                        window.open("https://sphereart-editor.netlify.app/editor/", "_blank", "", true).focus();
+                    }} />
+                    <LinedButton title="Download" style={{ fontSize: "20px", height: "auto" }} onClick={() => {
+                        window.open("https://github.com/Maadhav/sphere-art-three.js/archive/refs/heads/master.zip", "_blank", "", true).focus();
+                    }} />
                 </div>
                 <div className="video-container"></div>
                 <div className="title-text-style" style={{ marginTop: "135px" }}>Features</div>

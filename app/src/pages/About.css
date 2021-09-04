@@ -14,6 +14,7 @@
 }
 
 .action-section {
+    z-index: 3;
     width: 603px;
     display: flex;
     align-items: center;
