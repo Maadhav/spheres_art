@@ -53,3 +53,11 @@ li {
     background-color: white;
     width: calc(100% - 100px);
 }
+
+.preview-container {
+    margin: 0 50px;
+    height: max-content;
+    margin-top: 77px;
+    background-color: white;
+    width: calc(100% - 100px);
+}

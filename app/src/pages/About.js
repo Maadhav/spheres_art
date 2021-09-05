@@ -148,7 +148,7 @@ const About = () => {
                         A tool/ software which allows anyone to get started with building 3D Spheres.
                     </div>
                 </div>
-                <img src={preview} alt={''} className="video-container" />
+                <img src={preview} alt={''} className="preview-container" />
                 <div className="subtitle-text-style" style={{ marginTop: "160px", }}>
                     With the help of the editor, there is no need for the creators to have 3rd party complex software, nor do they need a powerful machine to run them. Sphere.ART Editor is a part of our submission. The user can export the project and then sell it as a NFT for the buyers to buy it. With even close to zero knowledge about 3d development, our editor can be used to showcase their creativity  and convert their ideas into real art.
                 </div>
