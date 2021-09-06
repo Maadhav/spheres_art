@@ -58,7 +58,7 @@ const Profile = () => {
   return (
     <div>
       <div className="banner-section">
-        <img src={banner} alt="logo" />
+        <img src={banner} alt="logo" style={{width: "100%",height: "308px",objectFit:"cover" }}/>
         <div className="profile-section">
           <div
             style={{
