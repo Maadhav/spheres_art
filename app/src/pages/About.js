@@ -6,7 +6,8 @@ import './About.css'
 import { Canvas, } from '@react-three/fiber'
 import { Sphere, OrbitControls, MeshDistortMaterial, MeshWobbleMaterial, CameraShake, OrthographicCamera } from '@react-three/drei'
 import { Link } from 'react-router-dom'
-import preview from '../images/editor_preview.png'
+import preview from '../assets/editor_preview.png'
+import videoPreview from '../assets/spherearteditor.mp4'
 
 
 
@@ -160,15 +161,17 @@ const About = () => {
                         window.open("https://github.com/Maadhav/sphere-art-three.js/archive/refs/heads/master.zip", "_blank", "", true).focus();
                     }} /> */}
                 </div>
-                <div className="video-container"></div>
+                <video className="video-container" controls autoPlay loop muted>
+                    <source src={videoPreview} type="video/mp4" />
+                </video>
                 <div className="title-text-style" style={{ marginTop: "135px" }}>Features</div>
                 <div className="feature-section">
                     <ol style={{ flex: 1 }}>
                         <li>Easy to learn.</li>
                         <li>Offline support.</li>
                         <li>Import anykind of texture maps to apply to your spheres.</li>
-                        <li>The .sphere file can then be re imported to our editor.</li>
-                        <li>Export project to a .sphere file which contains the code, thumbnail and a small video preview of the 3d model in motion.</li>
+                        <li>The.sphere file can then be re imported to our editor.</li>
+                        <li>Export project to a.sphere file which contains the code, thumbnail and a small video preview of the 3d model in motion.</li>
                     </ol>
                     <ol style={{ flex: 1 }} start={'6'}>
                         <li>Auto save.</li>
