@@ -22,7 +22,7 @@ const DragDrop = ({ onFileDrop, file }) => {
                 <h2>Upload</h2>
                 {file ? <div className="drag-drop-container selected">
                     <div style={{display: "flex",width: "calc(100% - 40px)",padding: "0 20px", gap: "0 20px",alignItems:"center"}}>
-                        <img src="https://raw.githubusercontent.com/Maadhav/sphere-art-three.js/master/editor/assets/icon.png" height={50}/>
+                        <img src="https://raw.githubusercontent.com/Maadhav/sphere-art-three.js/master/editor/images/icon.png" height={50}/>
                         <div style={{flex: 1}}>
                         <h2> {file.name}</h2>
                         <div className="drag-drop-text" style={{textAlign: "left"}}> {(file.size / 1e+6).toFixed(2)} MB</div>
