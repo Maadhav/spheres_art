@@ -3,11 +3,7 @@ import DragDrop from "../components/dragdrop/DragDrop";
 import SolidButton from "../components/button/SolidButton";
 import "./CreateItem.css";
 import { createItem, uploadToIPFS, confirmOperation } from "../adapters/tezos";
-import {
-  BlobReader,
-  ZipReader,
-  BlobWriter,
-} from "@zip.js/zip.js/dist/zip-fs-full";
+import JSZip from 'jszip'
 import SphereCanvas from "../components/loader/SphereCanvas";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,19 +21,19 @@ const CreateItem = () => {
 
   async function onCreate() {
     setLoading(true);
-
-    var blob = await new Blob([new Uint8Array(await file.arrayBuffer())], {
-      type: "application/zip",
-    });
-    const reader = new ZipReader(new BlobReader(blob));
-    const entries = await reader.getEntries();
     let imageFile, jsonFile, videoFile;
+    var entries = []
+    await JSZip.loadAsync(file).then((zip) => {
+      zip.forEach((e, entry) => {
+        entries.push(entry)
+      })
+    })
     for (let index = 0; index < entries.length; index++) {
       const entry = entries[index];
-      const blob = await entry.getData(new BlobWriter());
-      blob.name = entry.filename;
-      if (entry.filename === "app.json") jsonFile = blob;
-      else if (entry.filename === "thumbnail.png") imageFile = blob;
+      var blob = await entry.async('blob')
+      blob.name = entry.name
+      if (entry.name === "app.json") jsonFile = blob;
+      else if (entry.name === "thumbnail.png") imageFile = blob;
       else videoFile = blob;
     }
     if (!jsonFile) {
@@ -48,10 +44,9 @@ const CreateItem = () => {
       alert("Zip doesn't contain Preview Video");
     } else if (
       JSON.parse(await jsonFile.text()).metadata.source !== "sphere.ART Editor"
-    ) {
+      ) {
       alert("Export from Sphere.ART Editor");
     } else {
-      console.log(imageFile);
       const url = await toast.promise(
         uploadToIPFS({
           description: description,
@@ -66,25 +61,25 @@ const CreateItem = () => {
           success: "Upload Complete",
           error: "Upload rejected 🤯",
         }
-      );
-      const operation = await toast.promise(
-        createItem({
-          price: price * 1000000,
-          url: url,
-          title: title
-        }),
-        {
-          pending: "Minting NFT to Blockchain",
-          success: "NFT Created",
-          error: "Minting rejected 🤯",
-        }
-      );
-      await toast.promise(confirmOperation(operation), {
-        pending: "Waiting for confirmation",
-        success: "Operation Successfull",
-        error: "Operation rejected 🤯",
-      });
-      setFile(null);
+        );
+        const operation = await toast.promise(
+          createItem({
+            price: price * 1000000,
+            url: url,
+            title: title
+          }),
+          {
+            pending: "Minting NFT to Blockchain",
+            success: "NFT Created",
+            error: "Minting rejected 🤯",
+          }
+          );
+          await toast.promise(confirmOperation(operation), {
+            pending: "Waiting for confirmation",
+            success: "Operation Successfull",
+            error: "Operation rejected 🤯",
+          });
+          setFile(null);
       setDescription("");
       setPrice("");
       setTitle("");
