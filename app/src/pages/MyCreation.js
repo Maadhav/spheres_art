@@ -23,7 +23,7 @@ const MyCreation = () => {
     var parseData = Array.from(data).map((k, v) => k[1]);
     for (let i = 0; i < parseData.length; i++) {
       const sphere = parseData[i];
-      if (sphere.isNew && sphere.creator === wallet?.address) {
+      if (sphere.creator === wallet?.address) {
         spheres.push(sphere);
       }
     }
