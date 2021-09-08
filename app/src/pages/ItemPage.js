@@ -89,7 +89,7 @@ const ItemPage = (props) => {
                     <h1>{state.name}</h1>
                     <div style={{ display: 'flex', alignItems: "center", gap: "0 10px" }}>
                         {editing ? <input className="price-field-input" onChange={(e) => setPrice(e.target.value)} value={price} /> : <div className="price-text">{(state.price.c / 1000000).toFixed(2)} XTZ</div>}
-                        {(state.creator === wallet.address && state.creator === state.owner) && (editing ? <TickSquare set="bold" primaryColor="white" size={20} onClick={onPriceEdit} /> : <EditSquare set="bold" size={20} primaryColor="white" onClick={() => { setEditing(true) }} />)}
+                        {(state.creator === wallet?.address && state.creator === state.owner) && (editing ? <TickSquare set="bold" primaryColor="white" size={20} onClick={onPriceEdit} /> : <EditSquare set="bold" size={20} primaryColor="white" onClick={() => { setEditing(true) }} />)}
                     </div>
                     <div className="creator">Creator</div>
                     <div className="creator-details">
@@ -115,7 +115,7 @@ const ItemPage = (props) => {
                             name: state.properties.zip.split('ipfs://')[1].split('/')[1]
                         }
                         element.href = `https://ipfs.io/ipfs/${ipfs.cid}/${ipfs.name}`
-                        if (wallet.address === state.owner)
+                        if (wallet?.address === state.owner)
                             element.click()
                         else
                             alert('Only owner can download the file.')
