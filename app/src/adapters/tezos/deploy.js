@@ -9,28 +9,28 @@ import {
 const RPC_URL = "https://granadanet.smartpy.io";
 
 const FAUCET_KEY = {
-  "mnemonic": [
-    "remember",
-    "garden",
-    "anchor",
-    "enrich",
-    "perfect",
-    "hobby",
-    "length",
-    "setup",
-    "series",
-    "apart",
-    "fence",
-    "snow",
-    "tape",
-    "bind",
-    "salad"
+  pkh: "tz1e2YHCQ8YJESdR4VQN56tkQKheivwdWB2c",
+  mnemonic: [
+    "share",
+    "vessel",
+    "traffic",
+    "paddle",
+    "potato",
+    "excuse",
+    "answer",
+    "safe",
+    "entry",
+    "tube",
+    "need",
+    "object",
+    "coast",
+    "remain",
+    "copper",
   ],
-  "secret": "8d5f04490f1d82ab1f1128972469684ec849dbcf",
-  "amount": "431864625",
-  "pkh": "tz1aWs9YmRiD8QcYDfTrRQxD5BRMVHnGtU49",
-  "password": "q6w3lB2FNv",
-  "email": "rvcqcdhx.myttrltz@tezos.example.org"
+  email: "qehetzoz.ilroiuaf@teztnets.xyz",
+  password: "2PbooXYZSC",
+  amount: "67423786090",
+  activation_code: "7031578a6bd3b9d0eff9ee803420f1556340d7f5",
 };
 
 // Import the admin account
@@ -39,7 +39,7 @@ importKey(
   FAUCET_KEY.email,
   FAUCET_KEY.password,
   FAUCET_KEY.mnemonic.join(" "),
-  FAUCET_KEY.secret
+  FAUCET_KEY.activation_code
 ).catch((e) => console.error(e));
 
 console.log(Tezos._rpc);

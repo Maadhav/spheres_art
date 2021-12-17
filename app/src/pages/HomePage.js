@@ -1,4 +1,3 @@
-import { start } from "ipfs-core/src/components/network";
 import React, { useEffect, useState } from "react";
 import { getContractStorage } from "../adapters/tezos";
 import LinedButton from "../components/button/LinedButton";

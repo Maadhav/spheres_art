@@ -14,6 +14,7 @@ import About from "./pages/About";
 function App() {
   var location = useLocation()
   useEffect(() => {
+    // deploy();
     window.scroll(0, 0)
   }, [location]);
   return (

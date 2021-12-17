@@ -1715,5 +1715,5 @@ const CODE_JSON = [
   }
 ]
 
-const STORAGE_JSON = { "prim": "Pair", "args": [ { "string": "KT18unrRXJMuxhNEDugFoUdYQDzRsTN8bnsv" }, { "prim": "Pair", "args": [ { "int": "0" }, [] ] } ] }
+const STORAGE_JSON = { "prim": "Pair", "args": [ { "string": "KT1SauXpV1xskToJbe777GLY1Voa7Z5bDBKL" }, { "prim": "Pair", "args": [ { "int": "0" }, [] ] } ] }
 export { FA2_CODE_JSON, FA2_STORAGE_JSON, CODE_JSON, STORAGE_JSON };

@@ -1,4 +1,4 @@
-import IPFS from 'ipfs-core'
+import * as IPFS from 'ipfs-core'
 import {TextDecoder} from 'text-encoding'
 const node = IPFS.create()
 
