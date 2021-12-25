@@ -46,6 +46,12 @@ const HomePage = () => {
   }, []);
   return (
     <div className="home-body">
+      <input type='file' multiple onChange={async (event) => {
+        var downloadUrl = await StorageService.upload('test', event.target.files);
+        console.log(downloadUrl);
+
+        // await StorageService.delete(downloadUrl);
+      }} />
       <div className="discover-card">
         <div className="circle-1"></div>
         <div className="circle-2"></div>

@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { getFirestore, getDoc, collection, getDocs, doc, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
-
+import {v4 }  from 'uuid';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,9 +27,9 @@ var StorageService = {
         console.log("uploading file")
         var results = [];
         if (object instanceof FileList) {
-            for (const key in object) {
-                var file = object[key];
-                var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + file.name);
+            for (let index = 0; index < object.length; index++) {
+                var file = object[index];
+                var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + v4());
                 var _uploadTask = await uploadBytes(_storageRef, file);
                 var _downloadUrl = await getDownloadURL(_uploadTask.ref)
                 results.push(_downloadUrl);
@@ -37,7 +37,7 @@ var StorageService = {
             return results;
         }
         else if (object instanceof File) {
-            var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + file.name);
+            var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + v4());
             var _uploadTask = await uploadBytes(_storageRef, file);
             var _downloadUrl = await getDownloadURL(_uploadTask.ref)
             return _downloadUrl;
