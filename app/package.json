@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.2.1",
     "@tippyjs/react": "^4.2.5",
     "big-number": "^2.0.0",
+    "firebase": "^9.6.1",
     "ipfs-core": "^0.13.0",
     "it-to-buffer": "^2.0.0",
     "jszip": "^3.7.1",

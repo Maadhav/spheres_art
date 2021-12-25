@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { StorageService } from "../adapters/firebase";
 import { getContractStorage } from "../adapters/tezos";
 import LinedButton from "../components/button/LinedButton";
 import NFTCard from "../components/card/NFTCard";
@@ -31,14 +32,14 @@ const HomePage = () => {
     setTimeout(() => {
       searchElement = document.getElementById('search')
       searchElement.addEventListener('input', () => {
-          if (searchElement.value.trim() !== '') {
-              setSpheres(allSpheres.filter((e) => e.title.toLowerCase().includes(searchElement.value.toLowerCase())))
-          } else if (searchElement.value === '') {
-              setSpheres(allSpheres)
-              setLength(8)
-          }
+        if (searchElement.value.trim() !== '') {
+          setSpheres(allSpheres.filter((e) => e.title.toLowerCase().includes(searchElement.value.toLowerCase())))
+        } else if (searchElement.value === '') {
+          setSpheres(allSpheres)
+          setLength(8)
+        }
       })
-  }, 500)
+    }, 500)
   }
   useEffect(() => {
     getData();
@@ -63,13 +64,13 @@ const HomePage = () => {
                     sphere={e}
                     key={e.token_id}
                     onLoadIPFS={
-                        (sphere) => 
-                      setSpheres((val) => 
-                        val.map((e, index) => {
-                          if (index == i) return sphere;
-                          else return e;
-                        })
-                      )
+                      (sphere) =>
+                        setSpheres((val) =>
+                          val.map((e, index) => {
+                            if (index == i) return sphere;
+                            else return e;
+                          })
+                        )
                     }
                   />
                 )

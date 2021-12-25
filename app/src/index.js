@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import './adapters/firebase/index';
 import { BrowserRouter as Router } from 'react-router-dom'
+import { DatabaseService } from './adapters/firebase/index';
+
 
 
 ReactDOM.render(

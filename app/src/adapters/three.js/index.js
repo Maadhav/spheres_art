@@ -17,8 +17,42 @@ var APP = {
 		
 		var dom = document.createElement( 'div' );
         dom.className = 'image-style padding'
+		dom.style.position = 'relative';
+
+
+		var element = document.createElement('div');
+		element.className = 'controller-container';
+
+		var container = document.createElement( 'div' );
+		container.className = 'container';
+
+		var fullScreen = document.createElement( 'svg' );
+		fullScreen.className = 'action-button';
+		fullScreen.textContent = '\u21d0';
+		fullScreen.style.cursor = 'pointer';
+
+		var zoomOut = document.createElement( 'svg' );
+		zoomOut.className = 'action-button';
+		zoomOut.innerHTML = '\u21d1';
+		zoomOut.style.cursor = 'pointer';
+
+		var zoomIn = document.createElement( 'svg' );
+		zoomIn.className = 'action-button';
+		zoomIn.textContent = '\u21d2';
+		zoomIn.style.cursor = 'pointer';
+
+		var vr = document.createElement( 'svg' );
+		vr.className = 'action-button';
+		vr.textContent = '\u21d3';
+		vr.style.cursor = 'pointer';
+
+		container.append(fullScreen, zoomOut, zoomIn, vr);
+
+		element.appendChild( container );
+
         renderer.domElement.className = 'image-style'
-		dom.appendChild( renderer.domElement );
+		renderer.domElement.style.position = "absolute";
+		dom.append( renderer.domElement, );
 
 		this.dom = dom;
 

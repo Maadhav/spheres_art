@@ -16,12 +16,42 @@
 .image-style {
   height: 542px;
   width: 542px;
-  left: 165px;
-  top: 189px;
   border-radius: 20px;
 }
 .padding {
   margin: 80px 0px;
+}
+
+.controller-container {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 21px 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0) 0.01%,
+    rgba(0, 0, 0, 0.24) 100%
+  );
+}
+
+.controller-container .container {
+  display: flex;
+  padding: 7px 21px;
+  gap: 0 20px;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.controller-container .container .action-button {
+  height: 30px;
+  width: 30px;
+  fill: none;
+  color: var(--red-violet);
+
 }
 
 .details-section {
