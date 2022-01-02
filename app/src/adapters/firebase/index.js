@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { getFirestore, getDoc, collection, getDocs, doc, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
-import {v4 }  from 'uuid';
+import { getFirestore, getDoc, collection, getDocs, doc, addDoc, deleteDoc, updateDoc,query } from 'firebase/firestore';
+import { v4 } from 'uuid';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,19 +25,19 @@ var StorageService = {
     /// Can Send object of file or objects of files
     upload: async function (path, object) {
         console.log("uploading file")
-        var results = [];
-        if (object instanceof FileList) {
+        var results = {};
+        if (object instanceof FileList || object instanceof Array) {
             for (let index = 0; index < object.length; index++) {
                 var file = object[index];
-                var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + v4());
+                var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + file.name);
                 var _uploadTask = await uploadBytes(_storageRef, file);
                 var _downloadUrl = await getDownloadURL(_uploadTask.ref)
-                results.push(_downloadUrl);
+                results[index] = _downloadUrl;
             }
             return results;
         }
         else if (object instanceof File) {
-            var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + v4());
+            var _storageRef = new ref(this.storage, (path ? (path + '/') : '') + file.name);
             var _uploadTask = await uploadBytes(_storageRef, file);
             var _downloadUrl = await getDownloadURL(_uploadTask.ref)
             return _downloadUrl;
@@ -71,7 +71,7 @@ var DatabaseService = {
     /// getDoc is is used when id is not null
     /// getDocs is is used when id is null
 
-    get: async function (col, id) {
+    get: async function ({ col,  id, query }) {
         var collectionRef = collection(this.database, col);
         if (id) {
             var docRef = doc(this.database, col, id)
@@ -80,6 +80,18 @@ var DatabaseService = {
                 ...snapshot.data(),
                 id: snapshot.id
             }
+        }
+        if (query) {
+            // var queryBuilder = query(collectionRef, where,orderBy('timestamp', 'desc'), startAt(0), limit(10),);
+            var queryBuilder = query(collectionRef);
+            var snapshot = await getDocs(queryBuilder).catch(e => console.log(e));
+            console.log(snapshot);
+            return snapshot.docs.map(doc => {
+                return {
+                    ...doc.data(),
+                    id: doc.id
+                }
+            });
         }
         var snapshots = await getDocs(collectionRef);
         return snapshots.docs.map(e => {
@@ -96,7 +108,7 @@ var DatabaseService = {
     // })
     set: async function (col, data) {
         var collectionRef = collection(this.database, col);
-        await addDoc(collectionRef, data);
+        return await addDoc(collectionRef, data);
     },
 
     // DatabaseService.update('test','EEujUPFb9QJbfZMf0DkP', {
@@ -104,7 +116,13 @@ var DatabaseService = {
     //   address: "ahmedabad",
     //   age: 21
     // })
-    update: async function (col, id, data) {
+    update: async function ({ col, id, data, where }) {
+        if (where) {
+            var collectionRef = collection(this.database, col);
+            var _query = query(collectionRef, where);
+            var snapshot = await getDocs(_query)
+            await updateDoc(snapshot.docs[0].ref, data);
+        }
         var docRef = doc(this.database, col, id);
         await updateDoc(docRef, data);
     },

@@ -1,14 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './dialog.css'
 import './CheckOut.css'
 import SolidButton from '../button/SolidButton'
 import LinedButton from '../button/LinedButton'
-import { confirmOperation, createSale } from '../../adapters/tezos'
+import { confirmOperation, createSale, getActiveAccount } from '../../adapters/tezos'
 import { toast, ToastContainer } from 'react-toastify'
 import SphereCanvas from '../loader/SphereCanvas'
+import { DatabaseService } from '../../adapters/firebase'
 const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
-    const [ipfsCid, ipfsName] = sphere.image.split('ipfs://')[1].split('/')
     const [loading, setLoading] = useState(false)
+    const [wallet, setWallet] = useState()
+
+    const activeWallet = async () => {
+        let activeAccount = await getActiveAccount();
+        setWallet(activeAccount);
+    };
+    useEffect(() => {
+        activeWallet()
+    }, [])
     async function onBuy() {
         console.log('Buying')
         setLoading(true)
@@ -23,6 +32,15 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                 error: "Checkout rejected 🤯",
             }
         );
+        console.log(sphere.id)
+        await DatabaseService.update({
+            col: 'spheres',
+            id: sphere.id,
+            data: {
+                isNew: false,
+                owner: wallet?.address,
+            }
+        })
         await toast.promise(confirmOperation(operation), {
             pending: "Waiting for confirmation",
             success: "Operation Successfull",
@@ -56,17 +74,17 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                         </div>
                         <div className="item-section">
                             <div className="item-details">
-                                <img src={`https://ipfs.io/ipfs/${ipfsCid}/${ipfsName}`} className="item-image" alt='' />
+                                <img src={sphere.image} className="item-image" alt='' />
                                 <div>
                                     <div className="item-creator">{sphere.creator}</div>
                                     <div className="item-title">{sphere.name}</div>
                                 </div>
                             </div>
-                            <span className="price">{(sphere.price.c / 1000000).toFixed(2)} <span style={{ fontWeight: "600" }}>XTZ</span></span>
+                            <span className="price">{(sphere.price / 1000000).toFixed(2)} <span style={{ fontWeight: "600" }}>XTZ</span></span>
                         </div>
                         <div className="checkout-section">
                             <div className="header-text" style={{ flex: 1 }}>Total</div>
-                            <span className="price">{(sphere.price.c / 1000000).toFixed(2)} <span style={{ fontWeight: "600" }}>XTZ</span></span>
+                            <span className="price">{(sphere.price / 1000000).toFixed(2)} <span style={{ fontWeight: "600" }}>XTZ</span></span>
                         </div>
                     </div>
                     <div className="action-section">
@@ -76,7 +94,7 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                 </div>
             </div>
             {loading && (
-                <div className="loading-section" style={{backgroundColor:"transparent"}}>
+                <div className="loading-section" style={{ backgroundColor: "transparent" }}>
                     <SphereCanvas />
                 </div>
             )}

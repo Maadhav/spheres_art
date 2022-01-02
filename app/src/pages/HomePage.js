@@ -1,6 +1,6 @@
+import { orderBy, query, startAfter,  where, limit } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { StorageService } from "../adapters/firebase";
-import { getContractStorage } from "../adapters/tezos";
+import { DatabaseService } from "../adapters/firebase";
 import LinedButton from "../components/button/LinedButton";
 import NFTCard from "../components/card/NFTCard";
 import Loader from "../components/loader/Loader";
@@ -9,23 +9,19 @@ import "./HomePage.css";
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [spheres, setSpheres] = useState([]);
+  const [page, setPage] = useState(0);
   const [length, setLength] = useState(0);
   async function getData() {
     var allSpheres = []
     var searchElement;
-    var data = (await getContractStorage()).spheres.valueMap;
-    var parseData = Array.from(data)
-      .map((k, v) => k[1])
-      .filter((e) => e.isNew);
-    let spheres = [];
-    for (let i = 0; i < parseData.length; i++) {
-      const sphere = parseData[i];
-
-      spheres.push(sphere);
-    }
-    console.log(spheres)
-    allSpheres = spheres;
-    setSpheres(spheres);
+    var _data = await DatabaseService.get({
+      col: 'spheres',
+      query: (ref) => {
+        return query(ref, orderBy('timestamp', 'desc'), where('isNew', '==', true), limit(8))
+      }
+    });
+    console.log(_data);
+    setSpheres(_data);
     setLength(8);
     setLoading(false);
 
@@ -46,12 +42,6 @@ const HomePage = () => {
   }, []);
   return (
     <div className="home-body">
-      <input type='file' multiple onChange={async (event) => {
-        var downloadUrl = await StorageService.upload('test', event.target.files);
-        console.log(downloadUrl);
-
-        // await StorageService.delete(downloadUrl);
-      }} />
       <div className="discover-card">
         <div className="circle-1"></div>
         <div className="circle-2"></div>
@@ -69,25 +59,25 @@ const HomePage = () => {
                   <NFTCard
                     sphere={e}
                     key={e.token_id}
-                    onLoadIPFS={
-                      (sphere) =>
-                        setSpheres((val) =>
-                          val.map((e, index) => {
-                            if (index == i) return sphere;
-                            else return e;
-                          })
-                        )
-                    }
                   />
                 )
             )}
           </div>
         )}
       </div>
-      {spheres.length > length && (
+      {spheres.length === length && (
         <LinedButton
           title="Load More"
-          onClick={() => {
+          onClick={async () => {
+            var data = await DatabaseService.get({
+              col: 'spheres',
+              query: (ref) => {
+                return query(ref, orderBy('timestamp', 'desc'), where('isNew', '==', true), startAfter(spheres[spheres.length - 1].timestamp), limit(8))
+              }
+            });
+            setSpheres(val => {
+              return [...val, ...data];
+            })
             setLength((val) => val + 8);
           }}
           style={{ marginBottom: "60px", width: "300px" }}

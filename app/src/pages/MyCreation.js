@@ -7,6 +7,8 @@ import LinedButton from "../components/button/LinedButton";
 import Blockies from "react-blockies";
 import { getActiveAccount, getContractStorage } from "../adapters/tezos";
 import Loader from "../components/loader/Loader";
+import { DatabaseService } from "../adapters/firebase";
+import { limit, orderBy, query, startAfter, where } from "firebase/firestore";
 const MyCreation = () => {
   const [wallet, setWallet] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,17 +20,14 @@ const MyCreation = () => {
     setWallet(activeAccount);
   };
   async function getData() {
-    var data = (await getContractStorage()).spheres.valueMap;
-    var spheres = [];
-    var parseData = Array.from(data).map((k, v) => k[1]);
-    for (let i = 0; i < parseData.length; i++) {
-      const sphere = parseData[i];
-      if (sphere.creator === wallet?.address) {
-        spheres.push(sphere);
+    var data = await DatabaseService.get({
+      col: 'spheres',
+      query: (ref) => {
+        return query(ref, orderBy('timestamp', 'desc'), where('owner', '==', wallet?.address), limit(8))
       }
-    }
-    setSpheres(spheres);
-    setAllSpheres(spheres);
+    })
+    setSpheres(data);
+    setAllSpheres(data);
     setLength(8);
     setLoading(false);
   }
@@ -51,13 +50,14 @@ const MyCreation = () => {
 
   useEffect(() => {
     init();
-    getData();
+    if (wallet)
+      getData();
   }, [wallet]);
 
   return (
     <div>
       <div className="banner-section">
-        <img src={banner} alt="logo" style={{width: "100%",height: "308px",objectFit:"cover" }}/>
+        <img src={banner} alt="logo" style={{ width: "100%", height: "308px", objectFit: "cover" }} />
         <div className="profile-section">
           <div
             style={{
@@ -81,10 +81,10 @@ const MyCreation = () => {
         <Search
           onChange={(e) => {
             if (e.target.value.trim() !== '') {
-                setSpheres(allSpheres.filter((sphere) => sphere.title.toLowerCase().includes(e.target.value.toLowerCase())))
+              setSpheres(allSpheres.filter((sphere) => sphere.title.toLowerCase().includes(e.target.value.toLowerCase())))
             } else if (e.target.value === '') {
-                setSpheres(allSpheres)
-                setLength(8)
+              setSpheres(allSpheres)
+              setLength(8)
             }
           }}
         />
@@ -122,10 +122,17 @@ const MyCreation = () => {
                 )
             )}
           </div>
-          {spheres.length > length && (
+          {spheres.length === length && (
             <LinedButton
               title="Load More"
-              onClick={() => {
+              onClick={async () => {
+                var data = await DatabaseService.get({
+                  col: 'spheres',
+                  query: (ref) => {
+                    return query(ref, orderBy('timestamp', 'desc'), where('owner', '==', wallet?.address), startAfter(spheres[spheres.length - 1]), limit(8))
+                  }
+                })
+                setSpheres((val) => [...val, ...data]);
                 setLength((val) => val + 8);
               }}
               style={{ marginBottom: "60px", width: "300px" }}

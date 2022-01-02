@@ -9,7 +9,9 @@ import { useLocation, useParams } from 'react-router-dom'
 import Loader from '../components/loader/Loader'
 import { getActiveAccount, getContractStorage, updatePrice } from '../adapters/tezos'
 import getIPFSData from '../adapters/ipfs'
-import {  EditSquare, TickSquare } from 'react-iconly'
+import { EditSquare, TickSquare } from 'react-iconly'
+import { DatabaseService } from '../adapters/firebase'
+import { limit, orderBy, query, where } from 'firebase/firestore'
 const ItemPage = (props) => {
     const location = useLocation()
     const [checkout, setCheckout] = useState(false)
@@ -18,45 +20,49 @@ const ItemPage = (props) => {
     const [loading, setLoading] = useState(true)
     const [editing, setEditing] = useState(false)
     const [wallet, setWallet] = useState()
-    const [price, setPrice] = useState('')
+    const [price, setPrice] = useState(((props?.location?.state?.price ?? 0)/ 1000000).toFixed(2))
 
 
     const { id } = useParams()
     const ref = useRef();
     async function init() {
         var nft;
-        var sphere;
-        var ipfs = {}
-        var data = (await getContractStorage()).spheres.valueMap
-        var parseData = Array.from(data)
-            .map((k, v) => k[1]);
-        console.log(parseData)
-        nft = parseData.find((e) =>
-            e.token_id.c[0] === parseInt(id)
-        )
-        let ex = await getIPFSData(nft.tokenUrl.split("ipfs://")[1]);
-        let ipfsData = JSON.parse(ex);
-        
-        sphere = { ...nft, ...ipfsData }
-        console.log(sphere)
-        setstate(sphere)
-        setPrice((sphere.price.c / 1000000).toFixed(2))
-        ipfs = sphere.properties.file
-        let json = await getIPFSData(ipfs.split("ipfs://")[1])
-        var player = new APP.Player();
-        player.load(JSON.parse(json));
-        player.setSize(542, 542);
-        player.play();
+        if (!state) {
 
-        setLoading(false)
-        ref.current.appendChild(player.dom);
+            var data = await DatabaseService.get({
+                col: 'spheres',
+                query: (ref) => {
+                    return query(ref,orderBy('timestamp', 'desc'), where('token_id', '==', parseInt(id)), limit(1))
+                }
+            })
+            nft = data[0];
+            setstate(nft);
+            setPrice((nft.price/ 1000000).toFixed(2)) 
+        }
+        else {
+            nft = state;
+        }
+        console.log(nft)
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
 
-        window.addEventListener('resize', function () {
-
-            player.setSize(542, 542);
-
-        });
-        // })
+        fetch(nft.app, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                let ipfsData = JSON.parse(result);
+                var player = new APP.Player();
+                player.load(ipfsData);
+                player.setSize(542, 542);
+                player.play();
+                window.addEventListener('resize', function () {
+                    player.setSize(542, 542);
+                });
+                setLoading(false)
+                ref.current.appendChild(player.dom);
+            })
+            .catch(error => console.log('error', error));
     }
 
     const activeWallet = async () => {
@@ -66,10 +72,19 @@ const ItemPage = (props) => {
 
     const onPriceEdit = async () => {
         await updatePrice({
-            token_id: state.token_id.c[0],
+            token_id: state.token_id,
             price: parseInt(parseFloat(price) * 1000000)
         })
-        setstate(val => { return { ...val, price: { c: [(parseFloat(price) * 1000000)] } } })
+        await DatabaseService.update(
+            {
+                col: 'spheres',
+                id: state.id,
+                data: {
+                    price: parseInt(parseFloat(price) * 1000000)
+                }
+            }
+        )
+        setstate(val => { return { ...val, price: (parseFloat(price) * 1000000) } })
         setEditing(false)
     }
 
@@ -86,9 +101,9 @@ const ItemPage = (props) => {
             </div>
             <div className="details-section">
                 <div style={{ margin: "45px 43px" }}>
-                    <h1>{state.name}</h1>
+                    <h1>{state.title}</h1>
                     <div style={{ display: 'flex', alignItems: "center", gap: "0 10px" }}>
-                        {editing ? <input className="price-field-input" onChange={(e) => setPrice(e.target.value)} value={price} /> : <div className="price-text">{(state.price.c / 1000000).toFixed(2)} XTZ</div>}
+                        {editing ? <input className="price-field-input" onChange={(e) => setPrice(e.target.value)} value={price} /> : <div className="price-text">{price } XTZ</div>}
                         {(state.creator === wallet?.address && state.creator === state.owner) && (editing ? <TickSquare set="bold" primaryColor="white" size={20} onClick={onPriceEdit} /> : <EditSquare set="bold" size={20} primaryColor="white" onClick={() => { setEditing(true) }} />)}
                     </div>
                     <div className="creator">Creator</div>
@@ -121,7 +136,7 @@ const ItemPage = (props) => {
                             alert('Only owner can download the file.')
 
                     }} />}
-                    {(state.isNew) && <SolidButton title={"Buy for " + (state.price.c / 1000000).toFixed(2) + " XTZ"} onClick={() => { setCheckout(true) }} />}
+                    {(state.isNew) && <SolidButton title={"Buy for " + (state.price / 1000000).toFixed(2) + " XTZ"} onClick={() => { setCheckout(true) }} />}
                 </div>
             </div>
             {checkout && <CheckOut sphere={state} onQuit={() => { setCheckout(false) }} onCheckOut={() => { setPayment(true); setCheckout(false) }} />}

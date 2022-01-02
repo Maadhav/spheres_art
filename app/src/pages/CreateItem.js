@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import DragDrop from "../components/dragdrop/DragDrop";
 import SolidButton from "../components/button/SolidButton";
 import "./CreateItem.css";
-import { createItem, uploadToIPFS, confirmOperation } from "../adapters/tezos";
+import { createItem, uploadToIPFS, confirmOperation, getContractStorage } from "../adapters/tezos";
 import JSZip from 'jszip'
 import SphereCanvas from "../components/loader/SphereCanvas";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { StorageService, DatabaseService } from '../adapters/firebase/index'
 
 const CreateItem = () => {
   const [loading, setLoading] = useState(false);
@@ -44,7 +45,7 @@ const CreateItem = () => {
       alert("Zip doesn't contain Preview Video");
     } else if (
       JSON.parse(await jsonFile.text()).metadata.source !== "sphere.ART Editor"
-      ) {
+    ) {
       alert("Export from Sphere.ART Editor");
     } else {
       const url = await toast.promise(
@@ -61,25 +62,51 @@ const CreateItem = () => {
           success: "Upload Complete",
           error: "Upload rejected 🤯",
         }
-        );
-        const operation = await toast.promise(
-          createItem({
-            price: price * 1000000,
-            url: url,
-            title: title
-          }),
-          {
-            pending: "Minting NFT to Blockchain",
-            success: "NFT Created",
-            error: "Minting rejected 🤯",
-          }
-          );
-          await toast.promise(confirmOperation(operation), {
-            pending: "Waiting for confirmation",
-            success: "Operation Successfull",
-            error: "Operation rejected 🤯",
-          });
-          setFile(null);
+      );
+      const operation = await toast.promise(
+        createItem({
+          price: price * 1000000,
+          url: url,
+          title: title
+        }),
+        {
+          pending: "Minting NFT to Blockchain",
+          success: "NFT Created",
+          error: "Minting rejected 🤯",
+        }
+      );
+      await toast.promise(confirmOperation(operation), {
+        pending: "Waiting for confirmation",
+        success: "Operation Successfull",
+        error: "Operation rejected 🤯",
+      });
+      var data = (await getContractStorage()).spheres.valueMap;
+      console.log(data)
+      var sphere = Array.from(data)
+      .map((k, v) => k[1]).find(e => e.tokenUrl === url)
+      console.log(sphere);
+      var downloadUrls = await toast.promise(StorageService.upload(`spheres/${sphere.token_id}`, [imageFile, videoFile, jsonFile]), {
+        pending: "Uploading Files to Central Storage",
+        success: "Upload Complete",
+        error: "Upload rejected 🤯",
+      })
+      console.log(downloadUrls);
+      var sphereData = await toast.promise(DatabaseService.set('spheres', {
+        ...sphere,
+        description: description,
+        price: sphere.price.c[0],
+        token_id: sphere.token_id.c[0],
+        timestamp: sphere.timestamp.c[0],
+        image: downloadUrls[0],
+        preview: downloadUrls[1],
+        app: downloadUrls[2],
+      }), {
+        pending: "Uploading Data to Central Server",
+        success: "Upload Complete",
+        error: "Upload rejected 🤯",
+      })
+      console.log(sphereData);
+      setFile(null);
       setDescription("");
       setPrice("");
       setTitle("");

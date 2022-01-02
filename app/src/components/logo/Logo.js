@@ -1,13 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './Logo.css'
 
 
 const Logo = () => {
     return (
-        <div className="logo-container">
+        <Link to={'/'} className="logo-container">
             <div className="logo"></div>
             <div className="logo-title">Sphere.ART</div>
-        </div>
+        </Link>
     )
 }
 
