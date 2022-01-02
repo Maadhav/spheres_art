@@ -11,7 +11,7 @@ const firebaseConfig = {
     authDomain: process.env.REACT_APP_FIRE_AUTH_DOMAIN ,
     projectId: process.env.REACT_APP_FIRE_ID,
     storageBucket: process.env.REACT_APP_FIRE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_FIRE_SENDER_ID,
+    messagingSenderId: process.env.REACT_APP_FIRE_MESSAGING_SENDER_ID,
     appId: process.env.REACT_APP_FIRE_APP_ID,
 };
 
