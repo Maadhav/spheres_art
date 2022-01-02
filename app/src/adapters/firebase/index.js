@@ -7,12 +7,12 @@ import { v4 } from 'uuid';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDNJnAow9jz30FJHE_d5oXgra19iZxCgZM",
-    authDomain: "sphere-art.firebaseapp.com",
-    projectId: "sphere-art",
-    storageBucket: "sphere-art.appspot.com",
-    messagingSenderId: "793318234525",
-    appId: "1:793318234525:web:1db9dec4899d22b475f774"
+    apiKey: process.env.REACT_APP_FIRE_API_KEY,
+    authDomain: process.env.REACT_APP_FIRE_AUTH_DOMAIN ,
+    projectId: process.env.REACT_APP_FIRE_ID,
+    storageBucket: process.env.REACT_APP_FIRE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIRE_SENDER_ID,
+    appId: process.env.REACT_APP_FIRE_APP_ID,
 };
 
 // Initialize Firebase
