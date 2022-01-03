@@ -55,7 +55,7 @@ const MyCreation = () => {
   }, [wallet]);
 
   return (
-    <div>
+    <div style={{minHeight: '1000px'}}>
       <div className="banner-section">
         <img src={banner} alt="logo" style={{ width: "100%", height: "308px", objectFit: "cover" }} />
         <div className="profile-section">
@@ -122,7 +122,7 @@ const MyCreation = () => {
                 )
             )}
           </div>
-          {spheres.length === length && (
+          {length !== 0 && spheres.length === length ? (
             <LinedButton
               title="Load More"
               onClick={async () => {
@@ -137,7 +137,7 @@ const MyCreation = () => {
               }}
               style={{ marginBottom: "60px", width: "300px" }}
             />
-          )}
+          ): <div/>}
         </div>
       )}
     </div>

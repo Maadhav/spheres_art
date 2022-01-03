@@ -4,6 +4,7 @@
 .logo-container {
   display: flex;
   height: 32px;
+  text-decoration: none;
   align-items: center;
   flex: 0.14;
 }
