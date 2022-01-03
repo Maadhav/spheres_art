@@ -3,12 +3,32 @@ import * as THREE from 'three'
 import { VRButton } from './VRButton'
 var APP = {
 
-	Player: function () {
+	Player: function ({onStart, onLoad, onProgress}) {
+		var manager = new THREE.LoadingManager();
+
+		manager.onStart = function (item, loaded, total) {
+			console.log('Loading started');
+			onStart();
+		};
+	
+		manager.onLoad = function () {
+			console.log('Loading complete');    
+			onLoad();        
+		};
+	
+		manager.onProgress = function (item, loaded, total) {            
+			console.log('Loaded:', Math.round(loaded / total * 100, 2) + '%')
+			onProgress(loaded / total);
+		};
+	
+		manager.onError = function (url) {
+			console.log('Error loading');
+		};
 		var renderer = new THREE.WebGLRenderer( { antialias: true } );
 		renderer.setPixelRatio( 5 ); // TODO: Use player.setPixelRatio()
 		renderer.outputEncoding = THREE.sRGBEncoding;
 		
-		var loader = new THREE.ObjectLoader();
+		var loader = new THREE.ObjectLoader(manager);
 		var camera, scene;
 		
 		var vrButton = VRButton.createButton( renderer ); // eslint-disable-line no-undef
