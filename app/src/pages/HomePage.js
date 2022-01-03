@@ -24,18 +24,6 @@ const HomePage = () => {
     setSpheres(_data);
     setLength(8);
     setLoading(false);
-
-    setTimeout(() => {
-      searchElement = document.getElementById('search')
-      searchElement.addEventListener('input', () => {
-        if (searchElement.value.trim() !== '') {
-          setSpheres(allSpheres.filter((e) => e.title.toLowerCase().includes(searchElement.value.toLowerCase())))
-        } else if (searchElement.value === '') {
-          setSpheres(allSpheres)
-          setLength(8)
-        }
-      })
-    }, 500)
   }
   useEffect(() => {
     getData();
@@ -65,7 +53,7 @@ const HomePage = () => {
           </div>
         )}
       </div>
-      {spheres.length === length && (
+      {length !== 0 &&  spheres.length === length ? (
         <LinedButton
           title="Load More"
           onClick={async () => {
@@ -82,7 +70,7 @@ const HomePage = () => {
           }}
           style={{ marginBottom: "60px", width: "300px" }}
         />
-      )}
+      ): <div/>}
     </div>
   );
 };

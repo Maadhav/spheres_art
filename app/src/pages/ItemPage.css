@@ -26,8 +26,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px 0px;
   height: 100%;
   justify-content: center;
+}
+
+progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 0px;
+  height: 5px;
+}
+
+progress[value]::-webkit-progress-value {
+  background-image: var(--red-linear);
 }
 
 .overlay-content-text {

@@ -53,7 +53,7 @@ const NavBar = () => {
   return (
     <div className="navbar-container">
       <Logo />
-      <Search onClick={() => { if(location.pathname !== '/') history.replace('/')  }}/>
+      <div style={{flex: 1}}/>
       <Link to={"/"} style={{ textDecoration: "none" }}>
         <MenuItem title="Explore" active={index === 0} />
       </Link>
