@@ -1,3 +1,5 @@
+@import "../../styles/index.css";
+
 @keyframes spinner {
   to {transform: rotate(360deg);}
 }
@@ -13,7 +15,7 @@
   margin-top: -20px;
   margin-left: -20px;
   border-radius: 50%;
-  border: 2px solid #ccc;
+  border: 2px solid var(--red-violet);
   border-top-color: #000;
   animation: spinner .6s linear infinite;
 }
