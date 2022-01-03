@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import HoverVideoPlayer from "react-hover-video-player";
-import { Image, Shimmer } from 'react-shimmer'
+import { Image, Shimmer } from "react-shimmer";
 
 import "./NFTCard.css";
+import LoadingOverlay from "./LoadingOverlay";
 
-const NFTCard = ({ sphere, }) => {
+const NFTCard = ({ sphere }) => {
   const location = useLocation();
   const history = useHistory();
   console.log(sphere);
@@ -15,16 +16,18 @@ const NFTCard = ({ sphere, }) => {
       className="container"
       onClick={() => {
         history.push({
-          pathname:
-            `/item/${sphere.token_id}`,
+          pathname: `/item/${sphere.token_id}`,
           state: sphere,
         });
       }}
     >
-
       <>
         <HoverVideoPlayer
           videoSrc={sphere.preview}
+          muted={true}
+          loadingOverlay={
+           <LoadingOverlay/>
+          }
           loop={true}
           sizingMode="overlay"
           overlayTransitionDuration={0}
@@ -45,10 +48,10 @@ const NFTCard = ({ sphere, }) => {
           pausedOverlay={
             <Image
               src={sphere.image}
-              fallback={<Shimmer height={211} width={208}  className="image-container"/>}
-              NativeImgProps={
-                { className: "image-container" }
+              fallback={
+                <Shimmer height={211} width={208} className="image-container" />
               }
+              NativeImgProps={{ className: "image-container" }}
               alt=""
             />
           }
