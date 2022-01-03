@@ -9,8 +9,37 @@
   flex: 0.55;
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: center;
   border-right: 1px solid var(--black-1);
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.24);
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+.overlay-content-text {
+  font-size: var(--p1);
+  color: white;
+  font-weight: 600;
+}
+
+.image-loading-display {
+  height: 542px;
+  width: 542px;
+  border-radius: 20px;
 }
 
 .image-style {
@@ -51,7 +80,6 @@
   width: 30px;
   fill: none;
   color: var(--red-violet);
-
 }
 
 .details-section {
