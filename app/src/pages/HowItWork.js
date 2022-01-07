@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import LinedButton from '../components/button/LinedButton'
 import SolidButton from '../components/button/SolidButton'
 import * as THREE from 'three'
-import './About.css'
+import './HowItWork.css'
 import { Canvas, } from '@react-three/fiber'
 import { Sphere, OrbitControls, MeshDistortMaterial, MeshWobbleMaterial, CameraShake, OrthographicCamera } from '@react-three/drei'
 import { Link } from 'react-router-dom'
@@ -11,7 +11,7 @@ import videoPreview from '../assets/spherearteditor.mp4'
 
 
 
-const About = () => {
+const HowItWork = () => {
     const [distort, setdistort] = useState(0)
     return (
         <>
@@ -187,5 +187,5 @@ const About = () => {
     )
 }
 
-export default About
+export default HowItWork
 
