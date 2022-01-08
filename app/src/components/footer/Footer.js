@@ -35,13 +35,15 @@ const Footer = () => {
                         <Link to='/tos' style={{ textDecoration: 'none' }}>
                             <div className="footer-text">Terms of service</div>
                         </Link>
-                        <div className="footer-text">Legal</div>
+                        {/* <div className="footer-text">Legal</div> */}
+                        <Link to='/privacy' style={{ textDecoration: 'none' }}>
                         <div className="footer-text">Privacy Policy</div>
+                        </Link>
                     </div>
                 </div>
             </div>
             <div className="copyright-container">
-                <div className="copyright-text">Sphere.ART, Inc. All Rights Reserved</div>
+                <div className="copyright-text">CodeDecoders™, All Rights Reserved</div>
                 <FaInstagram className="footer-icon" />
                 <FaTwitter className="footer-icon" />
                 <FaTelegramPlane className="footer-icon" />

@@ -11,6 +11,7 @@ import MyCreation from "./pages/MyCreation";
 import HowItWork from "./pages/HowItWork";
 import Contact from "./pages/Contact";
 import TOS from "./pages/TOS";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import { deploy } from "./adapters/tezos/deploy";
 
 function App() {
@@ -37,6 +38,9 @@ function App() {
         </Route>
         <Route path="/tos">
           <TOS />
+        </Route>
+        <Route path="/privacy">
+          <PrivacyPolicy />
         </Route>
         <Route path="/mycreation">
           <MyCreation />
