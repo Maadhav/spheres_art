@@ -8,7 +8,10 @@ import ItemPage from "./pages/ItemPage";
 import CreateItem from "./pages/CreateItem";
 import React, { useEffect, useRef } from "react";
 import MyCreation from "./pages/MyCreation";
-import About from "./pages/About";
+import HowItWork from "./pages/HowItWork";
+import Contact from "./pages/Contact";
+import TOS from "./pages/TOS";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import { deploy } from "./adapters/tezos/deploy";
 
 function App() {
@@ -19,7 +22,7 @@ function App() {
   }, [location]);
   return (
     <div id="home">
-      {!location.pathname.includes('/about') && <NavBar />}
+      {!location.pathname.includes('/howitwork') && <NavBar />}
       <Switch>
         <Route path="/" exact>
           <HomePage />
@@ -27,8 +30,17 @@ function App() {
         <Route path="/profile">
           <Profile />
         </Route>
-        <Route path="/about">
-          <About />
+        <Route path="/howitwork">
+          <HowItWork />
+        </Route>
+        <Route path="/contactus">
+          <Contact />
+        </Route>
+        <Route path="/tos">
+          <TOS />
+        </Route>
+        <Route path="/privacy">
+          <PrivacyPolicy />
         </Route>
         <Route path="/mycreation">
           <MyCreation />

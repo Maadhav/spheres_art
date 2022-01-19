@@ -20,24 +20,30 @@ const Footer = () => {
                         <Link to="/" style={{ textDecoration: "none" }}>
                             <div className="footer-text">Explore</div>
                         </Link>
-                        <Link to="/about" style={{textDecoration: "none"}}>
+                        <Link to="/howitwork" style={{ textDecoration: "none" }}>
                             <div className="footer-text">How it Works</div>
                         </Link>
-                        <div className="footer-text">Contact Us</div>
+                        <Link to='/contactus' style={{ textDecoration: 'none' }}>
+                            <div className="footer-text">Contact Us</div>
+                        </Link>
                     </div>
                 </div>
                 <div style={{ flex: 0.16, }}>
                     <h3>Support</h3>
                     <div style={{ marginTop: "20px" }}>
                         <div className="footer-text">Help Center</div>
-                        <div className="footer-text">Terms of service</div>
-                        <div className="footer-text">Legal</div>
+                        <Link to='/tos' style={{ textDecoration: 'none' }}>
+                            <div className="footer-text">Terms of service</div>
+                        </Link>
+                        {/* <div className="footer-text">Legal</div> */}
+                        <Link to='/privacy' style={{ textDecoration: 'none' }}>
                         <div className="footer-text">Privacy Policy</div>
+                        </Link>
                     </div>
                 </div>
             </div>
             <div className="copyright-container">
-                <div className="copyright-text">Sphere.ART, Inc. All Rights Reserved</div>
+                <div className="copyright-text">CodeDecoders™, All Rights Reserved</div>
                 <FaInstagram className="footer-icon" />
                 <FaTwitter className="footer-icon" />
                 <FaTelegramPlane className="footer-icon" />
