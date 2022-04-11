@@ -15,7 +15,7 @@ const EmailInput = () => {
     if (validateEmail(email)) {
       axios
         .get(
-          "http://localhost:5001/sphere-art/us-central1/createContact?email=" +
+          "https://us-central1-sphere-art.cloudfunctions.net/createContact?email=" +
             email
         )
         .then((res) => {
