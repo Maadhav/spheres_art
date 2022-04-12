@@ -6,7 +6,8 @@ import {
   CODE_JSON,
   STORAGE_JSON,
 } from "./contracts";
-const RPC_URL = "https://granadanet.smartpy.io";
+const RPC_URL = "https://hangzhounet.smartpy.io";
+
 
 const FAUCET_KEY = {
   pkh: "tz1e2YHCQ8YJESdR4VQN56tkQKheivwdWB2c",

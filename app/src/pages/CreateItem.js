@@ -13,6 +13,7 @@ import SphereCanvas from "../components/loader/SphereCanvas";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StorageService, DatabaseService } from "../adapters/firebase/index";
+import { Timestamp } from "firebase/firestore";
 
 const CreateItem = () => {
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,8 @@ const CreateItem = () => {
   useEffect(() => {
     console.log(errors);
   }, [errors]);
+
+
 
   async function onCreate() {
     setErrors({});
@@ -128,12 +131,8 @@ const CreateItem = () => {
         success: "Operation Successfull",
         error: "Operation rejected 🤯",
       });
-      var data = (await getContractStorage()).spheres.valueMap;
-      console.log(data);
-      var sphere = Array.from(data)
-        .map((k, v) => k[1])
-        .find((e) => e.tokenUrl === url);
-      console.log(sphere);
+      var storage = (await getContractStorage());
+      var sphere = await storage.spheres.get(storage.token_id.c[0] - 1);
       var downloadUrls = await toast.promise(
         StorageService.upload(`spheres/${sphere.token_id}`, [
           imageFile,
@@ -153,7 +152,7 @@ const CreateItem = () => {
           description: description,
           price: sphere.price.c[0],
           token_id: sphere.token_id.c[0],
-          timestamp: sphere.timestamp.c[0],
+          timestamp: Date.parse(sphere.timestamp),
           image: downloadUrls[0],
           preview: downloadUrls[1],
           app: downloadUrls[2],

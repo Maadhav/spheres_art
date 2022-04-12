@@ -12,7 +12,7 @@ import HowItWork from "./pages/HowItWork";
 import Contact from "./pages/Contact";
 import TOS from "./pages/TOS";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-// import { deploy } from "./adapters/tezos/deploy";
+import { deploy } from "./adapters/tezos/deploy";
 
 function App() {
   var location = useLocation()

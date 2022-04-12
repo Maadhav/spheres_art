@@ -6,7 +6,7 @@ import { NFTStorage, File } from "nft.storage";
 const DAPP_NAME = "Sphere.ART";
 const RPC_URL = "https://hangzhounet.smartpy.io";
 const NETWORK = "hangzhounet";
-const CONTRACT_ADDRESS = "KT1KmoGzLPMr1ASjAPr7m82unVKcemPHDbXZ";
+const CONTRACT_ADDRESS = "KT192HX57VUrxSHibgGsTVRGM5BQJC628woJ";
 
 const Tezos = new TezosToolkit(RPC_URL);
 
@@ -82,15 +82,14 @@ const uploadToIPFS = async ({
   return metadata.url;
 };
 
-const createItem = async ({ url, price, title }) => {
+const mint = async ({ url, price, title }) => {
   console.log("Started Minting");
   return await getContract().then((c) => {
     return c.methods
-      .createItem(
+      .mint(
         price,
-        Math.round(Date.now() / 1000),
         title,
-        url ?? "test.com"
+        url,
       )
       .send();
   });
@@ -101,9 +100,9 @@ const confirmOperation = async (operation) => {
   return operation.confirmation(1).then(() => operation.opHash);
 };
 
-const createSale = async ({ token_id, price }) => {
+const collect = async ({ token_id, price }) => {
   return await getContract().then((c) => {
-    return c.methods.createSale(token_id ?? 0).send({
+    return c.methods.collect(token_id).send({
       amount: price,
       mutez: true,
     });
@@ -112,7 +111,7 @@ const createSale = async ({ token_id, price }) => {
 
 const updatePrice = async ({ token_id, price }) => {
   return await getContract().then((c) => {
-    return c.methods.updatePrice(price, token_id ?? 0).send();
+    return c.methods.update(price, token_id).send();
   });
 };
 
@@ -126,7 +125,7 @@ export {
   getContract,
   getContractStorage,
   uploadToIPFS,
-  createItem,
+  mint as createItem,
   confirmOperation,
-  createSale,
+  collect as createSale,
 };

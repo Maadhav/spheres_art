@@ -17,7 +17,7 @@ const ItemPage = (props) => {
     const [payment, setPayment] = useState(false);
     const [state, setstate] = useState(props.location.state);
     const [loading, setLoading] = useState(true);
-    const [threejsLoading, setthreejsLoading] = useState(true);
+    const [threejsLoading, setthreejsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [editing, setEditing] = useState(false);
     const [wallet, setWallet] = useState();
