@@ -7,6 +7,7 @@ import {
   uploadToIPFS,
   confirmOperation,
   getContractStorage,
+  getActiveAccount,
 } from "../adapters/tezos";
 import JSZip from "jszip";
 import SphereCanvas from "../components/loader/SphereCanvas";
@@ -14,18 +15,44 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StorageService, DatabaseService } from "../adapters/firebase/index";
 import { Timestamp } from "firebase/firestore";
+import { useHistory } from "react-router-dom";
 
 const CreateItem = () => {
   const [loading, setLoading] = useState(false);
+  const history = useHistory()
   const [title, setTitle] = useState("");
+  const [wallet, setWallet] = useState(null);
   const [errors, setErrors] = useState({});
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+    getPermissions();
+  }, []);
+
+  async function getPermissions() {
+    const wallet = await getActiveAccount();
+    if (wallet) {
+      const permissions = await DatabaseService.get({ col: 'permissions', id: 'permissions' });
+      console.log(permissions)
+      console.log(permissions.creation)
+      let trigger = true;
+      for (let i = 0; i < permissions.creation.length; i++) {
+        console.log(permissions.creation[i])
+        console.log(wallet.address)
+        if (permissions.creation[i] === wallet.address) {
+          trigger = false;
+        }
+      }
+      if (trigger) {
+        alert('You do not have permission to create items.\n Please contact Sphere.Art .')
+        history.goBack()
+      }
+    }
+  }
+
+
 
 
 

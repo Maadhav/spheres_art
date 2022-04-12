@@ -24,7 +24,6 @@ var StorageService = {
     /// StorageService.upload('test', event.currentTarget.files);
     /// Can Send object of file or objects of files
     upload: async function (path, object) {
-        console.log("uploading file")
         var results = {};
         if (object instanceof FileList || object instanceof Array) {
             for (let index = 0; index < object.length; index++) {
@@ -51,7 +50,6 @@ var StorageService = {
 
     /// url will passed as an parameter no need to split it
     delete: async function (url) {
-        console.log("deleting file at url", url)
         var storageRef = ref(this.storage, url);
         deleteObject(storageRef);
     }
