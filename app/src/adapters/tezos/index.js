@@ -110,6 +110,7 @@ const collect = async ({ token_id, price }) => {
 };
 
 const updatePrice = async ({ token_id, price }) => {
+  console.log('Started updating price');
   return await getContract().then((c) => {
     return c.methods.update(price, token_id).send();
   });

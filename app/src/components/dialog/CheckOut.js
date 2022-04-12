@@ -94,7 +94,7 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                 </div>
             </div>
             {loading && (
-                <div className="loading-section" style={{ backgroundColor: "transparent" }}>
+                <div className="loading-section" style={{ backgroundColor: "rgba(27, 26, 33, 0.9)" }}>
                     <SphereCanvas />
                 </div>
             )}

@@ -6,21 +6,25 @@ import Payment from "../components/dialog/Payment";
 import Blockies from "react-blockies";
 import { APP } from "../adapters/three.js/index";
 import { useLocation, useParams } from "react-router-dom";
-import { getActiveAccount, updatePrice } from "../adapters/tezos";
+import { confirmOperation, getActiveAccount, updatePrice } from "../adapters/tezos";
 import { EditSquare, TickSquare } from "react-iconly";
 import { DatabaseService } from "../adapters/firebase";
 import { limit, orderBy, query, where } from "firebase/firestore";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import SphereCanvas from "../components/loader/SphereCanvas";
 const ItemPage = (props) => {
     const location = useLocation();
     const [checkout, setCheckout] = useState(false);
+    const [loading2, setLoading2] = useState(false)
     const [payment, setPayment] = useState(false);
     const [state, setstate] = useState(props.location.state);
     const [loading, setLoading] = useState(true);
-    const [threejsLoading, setthreejsLoading] = useState(false);
+    const [threejsLoading, setthreejsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
     const [editing, setEditing] = useState(false);
     const [wallet, setWallet] = useState();
+    const [errors, setErrors] = useState({});
     const [price, setPrice] = useState(
         ((props?.location?.state?.price ?? 0) / 1000000).toFixed(2)
     );
@@ -59,18 +63,13 @@ const ItemPage = (props) => {
                 },
             })
             .then((response) => {
-                var player = new APP.Player({
-                    onLoad: () => {
+                var player = new APP.Player();
+                player.load({
+                    json: response.data, onLoad: () => {
                         setthreejsLoading(false);
                         ref.current.appendChild(player.dom);
-                    },
-                    onProgress: (progress) => setProgress(progress),
-                    onStart: () => {
-                        setthreejsLoading(true);
-                        setProgress(0);
-                    },
+                    }
                 });
-                player.load(response.data);
                 player.setSize(542, 542);
                 player.play();
                 window.addEventListener("resize", function () {
@@ -89,20 +88,41 @@ const ItemPage = (props) => {
     };
 
     const onPriceEdit = async () => {
-        await updatePrice({
-            token_id: state.token_id,
-            price: parseInt(parseFloat(price) * 1000000),
-        });
-        await DatabaseService.update({
-            col: "spheres",
-            id: state.id,
-            data: {
+        setLoading2(true)
+        const operation = await toast.promise(
+            updatePrice({
+                token_id: state.token_id,
                 price: parseInt(parseFloat(price) * 1000000),
-            },
+            }),
+            {
+                pending: "Updating NFT to Blockchain",
+                success: "NFT Updated",
+                error: "NFT Update rejected 🤯",
+            }
+        )
+        await toast.promise(confirmOperation(operation), {
+            pending: "Waiting for confirmation",
+            success: "Operation Successfull",
+            error: "Operation rejected 🤯",
         });
+        await toast.promise(
+            DatabaseService.update({
+                col: "spheres",
+                id: state.id,
+                data: {
+                    price: parseInt(parseFloat(price) * 1000000),
+                },
+            }),
+            {
+                pending: "Updating Data to Central Server",
+                success: "Updated Complete",
+                error: "Update rejected 🤯",
+            }
+        );
         setstate((val) => {
             return { ...val, price: parseFloat(price) * 1000000 };
         });
+        setLoading2(false)
         setEditing(false);
     };
 
@@ -112,23 +132,34 @@ const ItemPage = (props) => {
     }, []);
     return (
         <div className="section-separator">
-            {loading || threejsLoading ? (
-                <div className="image-section">
-                    <img
-                        className="image-loading-display padding"
-                        src={state.image}
-                        alt={"Sphere Model"}
-                    />
-                    <div className="overlay">
-                        <div className="overlay-content">
-                            <div className="overlay-content-text">{loading ? 'Fetching 3D Model' : threejsLoading ? 'Rendering 3D Model' : ''}</div>
-                            <progress value={progress} max={1} style={{ appearance: 'none' }}></progress>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                newestOnTop={false}
+                closeOnClick={false}
+                closeButton={false}
+                rtl={false}
+                theme="dark"
+                pauseOnFocusLoss={true}
+                draggable={false}
+            />
+            <div className="image-section" ref={ref}>
+                {(loading || threejsLoading) && (
+                    <>
+                        <img
+                            className="image-loading-display padding"
+                            src={state.image}
+                            alt={"Sphere Model"}
+                        />
+                        <div className="overlay">
+                            <div className="overlay-content">
+                                <div className="overlay-content-text">{loading ? 'Fetching 3D Model' : threejsLoading ? 'Rendering 3D Model' : ''}</div>
+                                <progress value={progress} max={1} style={{ appearance: 'none' }}></progress>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            ) : (
-                <div className="image-section" ref={ref}></div>
-            )}
+                    </>
+                )}
+            </div>
             <div className="details-section">
                 <div style={{ margin: "45px 43px" }}>
                     <h1>{state.title}</h1>
@@ -218,6 +249,11 @@ const ItemPage = (props) => {
                         setCheckout(false);
                     }}
                 />
+            )}
+            {loading2 && (
+                <div className="loading-section">
+                    <SphereCanvas />
+                </div>
             )}
             {payment && (
                 <Payment
