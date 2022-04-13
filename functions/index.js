@@ -16,7 +16,6 @@ exports.createContact = functions.https.onRequest((request, response) => {
 
   let createContact = new SibApiV3Sdk.CreateContact();
 
-  console.log(apiKey);
 
   createContact.email = email;
   createContact.listIds = [3];

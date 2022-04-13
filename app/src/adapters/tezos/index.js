@@ -1,6 +1,5 @@
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
-import { importKey } from "@taquito/signer";
 import { NFTStorage, File } from "nft.storage";
 
 const DAPP_NAME = "Sphere.ART";
@@ -65,8 +64,6 @@ const uploadToIPFS = async ({
   videoFile,
   zipFile,
 }) => {
-  console.log("Starting IPFS");
-  console.log(imageFile);
   const metadata = await client.store({
     name: title,
     description: description,
@@ -77,13 +74,10 @@ const uploadToIPFS = async ({
       preview: new File([videoFile], videoFile.name, { type: videoFile.type }),
     },
   });
-  console.log("Completed IPFS");
-  console.log(metadata.url);
   return metadata.url;
 };
 
 const mint = async ({ url, price, title }) => {
-  console.log("Started Minting");
   return await getContract().then((c) => {
     return c.methods
       .mint(
@@ -95,7 +89,6 @@ const mint = async ({ url, price, title }) => {
   });
 };
 const confirmOperation = async (operation) => {
-  console.log("Mint operation sent.");
   console.log(`Awaiting for ${operation.opHash} to be confirmed...`);
   return operation.confirmation(1).then(() => operation.opHash);
 };
@@ -110,7 +103,6 @@ const collect = async ({ token_id, price }) => {
 };
 
 const updatePrice = async ({ token_id, price }) => {
-  console.log('Started updating price');
   return await getContract().then((c) => {
     return c.methods.update(price, token_id).send();
   });

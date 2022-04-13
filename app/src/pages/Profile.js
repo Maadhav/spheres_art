@@ -5,7 +5,7 @@ import Search from "../components/navbar/Search";
 import NFTCard from "../components/card/NFTCard";
 import LinedButton from "../components/button/LinedButton";
 import Blockies from "react-blockies";
-import { getActiveAccount, getContractStorage } from "../adapters/tezos";
+import { getActiveAccount } from "../adapters/tezos";
 import Loader from "../components/loader/Loader";
 import { DatabaseService } from "../adapters/firebase";
 import { limit, orderBy, query, startAfter, where } from "firebase/firestore";
@@ -20,7 +20,6 @@ const Profile = () => {
     setWallet(activeAccount);
   };
   async function getData() {
-    var searchElement;
     var data = await DatabaseService.get({
       col: 'spheres',
       query: (ref) => {
@@ -34,7 +33,6 @@ const Profile = () => {
   }
 
   function onFilterChange(value) {
-    console.log(value);
     var _spheres;
     if (value === "0") {
       _spheres = spheres.sort((a, b) => b.timestamp - a.timestamp);
@@ -43,10 +41,8 @@ const Profile = () => {
     } else if (value === "2") {
       _spheres = spheres.sort((a, b) => b.price - a.price);
     }
-    console.log(_spheres);
     setSpheres([..._spheres]);
     setLength(8);
-    console.log(spheres);
   }
 
 
@@ -115,7 +111,7 @@ const Profile = () => {
                     onLoadIPFS={(sphere) =>
                       setSpheres((val) =>
                         val.map((e, index) => {
-                          if (index == i) return sphere;
+                          if (index === i) return sphere;
                           else return e;
                         })
                       )

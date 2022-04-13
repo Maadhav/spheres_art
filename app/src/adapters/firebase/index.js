@@ -1,7 +1,7 @@
+/* eslint-disable no-redeclare */
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { getFirestore, getDoc, collection, getDocs, doc, addDoc, deleteDoc, updateDoc,query } from 'firebase/firestore';
-import { v4 } from 'uuid';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -83,7 +83,6 @@ var DatabaseService = {
             // var queryBuilder = query(collectionRef, where,orderBy('timestamp', 'desc'), startAt(0), limit(10),);
             var queryBuilder = query(collectionRef);
             var snapshot = await getDocs(queryBuilder).catch(e => console.log(e));
-            console.log(snapshot);
             return snapshot.docs.map(doc => {
                 return {
                     ...doc.data(),

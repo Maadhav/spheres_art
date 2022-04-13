@@ -5,7 +5,7 @@ import CheckOut from "../components/dialog/CheckOut";
 import Payment from "../components/dialog/Payment";
 import Blockies from "react-blockies";
 import { APP } from "../adapters/three.js/index";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { confirmOperation, getActiveAccount, updatePrice } from "../adapters/tezos";
 import { EditSquare, TickSquare } from "react-iconly";
 import { DatabaseService } from "../adapters/firebase";
@@ -14,7 +14,6 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import SphereCanvas from "../components/loader/SphereCanvas";
 const ItemPage = (props) => {
-    const location = useLocation();
     const [checkout, setCheckout] = useState(false);
     const [loading2, setLoading2] = useState(false)
     const [payment, setPayment] = useState(false);
@@ -24,7 +23,6 @@ const ItemPage = (props) => {
     const [progress, setProgress] = useState(0);
     const [editing, setEditing] = useState(false);
     const [wallet, setWallet] = useState();
-    const [errors, setErrors] = useState({});
     const [price, setPrice] = useState(
         ((props?.location?.state?.price ?? 0) / 1000000).toFixed(2)
     );
@@ -52,13 +50,10 @@ const ItemPage = (props) => {
         } else {
             nft = state;
         }
-        console.log(nft);
 
         axios
             .get(nft.app, {
                 onDownloadProgress: (progressEvent) => {
-                    console.log(progressEvent);
-                    console.log(progressEvent.loaded / progressEvent.total);
                     setProgress(progressEvent.loaded / progressEvent.total);
                 },
             })

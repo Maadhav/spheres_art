@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import SolidButton from '../components/button/SolidButton'
 import './Contact.css'
 import axios from 'axios';
@@ -19,7 +19,6 @@ const Contact = () => {
                 "https://us-central1-sphere-art.cloudfunctions.net/sendEmail?email=" + state.email + '&name=' + state.name + '&msg=' + state.msg,
             )
             .then((res) => {
-                console.log(res.data);
                 toast.success("Your message has been sent!");
             })
             .catch((err) => {

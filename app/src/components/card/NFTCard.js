@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import HoverVideoPlayer from "react-hover-video-player";
 import { Image, Shimmer } from "react-shimmer";
 
@@ -7,9 +7,7 @@ import "./NFTCard.css";
 import LoadingOverlay from "./LoadingOverlay";
 
 const NFTCard = ({ sphere }) => {
-  const location = useLocation();
   const history = useHistory();
-  console.log(sphere);
 
   return (
     <div

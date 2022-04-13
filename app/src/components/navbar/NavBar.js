@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../logo/Logo";
 import "./NavBar.css";
-import Search from "./Search";
 import MenuItem from "./menu/MenuItem";
 import SolidButton from "../button/SolidButton";
 import LinedButton from "../button/LinedButton";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   getActiveAccount,
   connectAccount,
@@ -18,7 +17,6 @@ import ProfileButton from "../button/ProfileButton";
 
 const NavBar = () => {
   const location = useLocation();
-  const history = useHistory()
   const [index, setIndex] = useState(0);
   const [wallet, setWallet] = useState(null);
 
@@ -26,7 +24,6 @@ const NavBar = () => {
     if (!wallet) {
       let wallet = await connectAccount();
       setWallet(wallet);
-      console.log(wallet);
     } else {
       await clearActiveAccount();
       setWallet(null);
@@ -43,7 +40,6 @@ const NavBar = () => {
   }, []);
 
   useEffect(() => {
-    console.log(location.pathname);
     if (location.pathname.includes("profile")) {
       setIndex(1);
     } else {

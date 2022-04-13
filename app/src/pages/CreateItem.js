@@ -14,14 +14,12 @@ import SphereCanvas from "../components/loader/SphereCanvas";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StorageService, DatabaseService } from "../adapters/firebase/index";
-import { Timestamp } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
 
 const CreateItem = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory()
   const [title, setTitle] = useState("");
-  const [wallet, setWallet] = useState(null);
   const [errors, setErrors] = useState({});
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -35,12 +33,8 @@ const CreateItem = () => {
     const wallet = await getActiveAccount();
     if (wallet) {
       const permissions = await DatabaseService.get({ col: 'permissions', id: 'permissions' });
-      console.log(permissions)
-      console.log(permissions.creation)
       let trigger = true;
       for (let i = 0; i < permissions.creation.length; i++) {
-        console.log(permissions.creation[i])
-        console.log(wallet.address)
         if (permissions.creation[i] === wallet.address) {
           trigger = false;
         }
@@ -64,7 +58,6 @@ const CreateItem = () => {
       toast.error("Please upload a file");
       return;
     } else if (title.length < 3 || description.length < 3 || price <= 0) {
-      console.log("Test");
       if (title.length < 3) {
         setErrors((errors) => {
           return {
@@ -72,7 +65,6 @@ const CreateItem = () => {
             title: "Title must be at least 3 characters",
           };
         });
-        console.log("Error");
       }
       if (description.length < 3) {
         setErrors((errors) => {
@@ -172,8 +164,7 @@ const CreateItem = () => {
           error: "Upload rejected 🤯",
         }
       );
-      console.log(downloadUrls);
-      var sphereData = await toast.promise(
+      await toast.promise(
         DatabaseService.set("spheres", {
           ...sphere,
           description: description,
@@ -190,7 +181,6 @@ const CreateItem = () => {
           error: "Upload rejected 🤯",
         }
       );
-      console.log(sphereData);
       setFile(null);
       setDescription("");
       setPrice("");

@@ -9,18 +9,14 @@ import "./HomePage.css";
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [spheres, setSpheres] = useState([]);
-  const [page, setPage] = useState(0);
   const [length, setLength] = useState(0);
   async function getData() {
-    var allSpheres = []
-    var searchElement;
     var _data = await DatabaseService.get({
       col: 'spheres',
       query: (ref) => {
         return query(ref, orderBy('timestamp', 'desc'), where('isNew', '==', true), limit(8))
       }
     });
-    console.log(_data);
     setSpheres(_data);
     setLength(8);
     setLoading(false);

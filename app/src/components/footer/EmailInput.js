@@ -19,7 +19,6 @@ const EmailInput = () => {
             email
         )
         .then((res) => {
-          console.log(res.data);
           toast.success("You have been added to our mailing list!");
         })
         .catch((err) => {

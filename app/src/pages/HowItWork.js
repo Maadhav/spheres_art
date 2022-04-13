@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, {  useState } from 'react'
 import LinedButton from '../components/button/LinedButton'
 import SolidButton from '../components/button/SolidButton'
-import * as THREE from 'three'
 import './HowItWork.css'
 import { Canvas, } from '@react-three/fiber'
-import { Sphere, OrbitControls, MeshDistortMaterial, MeshWobbleMaterial, CameraShake, OrthographicCamera } from '@react-three/drei'
+import { Sphere, MeshDistortMaterial, MeshWobbleMaterial, CameraShake, OrthographicCamera } from '@react-three/drei'
 import { Link } from 'react-router-dom'
 import preview from '../assets/editor_preview.png'
 import videoPreview from '../assets/spherearteditor.mp4'
@@ -28,7 +27,7 @@ const HowItWork = () => {
                         intensity={distort}
                         decay={false}
                         decayRate={0.65} />
-                    <group position={[10, 0, -10]} onPointerEnter={() => { console.log('Pointer'); setdistort(0.9) }} onPointerLeave={() => { console.log('Pointer --'); setdistort(0) }}>
+                    <group position={[10, 0, -10]} onPointerEnter={() => { setdistort(0.9) }} onPointerLeave={() => { setdistort(0) }}>
                         <mesh
                             visible // object gets render if true
                             userData={{ test: "hello" }} // An object that can be used to store custom data about the Object3d

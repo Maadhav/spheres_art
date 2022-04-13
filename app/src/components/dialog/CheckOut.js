@@ -19,7 +19,6 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
         activeWallet()
     }, [])
     async function onBuy() {
-        console.log('Buying')
         setLoading(true)
         const operation = await toast.promise(
             createSale({
@@ -32,7 +31,6 @@ const CheckOut = ({ onQuit, onCheckOut, sphere }) => {
                 error: "Checkout rejected 🤯",
             }
         );
-        console.log(sphere.id)
         await DatabaseService.update({
             col: 'spheres',
             id: sphere.id,
