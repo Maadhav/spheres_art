@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { getFirestore, getDoc, collection, getDocs, doc, addDoc, deleteDoc, updateDoc,query } from 'firebase/firestore';
+import { getAuth, signInAnonymously } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -130,4 +131,11 @@ var DatabaseService = {
     },
 }
 
-export { StorageService, DatabaseService }
+const AuthService = {
+    auth: getAuth(app),
+    signin: async function () {
+        await signInAnonymously(this.auth)
+    }
+}
+
+export { StorageService, DatabaseService, AuthService }

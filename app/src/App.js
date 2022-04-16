@@ -6,20 +6,27 @@ import { Route, Switch, useLocation } from "react-router-dom";
 import Profile from "./pages/Profile";
 import ItemPage from "./pages/ItemPage";
 import CreateItem from "./pages/CreateItem";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MyCreation from "./pages/MyCreation";
 import HowItWork from "./pages/HowItWork";
 import Contact from "./pages/Contact";
 import TOS from "./pages/TOS";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { deploy } from "./adapters/tezos/deploy";
+import { AuthService } from "./adapters/firebase";
 
 function App() {
   var location = useLocation()
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     // deploy();
+    AuthService.signin().then(val => {
+      setLoading(false);
+    })
     window.scroll(0, 0)
   }, [location]);
+  if (loading)
+    return <div />
   return (
     <div id="home">
       {!location.pathname.includes('/howitwork') && <NavBar />}
