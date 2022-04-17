@@ -7,7 +7,7 @@ import {
   uploadToIPFS,
   confirmOperation,
   getContractStorage,
-  getActiveAccount,
+  connectAccount
 } from "../adapters/tezos";
 import JSZip from "jszip";
 import SphereCanvas from "../components/loader/SphereCanvas";
@@ -30,7 +30,7 @@ const CreateItem = () => {
   }, []);
 
   async function getPermissions() {
-    const wallet = await getActiveAccount();
+    const wallet = await connectAccount();
     if (wallet) {
       const permissions = await DatabaseService.get({ col: 'permissions', id: 'permissions' });
       let trigger = true;
