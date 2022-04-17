@@ -48,7 +48,7 @@ const NavBar = () => {
   }, [location]);
   return (
     <div className="navbar-container">
-      <div style={{display: 'flex', gap: '0 10px', alignItems: 'center'}}>
+      <div style={{ display: 'flex', gap: '0 10px', alignItems: 'center' }}>
         <Logo />
         <div className="beta-chip">BETA</div>
       </div>
@@ -60,9 +60,9 @@ const NavBar = () => {
         <MenuItem title="My Spheres" active={index === 1} />
       </Link>}
       {/* <MenuItem title="Following" active={index === 2} /> */}
-      <Link to={"/create"} style={{ textDecoration: "none" }}>
+      {wallet && <Link to={"/create"} style={{ textDecoration: "none" }}>
         <SolidButton title="Create" onClick={() => { }} />
-      </Link>
+      </Link>}
       {wallet ? <ProfileButton title={wallet.address} onDisconnect={handleLogin} /> :
         <LinedButton
           title={"Connect"}
