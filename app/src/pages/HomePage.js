@@ -1,4 +1,4 @@
-import { orderBy, query, startAfter,  where, limit } from "firebase/firestore";
+import { orderBy, query, startAfter, where, limit } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { DatabaseService } from "../adapters/firebase";
 import LinedButton from "../components/button/LinedButton";
@@ -12,12 +12,17 @@ const HomePage = () => {
   const [length, setLength] = useState(0);
   async function getData() {
     var _data = await DatabaseService.get({
-      col: 'spheres',
+      col: "spheres",
       query: (ref) => {
-        return query(ref, orderBy('timestamp', 'desc'), where('isNew', '==', true), limit(8))
-      }
+        return query(
+          ref,
+          orderBy("timestamp", "desc"),
+          where("isNew", "==", true),
+          limit(8)
+        );
+      },
     });
-    setSpheres(_data);
+    setSpheres(_data.sort(() => Math.random() - 0.5));
     setLength(8);
     setLoading(false);
   }
@@ -38,35 +43,37 @@ const HomePage = () => {
         ) : (
           <div className="nft-grid">
             {spheres.map(
-              (e, i) =>
-                i < length && (
-                  <NFTCard
-                    sphere={e}
-                    key={e.token_id}
-                  />
-                )
+              (e, i) => i < length && <NFTCard sphere={e} key={e.token_id} />
             )}
           </div>
         )}
       </div>
-      {length !== 0 &&  spheres.length === length ? (
+      {length !== 0 && spheres.length === length ? (
         <LinedButton
           title="Load More"
           onClick={async () => {
             var data = await DatabaseService.get({
-              col: 'spheres',
+              col: "spheres",
               query: (ref) => {
-                return query(ref, orderBy('timestamp', 'desc'), where('isNew', '==', true), startAfter(spheres[spheres.length - 1].timestamp), limit(8))
-              }
+                return query(
+                  ref,
+                  orderBy("timestamp", "desc"),
+                  where("isNew", "==", true),
+                  startAfter(spheres[spheres.length - 1].timestamp),
+                  limit(8)
+                );
+              },
             });
-            setSpheres(val => {
-              return [...val, ...data];
-            })
+            setSpheres((val) => {
+              return [...val, ...data.sort(() => Math.random() - 0.5)];
+            });
             setLength((val) => val + 8);
           }}
           style={{ marginBottom: "60px", width: "300px" }}
         />
-      ): <div/>}
+      ) : (
+        <div />
+      )}
     </div>
   );
 };

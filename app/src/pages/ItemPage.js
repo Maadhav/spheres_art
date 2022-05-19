@@ -36,24 +36,20 @@ const ItemPage = (props) => {
 
   async function init() {
     var nft;
-    if (!state) {
-      var data = await DatabaseService.get({
-        col: "spheres",
-        query: (ref) => {
-          return query(
-            ref,
-            orderBy("timestamp", "desc"),
-            where("token_id", "==", parseInt(id)),
-            limit(1)
-          );
-        },
-      });
-      nft = data[0];
-      setstate(nft);
-      setPrice((nft.price / 1000000).toFixed(2));
-    } else {
-      nft = state;
-    }
+    var data = await DatabaseService.get({
+      col: "spheres",
+      query: (ref) => {
+        return query(
+          ref,
+          orderBy("timestamp", "desc"),
+          where("token_id", "==", parseInt(id)),
+          limit(1)
+        );
+      },
+    });
+    nft = data[0];
+    setstate(nft);
+    setPrice((nft.price / 1000000).toFixed(2));
 
     axios
       .get(nft.app, {
