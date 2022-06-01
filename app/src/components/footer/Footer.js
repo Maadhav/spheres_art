@@ -3,7 +3,7 @@ import Logo from '../logo/Logo';
 import EmailInput from './EmailInput';
 import './Footer.css';
 import { FaDiscord, FaInstagram, FaTwitter, FaTelegramPlane } from 'react-icons/fa'
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -37,17 +37,17 @@ const Footer = () => {
                         </Link>
                         {/* <div className="footer-text">Legal</div> */}
                         <Link to='/privacy' style={{ textDecoration: 'none' }}>
-                        <div className="footer-text">Privacy Policy</div>
+                            <div className="footer-text">Privacy Policy</div>
                         </Link>
                     </div>
                 </div>
             </div>
             <div className="copyright-container">
                 <div className="copyright-text">CodeDecoders™, All Rights Reserved</div>
-                <FaInstagram className="footer-icon" />
-                <FaTwitter className="footer-icon" />
-                <FaTelegramPlane className="footer-icon" />
-                <FaDiscord className="footer-icon" />
+                <a href='https://www.instagram.com/sphereart_nft' target={'_blank'}><FaInstagram className="footer-icon" /></a>
+                <a href='https://twitter.com/SphereART_NFT' target={'_blank'}><FaTwitter className="footer-icon" /></a>
+                <a href='https://t.me/SphereART_NFT' target={'_blank'}><FaTelegramPlane className="footer-icon" /></a>
+                <a href='https://discord.gg/JGhTFqcx3T' target={'_blank'}><FaDiscord className="footer-icon" /></a>
             </div>
         </div>
     )
