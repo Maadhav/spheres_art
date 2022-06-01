@@ -1,5 +1,5 @@
 # Sphere.ART
-[Live Demo (Granadanet)](https://sphereart.netlify.app)
+[BETA Live(Mainnet)](https://sphereart.app)
 Sphere.ART is a platform that aims to build a new creative economy—a world where creators, designers, and developers can use the Tezos blockchain to value their skills in an entirely new way. In this world, users can create, buy and sell 3D Spheres as an NFT. Unlike other NFT marketplaces, Sphere.ART has come up with a unique way of presenting the NFTs. It allows users to move the camera to orbit around the 3d Sphere NFT. This gives the users freedom to look around the NFT and have a close to real-life three-dimensional view.
 
 #### FEATURES:

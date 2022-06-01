@@ -3,7 +3,7 @@ import { TezosToolkit } from "@taquito/taquito";
 import { NFTStorage, File } from "nft.storage";
 
 const DAPP_NAME = "Sphere.ART";
-const RPC_URL = "https://mainnet.smartpy.io";
+const RPC_URL = "https://mainnet.api.tez.ie";
 const NETWORK = "mainnet";
 const CONTRACT_ADDRESS = "KT1BWCZkyNyE2AHomVsQvi4sfZdDHL7BZi8P";
 
