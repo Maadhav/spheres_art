@@ -25,9 +25,6 @@ const CreateItem = () => {
   const [price, setPrice] = useState("");
   const [file, setFile] = useState(null);
 
-  useEffect(() => {
-    getPermissions();
-  }, []);
 
   async function getPermissions() {
     const wallet = await connectAccount();
@@ -51,6 +48,7 @@ const CreateItem = () => {
 
 
   async function onCreate() {
+    await getPermissions()
     setErrors({});
     if (!file) {
       document.body.scrollTop = 0; // For Safari
@@ -210,7 +208,7 @@ const CreateItem = () => {
               onClick={() => {
                 window
                   .open(
-                    "https://sphereart-editor.netlify.app/editor/",
+                    "https://editor.sphere.art/",
                     "_blank",
                     "",
                     true
