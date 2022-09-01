@@ -14,6 +14,10 @@ import TOS from "./pages/TOS";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { deploy } from "./adapters/tezos/deploy";
 import { AuthService } from "./adapters/firebase";
+import Playground from "./pages/Playground";
+import { getActiveAccount, getIGTContract, getIGTContractStorage, mintSPZTokens, Tezos } from "./adapters/tezos";
+import BigNumber from "bignumber.js";
+import { BeaconWallet } from "@taquito/beacon-wallet";
 
 function App() {
   var location = useLocation()
@@ -36,6 +40,9 @@ function App() {
         </Route>
         <Route path="/profile">
           <Profile />
+        </Route>
+        <Route path="/playground">
+          <Playground />
         </Route>
         <Route path="/howitwork">
           <HowItWork />

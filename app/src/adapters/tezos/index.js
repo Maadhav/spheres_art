@@ -1,17 +1,23 @@
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import { NFTStorage, File } from "nft.storage";
+import { InMemorySigner, importKey } from "@taquito/signer";
 
 const DAPP_NAME = "Sphere.ART";
 const RPC_URL = "https://mainnet.api.tez.ie";
+const TESTNET_RPC_URL = "https://jakartanet.smartpy.io";
 const NETWORK = "mainnet";
+const TESTNET_NETWORK = "jakartanet";
 const CONTRACT_ADDRESS = "KT1BWCZkyNyE2AHomVsQvi4sfZdDHL7BZi8P";
+const TESTNET_IGT_CONTRACT_ADDRESS = "KT1T8CbPHFnenakbqpjrMFNPqZQWtbi93TPA";
 
-const Tezos = new TezosToolkit(RPC_URL);
+window.TESTNET_IGT_CONTRACT_ADDRESS = TESTNET_IGT_CONTRACT_ADDRESS;
+
+const Tezos = new TezosToolkit(TESTNET_RPC_URL);
 
 const wallet = new BeaconWallet({
   name: DAPP_NAME,
-  preferredNetwork: NETWORK,
+  preferredNetwork: TESTNET_NETWORK,
   colorMode: "dark",
 });
 
@@ -25,8 +31,8 @@ const client = new NFTStorage({
 });
 
 const network = {
-  type: NETWORK,
-  rpcUrl: RPC_URL,
+  type: TESTNET_NETWORK,
+  rpcUrl: TESTNET_RPC_URL,
 };
 
 const getActiveAccount = async () => {
@@ -52,9 +58,32 @@ const getContract = async () => {
   return Tezos.wallet.at(CONTRACT_ADDRESS);
 };
 
+const getIGTContract = async () => {
+  return Tezos.wallet.at(TESTNET_IGT_CONTRACT_ADDRESS);
+};
+
 const getContractStorage = async () => {
   return (await getContract()).storage();
 };
+
+const getIGTContractStorage = async () => {
+  return (await getIGTContract()).storage();
+};
+
+const mintSPZTokens = async (amount, to_) => {
+  console.log(amount, to_);
+  Tezos.setProvider({
+    signer: new InMemorySigner(process.env.REACT_APP_PRIVATE_KEY),
+  });
+  await Tezos.contract
+    .at(TESTNET_IGT_CONTRACT_ADDRESS)
+    .then((contract) => {
+      return contract.methods.mint([{ to_: to_, amount: amount }]).send();;
+    })
+    .catch((error) => window.alert(`Error: ${JSON.stringify(error, null, 2)}`));
+  Tezos.setWalletProvider(wallet);
+};
+
 
 const uploadToIPFS = async ({
   title,
@@ -111,6 +140,9 @@ const updatePrice = async ({ token_id, price }) => {
 export {
   Tezos,
   wallet,
+  mintSPZTokens,
+  getIGTContractStorage,
+  getIGTContract,
   getActiveAccount,
   updatePrice,
   connectAccount,

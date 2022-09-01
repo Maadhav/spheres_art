@@ -41,8 +41,11 @@ const NavBar = () => {
 
   useEffect(() => {
     if (location.pathname.includes("profile")) {
+      setIndex(2);
+    } else if (location.pathname.includes("playground")) {
       setIndex(1);
-    } else {
+    }
+    else {
       setIndex(0);
     }
   }, [location]);
@@ -56,8 +59,11 @@ const NavBar = () => {
       <Link to={"/"} style={{ textDecoration: "none" }}>
         <MenuItem title="Explore" active={index === 0} />
       </Link>
+      {wallet && <Link to={"/playground"} style={{ textDecoration: "none" }}>
+        <MenuItem title="Playground" active={index === 1} />
+      </Link>}
       {wallet && <Link to={"/profile"} style={{ textDecoration: "none" }}>
-        <MenuItem title="My Spheres" active={index === 1} />
+        <MenuItem title="My Spheres" active={index === 2} />
       </Link>}
       {/* <MenuItem title="Following" active={index === 2} /> */}
       {wallet && <Link to={"/create"} style={{ textDecoration: "none" }}>
