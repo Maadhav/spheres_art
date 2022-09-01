@@ -36,8 +36,9 @@ const Playground = () => {
     
       const OnAppReady = useCallback(async () => {
         console.log("OnAppReady");
-        window.sendMessage = sendMessage
         var account = await getActiveAccount();
+        window.sendMessage = sendMessage
+        window.account = account
         if (account) {
             var storage = await getIGTContractStorage();
             storage.ledger.get(account.address).then((val) => {
@@ -45,6 +46,7 @@ const Playground = () => {
                 console.log(coins);
                 setCoins(coins);
                 sendMessage("Coins", "SetCoins", coins);
+                sendMessage("Coins", "SetAccount", account.address);
             });
       }
     }, [sendMessage]);
